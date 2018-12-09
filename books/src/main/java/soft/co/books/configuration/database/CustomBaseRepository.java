@@ -8,5 +8,5 @@ import org.springframework.data.repository.NoRepositoryBean;
  */
 @NoRepositoryBean
 //public interface CustomBaseRepository<T, ID> extends MongoRepository<T, ID> {
-public interface CustomBaseRepository<T, ID> extends MongoRepository<T, ID> {
+public interface CustomBaseRepository<T, ID> extends MongoRepository<T, ID>{
 }

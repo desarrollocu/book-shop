@@ -1,17 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {AccountService} from './account.service';
+import {StateStorageService} from './state-storage.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Principal {
-
   private userIdentity: any;
   private authenticated = false;
   private authenticationState = new Subject<any>();
 
-  constructor(private account: AccountService) {
+  constructor(private account: AccountService,
+              private translate: TranslateService,
+              private stateStorageService: StateStorageService) {
   }
 
   authenticate(identity) {
@@ -71,9 +74,16 @@ export class Principal {
         if (account) {
           this.userIdentity = account;
           this.authenticated = true;
+          let lang = this.userIdentity.langKey;
+          if (lang) {
+            this.stateStorageService.storeLanguage(lang);
+            this.translate.use(lang);
+          }
         } else {
           this.userIdentity = null;
           this.authenticated = false;
+          // this.stateStorageService.resetAuth();
+          this.stateStorageService.resetLanguage();
         }
         this.authenticationState.next(this.userIdentity);
         return this.userIdentity;
@@ -81,6 +91,7 @@ export class Principal {
       .catch(err => {
         this.userIdentity = null;
         this.authenticated = false;
+        // this.stateStorageService.storeAuth(this.userIdentity);
         this.authenticationState.next(this.userIdentity);
         return null;
       });
@@ -88,6 +99,19 @@ export class Principal {
 
   isAuthenticated(): boolean {
     return this.authenticated;
+  }
+
+  fullName(): string {
+    return this.isIdentityResolved() ? this.userIdentity.fullName : null;
+  }
+
+  isAdmin(): boolean {
+    if (this.isIdentityResolved()) {
+      if (this.userIdentity !== null)
+        return this.userIdentity.isAdmin === "true" ? true : false;
+    }
+
+    return false;
   }
 
   isIdentityResolved(): boolean {

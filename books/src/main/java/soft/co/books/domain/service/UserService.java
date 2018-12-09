@@ -2,20 +2,29 @@ package soft.co.books.domain.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
+import soft.co.books.configuration.security.other.SecurityUtils;
 import soft.co.books.domain.collection.Authority;
 import soft.co.books.domain.collection.User;
 import soft.co.books.domain.repository.UserRepository;
+import soft.co.books.domain.service.dto.PageResultDTO;
 import soft.co.books.domain.service.dto.UserDTO;
-import soft.co.books.configuration.security.other.SecurityUtils;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
@@ -32,18 +41,43 @@ public class UserService extends CustomBaseService<User, String> {
 
     private final AuthorityService authorityService;
 
+    private MongoTemplate mongoTemplate;
+
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                       AuthorityService authorityService) {
+                       AuthorityService authorityService, MongoTemplate mongoTemplate) {
         super(userRepository);
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
+        this.mongoTemplate = mongoTemplate;
     }
 
-    public User createUser(UserDTO userDTO) {
+    public PageResultDTO findAll(UserDTO userDTO, Pageable pageable) {
+        PageResultDTO<UserDTO> resultDTO = new PageResultDTO<>();
+
+        Query query = new Query();
+        query.limit(pageable.getPageSize());
+        query.skip(pageable.getPageNumber() * pageable.getPageSize());
+        query.with(pageable.getSort());
+
+        if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty())
+            query.addCriteria(where("firstName").regex(userDTO.getFirstName().toLowerCase()));
+        if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty())
+            query.addCriteria(where("lastName").regex(userDTO.getLastName()));
+        if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty())
+            query.addCriteria(where("userName").regex(userDTO.getUserName()));
+        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty())
+            query.addCriteria(where("email").regex(userDTO.getEmail()));
+
+        Page<User> users = new PageImpl<>(mongoTemplate.find(query, User.class));
+        resultDTO.setElements(users.stream().map(UserDTO::new).collect(Collectors.toList()));
+        resultDTO.setTotal(mongoTemplate.count(query, User.class));
+        return resultDTO;
+    }
+
+    public Optional<UserDTO> createUser(UserDTO userDTO) {
         User user = new User();
-        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
-        user.setPassword(encryptedPassword);
+        user.setPassword("$2a$10$Iwn.w7FA7780RmxOBQKFQ.gV0QjFTYQCyEoAmZsYWSIr9rlHEiR7y");
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUserName(userDTO.getUserName().toLowerCase());
@@ -51,24 +85,19 @@ public class UserService extends CustomBaseService<User, String> {
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
 
+        if (userDTO.getIsAdmin().equals("true")) {
+            user.setAuthorities(new HashSet<>(authorityService.findAll()));
+        }
+
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE);
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
 
-        if (userDTO.getAuthorities() != null) {
-            Set<Authority> authorities = userDTO.getAuthorities().stream()
-                    .map(authorityService::findOne)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            user.setAuthorities(authorities);
-        }
-
-        userRepository.save(user);
         log.debug("Created Information for User: {}", user);
-        return user;
+        return Optional.of(userRepository.save(user))
+                .map(UserDTO::new);
     }
 
     /**
@@ -103,8 +132,25 @@ public class UserService extends CustomBaseService<User, String> {
                 .map(UserDTO::new);
     }
 
+    public void updateLang(String lang) {
+        SecurityUtils.getCurrentUserLogin()
+                .flatMap(userRepository::findOneByUserName)
+                .ifPresent(user -> {
+                    user.setLangKey(lang);
+                    userRepository.save(user);
+                    log.debug("Changed language for User: {}", user);
+                });
+    }
+
     public void deleteUser(String login) {
         userRepository.findOneByUserName(login).ifPresent(user -> {
+            userRepository.delete(user);
+            log.debug("Deleted User: {}", user);
+        });
+    }
+
+    public void delete(String id) {
+        userRepository.findById(id).ifPresent(user -> {
             userRepository.delete(user);
             log.debug("Deleted User: {}", user);
         });

@@ -1,0 +1,102 @@
+{
+  "general": {
+    "search": " Buscar",
+    "edit": " Editar",
+    "delete": " Eliminar",
+    "empty": "No hay elementos",
+    "save": " Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "sureMessage": "¿Está seguro?"
+  },
+  "login": {
+    "username": "Usuario",
+    "password": "Contraseña",
+    "signIn": "Autenticarse",
+    "logout": "Desloguearse",
+    "error": "La autenticación a fallado!",
+    "errorMore": "Por favor verifique sus credenciales y vuelva a intentarlo."
+  },
+  "navBar": {
+    "contact": "Contáctenos"
+  },
+  "sideBar": {
+    "menu": "Tienda de libros",
+    "menuResp": "TL",
+    "home": "Inicio",
+    "books": "Libros",
+    "magazines": "Revistas",
+    "user": "Usuario",
+    "book": "Libro",
+    "author": "Autor",
+    "editor": "Editor",
+    "country": "País",
+    "publisher": "Editorial",
+    "magazine": "Revista"
+  },
+  "search": {
+    "title": "Título",
+    "author": "Autor",
+    "button": " Buscar"
+  },
+  "user": {
+    "name": "Nombre",
+    "lastName": "Apellidos",
+    "username": "Usuario",
+    "email": "Correo",
+    "account": " Cuenta",
+    "admin": "Administrador",
+    "language": "Idioma",
+    "password": "Contraseña",
+    "passwordTwo": "Repita la contraseña",
+    "oldPassword": "Contraseña actual",
+    "add": " Adicionar usuario",
+    "yes": "Sí",
+    "no": "No",
+    "delete": "Eliminar usuario",
+    "changePass": "Cambiar contraseña"
+  },
+  "error": {
+    "duplicate": "El elemento ya existe.",
+    "badRequest": "Petición incorrecta.",
+    "general": "Error en el servidor! Contacte con el administrador.",
+    "password": {
+      "equal": "Las dos contraseñas deben ser iguales."
+    },
+    "required": {
+      "firstName": "El nombre es requerido.",
+      "email": "El correo es requerido.",
+      "username": "El nombre de usuario es requerido.",
+      "language": "El idioma es requerido.",
+      "password": "La contraseña es requerida.",
+      "passwordTwo": "La confirmación de la contraseña es requerida.",
+      "oldPassword": "La contraseña actual es requerida.",
+      "admin": "El campo administrator is requerido."
+    },
+    "minLength": {
+      "email": "Mínimo 5 caracteres."
+    },
+    "maxLength": {
+      "email": "Máximo 254 caracteres."
+    },
+    "E50": "Máximo 50 caracteres.",
+    "E51": "Mínimo 1 y máximo 50 caracteres.",
+    "E52": "Nombre de usuario inválido.",
+    "E53": "Mínimo 5 y máximo 254 caracteres.",
+    "E54": "Mínimo 2 y máximo 6 caracteres.",
+    "E55": "Máximo 50 caracteres.",
+    "E56": "Hay elementos que no pueden ser vacíos.",
+    "E57": "Mínimo 1000 caracteres.",
+    "E58": "Mínimo 1 y máximo 150 caracteres.",
+    "E59": "Contraseña incorrecta."
+  },
+  "success": {
+    "add": "El elemento fue adicionado.",
+    "remove": "El elemento fue eliminado.",
+    "language": "El idioma fue cambiado.",
+    "changePassword": "La contraseña fue cambiada."
+  },
+  "footer": {
+    "info": "2000–2018 Tienda de libros, Inc. Todos los derechos reservados."
+  }
+}

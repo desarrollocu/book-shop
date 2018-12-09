@@ -51,6 +51,10 @@ public abstract class CustomBaseService<T, ID extends Serializable> {
         return (Optional<T>) this.customBaseRepository.findById(id);
     }
 
+    public T save(T value) {
+        return (T) this.customBaseRepository.save(value);
+    }
+
 //    public Optional<T> findOne(Predicate var1) {
 //        return this.customBaseRepository.findOne(var1);
 //    }

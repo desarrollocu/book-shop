@@ -3,6 +3,8 @@ package soft.co.books.domain.collection;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,12 +25,16 @@ import java.util.Set;
  * A user.
  */
 @Document(collection = "sys_user")
+@CompoundIndexes({
+        @CompoundIndex(name = "user_idx", def = "{'user_name': 1, 'first_name': 1, 'last_name': 1, 'email': 1}",
+                unique = true)
+})
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id
     private String id;
 
-    @Indexed
+    @Indexed(unique = true)
     @Field("user_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
@@ -37,7 +43,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Field("first_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
-    @Size(max = 50, message = Constants.ERR_MAX50)
+    @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
     private String firstName;
 
     @Field("last_name")
@@ -45,7 +51,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String lastName;
 
     @Email
-    @Indexed
+    @Indexed(unique = true)
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
     private String email;

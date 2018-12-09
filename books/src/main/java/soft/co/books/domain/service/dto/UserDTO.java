@@ -1,8 +1,5 @@
 package soft.co.books.domain.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.domain.collection.Authority;
 import soft.co.books.domain.collection.User;
@@ -11,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,40 +16,36 @@ import java.util.stream.Collectors;
 /**
  * A DTO representing a user, with his authorities.
  */
-public class UserDTO {
+public class UserDTO implements Serializable {
 
     private String id;
 
-    @Indexed
-    @Field("user_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
     @Pattern(regexp = Constants.USER_NAME_REGEX, message = Constants.ERR_USER_NAME_REGEX)
     private String userName;
 
-    @Field("first_name")
+    private String fullName;
+
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String firstName;
 
-    @Field("last_name")
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
     @Email
-    @Indexed
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
     private String email;
 
-    @Field("lang_key")
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 2, max = 6, message = Constants.ERR_MIN2_MAX6)
     private String langKey = Constants.DEFAULT_LANGUAGE;
 
-    @JsonIgnore
-    @NotNull(message = Constants.ERR_NOT_NULL)
     private String password;
+
+    private String isAdmin;
 
     private Set<String> authorities;
 
@@ -74,6 +68,7 @@ public class UserDTO {
         this.userName = user.getUserName();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.fullName = user.getFirstName() + " " + user.getLastName();
         this.email = user.getEmail();
         this.activated = user.isActivated();
         this.langKey = user.getLangKey();
@@ -85,6 +80,19 @@ public class UserDTO {
         this.authorities = user.getAuthorities().stream()
                 .map(Authority::getName)
                 .collect(Collectors.toSet());
+
+        if (this.authorities.isEmpty())
+            this.isAdmin = "false";
+        else
+            this.isAdmin = "true";
+    }
+
+    public String getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(String isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public String getId() {
@@ -109,6 +117,14 @@ public class UserDTO {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getLastName() {

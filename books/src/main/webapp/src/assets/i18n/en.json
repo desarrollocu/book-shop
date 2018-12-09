@@ -1,0 +1,102 @@
+{
+  "general": {
+    "search": " Search",
+    "edit": " Edit",
+    "delete": " Delete",
+    "empty": "Elements not found",
+    "save": " Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "sureMessage": "Are you sure?"
+  },
+  "login": {
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign in",
+    "logout": "Sign out",
+    "error": "Failed to sign in!",
+    "errorMore": "Please check your credentials and try again."
+  },
+  "navBar": {
+    "contact": "Contact"
+  },
+  "sideBar": {
+    "menu": "BooksStore",
+    "menuResp": "BS",
+    "home": "Home",
+    "books": "Books",
+    "magazines": "Magazines",
+    "user": "User",
+    "book": "Book",
+    "author": "Author",
+    "editor": "Editor",
+    "country": "Country",
+    "publisher": "Publisher",
+    "magazine": "Magazine"
+  },
+  "search": {
+    "title": "Title",
+    "author": "Author",
+    "button": " Search"
+  },
+  "user": {
+    "name": "First name",
+    "lastName": "Last name",
+    "username": "Username",
+    "email": "Email",
+    "account": " Account",
+    "admin": "Administrator",
+    "language": "Language",
+    "password": "Password",
+    "passwordTwo": "Confirm password",
+    "oldPassword": "Current password",
+    "add": " Add user",
+    "yes": "Yes",
+    "no": "No",
+    "delete": "Delete user",
+    "changePass": "Change password"
+  },
+  "error": {
+    "duplicate": "Element exist.",
+    "badRequest": "Bad request.",
+    "general": "Server error! Contact with the administrator.",
+    "password": {
+      "equal": "Two password most be equals."
+    },
+    "required": {
+      "firstName": "First name is required.",
+      "email": "Email is required.",
+      "username": "Username is required.",
+      "language": "Language is required.",
+      "password": "Password is required.",
+      "passwordTwo": "Confirm password is required.",
+      "oldPassword": "Current password is required.",
+      "admin": "Administrator value is required."
+    },
+    "minLength": {
+      "email": "Min 5 characters."
+    },
+    "maxLength": {
+      "email": "Max 254 characters."
+    },
+    "E50": "Max 50 characters.",
+    "E51": "Min 1 and max 50 characters.",
+    "E52": "Username invalid.",
+    "E53": "Min 5 and max 254 characters.",
+    "E54": "Min 2 and max 6 characters.",
+    "E55": "Max 50 characters.",
+    "E56": "Cant not by elements empty.",
+    "E57": "Max 1000 characters.",
+    "E58": "Min 1 and max 150 characters.",
+    "E59": "Incorrect password."
+  },
+  "success": {
+    "add": "The element was added.",
+    "remove": "The element was removed.",
+    "language": "Language was changed.",
+    "changePassword": "Password was changed."
+  },
+  "footer": {
+    "info": "2000–2018 BooksStore, Inc. All rights reserved."
+  }
+}

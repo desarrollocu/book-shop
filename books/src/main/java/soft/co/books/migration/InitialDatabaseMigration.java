@@ -21,7 +21,21 @@ public class InitialDatabaseMigration {
     public void addAuthorities(MongoTemplate mongoTemplate) {
         List<Authority> authorityList = new ArrayList<>();
         authorityList.add(new Authority("user-management", "Create or update user data"));
-        authorityList.add(new Authority("user-list", "List users"));
+        authorityList.add(new Authority("user-list", "Users list"));
+        authorityList.add(new Authority("book-list", "Books list"));
+        authorityList.add(new Authority("book-management", "List users"));
+        authorityList.add(new Authority("author-management", "Create or update author data"));
+        authorityList.add(new Authority("author-list", "Authors list"));
+        authorityList.add(new Authority("editor-management", "Create or update editor data"));
+        authorityList.add(new Authority("editor-list", "Editors list"));
+        authorityList.add(new Authority("publisher-management", "Create or update publisher data"));
+        authorityList.add(new Authority("publisher-list", "Publishers list"));
+        authorityList.add(new Authority("descriptor-management", "Create or update descriptor data"));
+        authorityList.add(new Authority("descriptor-list", "Descriptors list"));
+        authorityList.add(new Authority("country-management", "Create or update country data"));
+        authorityList.add(new Authority("country-list", "Countries list"));
+        authorityList.add(new Authority("magazine-management", "Create or update magazine data"));
+        authorityList.add(new Authority("magazine-list", "Magazines list"));
 
         mongoTemplate.insertAll(authorityList);
     }

@@ -2,13 +2,15 @@ import {Injectable} from '@angular/core';
 
 import {Principal} from '../auth/principal.service';
 import {AuthServerProvider} from '../auth/auth.service';
+import {StateStorageService} from '../auth/state-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
-  constructor(private principal: Principal, private authServerProvider: AuthServerProvider) {
+  constructor(private principal: Principal,
+              private authServerProvider: AuthServerProvider,
+              private stateStorageService: StateStorageService) {
   }
 
   login(credentials, callback?) {
@@ -35,5 +37,6 @@ export class LoginService {
   logout() {
     this.authServerProvider.logout().subscribe();
     this.principal.authenticate(null);
+    // this.stateStorageService.resetAuth();
   }
 }
