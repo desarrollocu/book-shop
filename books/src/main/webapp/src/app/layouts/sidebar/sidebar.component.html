@@ -1,0 +1,68 @@
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <h3><i class="fa fa-bookmark"></i> {{'sideBar.menu' | translate}}</h3>
+    <strong [translate]="'sideBar.menu-resp'">BS</strong>
+  </div>
+
+  <ul class="list-unstyled components">
+    <li routerLinkActive="active">
+      <a routerLink="search-general" class="a-sidebar"><i class="fa fa-home"></i>
+        {{'sideBar.home' | translate}}
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="search-book" class="a-sidebar"><i class="fa fa-search"></i>
+        {{'sideBar.books' | translate}}
+      </a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="search-magazine" class="a-sidebar">
+        <i class="fa fa-search"></i>
+        {{'sideBar.magazines' | translate}}
+      </a>
+    </li>
+    <!--<li>-->
+      <!--<a class="a-sidebar" href="javascript:void(0);">-->
+        <!--<i class="fa fa-question"></i>-->
+        <!--FAQ-->
+      <!--</a>-->
+    <!--</li>-->
+  </ul>
+  <ul class="list-unstyled components">
+    <li *hasAnyAuthority="'user-list'" routerLinkActive="active">
+      <a routerLink="user-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.user' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'book-list'" routerLinkActive="active">
+      <a routerLink="book-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.book' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'author-list'" routerLinkActive="active">
+      <a routerLink="author-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.author' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'editor-list'" routerLinkActive="active">
+      <a routerLink="editor-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.editor' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'country-list'" routerLinkActive="active">
+      <a routerLink="country-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.country' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'publisher-list'" routerLinkActive="active">
+      <a routerLink="publisher-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.publisher' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'magazine-list'" routerLinkActive="active">
+      <a routerLink="magazine-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.magazine' | translate}}
+      </a>
+    </li>
+  </ul>
+</aside>
