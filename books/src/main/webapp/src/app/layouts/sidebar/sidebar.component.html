@@ -22,10 +22,10 @@
       </a>
     </li>
     <!--<li>-->
-      <!--<a class="a-sidebar" href="javascript:void(0);">-->
-        <!--<i class="fa fa-question"></i>-->
-        <!--FAQ-->
-      <!--</a>-->
+    <!--<a class="a-sidebar" href="javascript:void(0);">-->
+    <!--<i class="fa fa-question"></i>-->
+    <!--FAQ-->
+    <!--</a>-->
     <!--</li>-->
   </ul>
   <ul class="list-unstyled components">
@@ -49,16 +49,21 @@
         {{'sideBar.editor' | translate}}
       </a>
     </li>
-    <li *hasAnyAuthority="'country-list'" routerLinkActive="active">
-      <a routerLink="country-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
-        {{'sideBar.country' | translate}}
+    <!--<li *hasAnyAuthority="'country-list'" routerLinkActive="active">-->
+    <!--<a routerLink="country-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>-->
+    <!--{{'sideBar.country' | translate}}-->
+    <!--</a>-->
+    <!--</li>-->
+    <li *hasAnyAuthority="'topic-list'" routerLinkActive="active">
+      <a routerLink="topic-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.topic' | translate}}
       </a>
     </li>
-    <li *hasAnyAuthority="'publisher-list'" routerLinkActive="active">
-      <a routerLink="publisher-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
-        {{'sideBar.publisher' | translate}}
-      </a>
-    </li>
+    <!--<li *hasAnyAuthority="'publisher-list'" routerLinkActive="active">-->
+      <!--<a routerLink="publisher-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>-->
+        <!--{{'sideBar.publisher' | translate}}-->
+      <!--</a>-->
+    <!--</li>-->
     <li *hasAnyAuthority="'magazine-list'" routerLinkActive="active">
       <a routerLink="magazine-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
         {{'sideBar.magazine' | translate}}

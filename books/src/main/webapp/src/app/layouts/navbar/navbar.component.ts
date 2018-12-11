@@ -9,6 +9,7 @@ import {Principal} from '../../core/auth/principal.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
 import {UserService} from '../../admin/user/user.service';
 import {AlertService} from '../../shared/alert/alert.service';
+import {RegisterModalComponent} from "../../shared/register/register.modal.component";
 
 @Component({
   selector: 'app-navbar',
@@ -57,22 +58,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  getUserData() {
-    return this.principal.fullName();
-  }
-
-  isAuthenticated() {
-    return this.principal.isAuthenticated();
-  }
-
-  toggleNavbar() {
-    this.navbarOpen = !this.navbarOpen;
-  }
-
-  collapseNavbar() {
-    this.navbarOpen = false;
-  }
-
   login() {
     this.modalRef = this.loginModalService.open();
   }
@@ -81,21 +66,6 @@ export class NavbarComponent implements OnInit {
     this.collapseNavbar();
     this.loginService.logout();
     this.router.navigate(['']);
-  }
-
-  private onSuccess(response, key) {
-    if (key === 'lang')
-      this.alertService.success('success.language', null, null);
-    else {
-      this.alertService.success('success.changePassword', null, null);
-      this.modalService.dismissAll('cancel');
-    }
-  }
-
-  private onError(response) {
-    let error = response.error;
-    let fields = error.fields;
-    this.alertService.error(error.error, fields, null);
   }
 
   changePassword(changeUserPass) {
@@ -113,6 +83,41 @@ export class NavbarComponent implements OnInit {
     else {
       this.alertService.error('error.password.equal', null, null);
     }
+  }
+
+  register() {
+    const modalRef = this.modalService.open(RegisterModalComponent, {size: 'lg'});
+  }
+
+  private onSuccess(response, key) {
+    if (key === 'lang')
+      this.alertService.success('success.language', null, null);
+    else {
+      this.alertService.success('success.changePassword', null, null);
+      this.modalService.dismissAll('cancel');
+    }
+  }
+
+  private onError(response) {
+    let error = response.error;
+    let fields = error.fields;
+    this.alertService.error(error.error, fields, null);
+  }
+
+  getUserData() {
+    return this.principal.fullName();
+  }
+
+  isAuthenticated() {
+    return this.principal.isAuthenticated();
+  }
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
+
+  collapseNavbar() {
+    this.navbarOpen = false;
   }
 
   cancel() {

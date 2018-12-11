@@ -13,7 +13,6 @@ import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.configuration.security.other.SecurityUtils;
-import soft.co.books.domain.collection.Authority;
 import soft.co.books.domain.collection.User;
 import soft.co.books.domain.repository.UserRepository;
 import soft.co.books.domain.service.dto.PageResultDTO;
@@ -21,7 +20,6 @@ import soft.co.books.domain.service.dto.UserDTO;
 
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -61,11 +59,11 @@ public class UserService extends CustomBaseService<User, String> {
         query.with(pageable.getSort());
 
         if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty())
-            query.addCriteria(where("firstName").regex(userDTO.getFirstName().toLowerCase()));
+            query.addCriteria(where("firstName").regex(userDTO.getFirstName()));
         if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty())
             query.addCriteria(where("lastName").regex(userDTO.getLastName()));
         if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty())
-            query.addCriteria(where("userName").regex(userDTO.getUserName()));
+            query.addCriteria(where("userName").regex(userDTO.getUserName().toLowerCase()));
         if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty())
             query.addCriteria(where("email").regex(userDTO.getEmail()));
 
@@ -100,6 +98,27 @@ public class UserService extends CustomBaseService<User, String> {
                 .map(UserDTO::new);
     }
 
+    public void registerUser(UserDTO userDTO) {
+        User user = new User();
+        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+        user.setPassword(encryptedPassword);
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUserName(userDTO.getUserName().toLowerCase());
+        user.setId(userDTO.getId());
+        user.setActivated(true);
+        user.setEmail(userDTO.getEmail());
+
+        if (userDTO.getLangKey() == null) {
+            user.setLangKey(Constants.DEFAULT_LANGUAGE);
+        } else {
+            user.setLangKey(userDTO.getLangKey());
+        }
+
+        log.debug("Created Information for User: {}", user);
+        userRepository.save(user);
+    }
+
     /**
      * Update all information for a specific user, and return the modified user.
      *
@@ -115,16 +134,14 @@ public class UserService extends CustomBaseService<User, String> {
                     user.setUserName(userDTO.getUserName().toLowerCase());
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
-                    user.setEmail(userDTO.getEmail().toLowerCase());
+                    user.setEmail(userDTO.getEmail());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
-                    Set<Authority> managedAuthorities = user.getAuthorities();
-                    managedAuthorities.clear();
-                    userDTO.getAuthorities().stream()
-                            .map(authorityService::findOne)
-                            .filter(Optional::isPresent)
-                            .map(Optional::get)
-                            .forEach(managedAuthorities::add);
+
+                    if (userDTO.getIsAdmin().equals("true")) {
+                        user.setAuthorities(new HashSet<>(authorityService.findAll()));
+                    }
+
                     userRepository.save(user);
                     log.debug("Changed Information for User: {}", user);
                     return user;

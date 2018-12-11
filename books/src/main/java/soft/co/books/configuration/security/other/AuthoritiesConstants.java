@@ -9,6 +9,18 @@ public final class AuthoritiesConstants {
     //User
     public static final String USER_MANAGEMENT = "user-management";
     public static final String USER_LIST = "user-list";
+    //Author
+    public static final String AUTHOR_MANAGEMENT = "author-management";
+    public static final String AUTHOR_LIST = "author-list";
+    //Editor
+    public static final String EDITOR_MANAGEMENT = "editor-management";
+    public static final String EDITOR_LIST = "editor-list";
+    //Topic
+    public static final String TOPIC_MANAGEMENT = "topic-management";
+    public static final String TOPIC_LIST = "topic-list";
+    //Book
+    public static final String BOOK_MANAGEMENT = "book-management";
+    public static final String BOOK_LIST = "book-list";
 
 
     //Other

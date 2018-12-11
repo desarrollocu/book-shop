@@ -12,6 +12,7 @@ import soft.co.books.configuration.database.AbstractAuditingEntity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,36 +26,59 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @Id
     private String id;
 
+    @DBRef
+    @Indexed
+    private List<Author> authorList = new ArrayList<>();
+
     @Indexed
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String title;
 
+    @Indexed
+    @Field("sub_title")
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
+    private String subTitle;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String city;
+
+    @DBRef
+    private Editor editor;
+
+    @Field("edition_date")
+    private String editionDate;
+
     private int pages = 0;
 
-    private String coin;
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String size;
 
-    private String image;
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String isbn;
 
-    private String edition;
+    @DBRef
+    private Topic topic;
 
     @Field("sell_price")
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double salePrice;
 
-    @Field("edition_date")
-    private String editionDate;
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String coin;
+
+    private String image;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String edition;
 
     @DBRef
     private Editorial editorial;
 
     @DBRef
     @Indexed
-    private List<Author> authorList;
-
-    @DBRef
-    @Indexed
-    private List<Descriptor> descriptorList;
+    private List<Descriptor> descriptorList = new ArrayList<>();
 
     private Long visit = 0L;
 
@@ -62,6 +86,58 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     private Long version;
 
     public Book() {
+    }
+
+    public String getSubTitle() {
+        return subTitle;
+    }
+
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Editor getEditor() {
+        return editor;
+    }
+
+    public void setEditor(Editor editor) {
+        this.editor = editor;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public Optional<Topic> getTopicOrNull() {
+        return Optional.ofNullable(topic);
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public String getId() {
@@ -152,6 +228,10 @@ public class Book extends AbstractAuditingEntity implements Serializable {
         return Optional.ofNullable(editorial);
     }
 
+    public Optional<Editor> getEditorOrNull() {
+        return Optional.ofNullable(editor);
+    }
+
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
     }
@@ -181,17 +261,18 @@ public class Book extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "Book{" +
-                "title='" + title + '\'' +
+                "authorList=" + authorList +
+                ", title='" + title + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", city='" + city + '\'' +
+                ", editor=" + editor +
+                ", editionDate='" + editionDate + '\'' +
                 ", pages=" + pages +
-                ", authorList=" + authorList +
-                ", coin='" + coin + '\'' +
-                ", image='" + image + '\'' +
-                ", edition='" + edition + '\'' +
+                ", size='" + size + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", topic=" + topic +
                 ", salePrice=" + salePrice +
-                ", editorial=" + editorial +
-                ", editionDate=" + editionDate +
-                ", descriptorList=" + descriptorList +
-                ", version=" + version +
+                ", coin='" + coin + '\'' +
                 '}';
     }
 }

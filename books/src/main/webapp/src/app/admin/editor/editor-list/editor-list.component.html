@@ -1,3 +1,99 @@
-<p>
-  editor-list works!
-</p>
+<section class="mag-posts-area d-flex flex-wrap">
+  <div class="col-md-12" style="margin-top: 10px">
+    <app-alert></app-alert>
+  </div>
+  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
+    <form #editorSearchForm="ngForm" (submit)="getEditors('btn')">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="name" [translate]="'editor.name'">Name</label>
+          <input type="text"
+                 [(ngModel)]="editor.name"
+                 class="form-control"
+                 id="name"
+                 name="name"
+                 placeholder="{{'editor.name' | translate}}">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="city" [translate]="'editor.city'">City</label>
+          <input type="text"
+                 [(ngModel)]="editor.city"
+                 class="form-control"
+                 id="city"
+                 name="city"
+                 placeholder="{{'editor.city' | translate}}">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary"
+              [translate]="'general.search'"><i class="fa fa-search"></i> Search
+      </button>
+      <button type="button" class="btn btn-success table-button-search"
+              (click)="addEditor()"
+              [translate]="'editor.add'"><i class="fa fa-plus-square"></i> Add editor
+      </button>
+    </form>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col" [translate]="'editor.name'">Name</th>
+        <th scope="col" [translate]="'editor.city'">City</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="editorList.length === 0">
+        <td colspan="6" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+      </tr>
+      <tr *ngFor="let editor of editorList; trackBy: trackById">
+        <td scope="row">{{editor.name}}</td>
+        <td>{{editor.city}}</td>
+        <td>
+          <button class="btn btn-primary table-button"
+                  (click)="editEditor(editor)"
+                  [translate]="'general.edit'"><i class="fa fa-edit"></i> Edit
+          </button>
+          <button class="btn btn-danger table-button-delete"
+                  (click)="open(deleteEditor, editor.id)"
+                  [translate]="'general.delete'"><i class="fa fa-trash"></i>
+            Delete
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<ngb-pagination class="d-flex justify-content-center"
+                [collectionSize]="totalItems"
+                [(page)]="page"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="getEditors()"></ngb-pagination>
+
+<ng-template #deleteEditor let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-sm" [translate]="'editor.delete'">Delete editor</h5>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
+      </div>
+      <div class="col-md-8" style="margin-left: 60%">
+        <button type="submit" class="btn btn-primary"
+                (click)="removeEditor()"
+                [translate]="'general.confirm'"> Confirm
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

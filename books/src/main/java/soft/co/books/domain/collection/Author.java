@@ -2,7 +2,6 @@ package soft.co.books.domain.collection;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
@@ -31,8 +30,17 @@ public class Author extends AbstractAuditingEntity implements Serializable {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
-    @DBRef
-    private Country country;
+    @Field("born_date")
+    private String bornDate;
+
+    @Field("death_date")
+    private String deathDate;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String city;
+
+//    @DBRef
+//    private Country country;
 
     @Version
     private Long version;
@@ -64,13 +72,37 @@ public class Author extends AbstractAuditingEntity implements Serializable {
         this.lastName = lastName;
     }
 
-    public Country getCountry() {
-        return country;
+    public String getBornDate() {
+        return bornDate;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setBornDate(String bornDate) {
+        this.bornDate = bornDate;
     }
+
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(String deathDate) {
+        this.deathDate = deathDate;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+//    public Country getCountry() {
+//        return country;
+//    }
+//
+//    public void setCountry(Country country) {
+//        this.country = country;
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -91,7 +123,7 @@ public class Author extends AbstractAuditingEntity implements Serializable {
         return "Author{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", country=" + country +
+                ", city=" + city +
                 ", version=" + version +
                 '}';
     }

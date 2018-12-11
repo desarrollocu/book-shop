@@ -1,6 +1,5 @@
 package soft.co.books.domain.service.dto;
 
-import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.domain.collection.Author;
 
@@ -15,16 +14,21 @@ public class AuthorDTO {
 
     private String id;
 
-    @Field("first_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String firstName;
 
-    @Field("last_name")
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
-    private String country;
+    private String bornDate;
+
+    private String deathDate;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String city;
+
+//    private String country;
 
     private String createdBy;
 
@@ -42,7 +46,10 @@ public class AuthorDTO {
         this.id = author.getId();
         this.firstName = author.getFirstName();
         this.lastName = author.getLastName();
-        this.country = author.getCountry().getName();
+//        this.country = author.getCountry().getName();
+        this.bornDate = author.getBornDate();
+        this.deathDate = author.getDeathDate();
+        this.city = author.getCity();
         this.createdBy = author.getCreatedBy();
         this.createdDate = author.getCreatedDate();
         this.lastModifiedBy = author.getLastModifiedBy();
@@ -73,13 +80,37 @@ public class AuthorDTO {
         this.lastName = lastName;
     }
 
-    public String getCountry() {
-        return country;
+    public String getBornDate() {
+        return bornDate;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setBornDate(String bornDate) {
+        this.bornDate = bornDate;
     }
+
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(String deathDate) {
+        this.deathDate = deathDate;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    //    public String getCountry() {
+//        return country;
+//    }
+//
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
 
     public String getCreatedBy() {
         return createdBy;
@@ -118,7 +149,7 @@ public class AuthorDTO {
         return "AuthorDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

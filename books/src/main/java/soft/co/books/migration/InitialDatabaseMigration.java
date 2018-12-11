@@ -36,6 +36,8 @@ public class InitialDatabaseMigration {
         authorityList.add(new Authority("country-list", "Countries list"));
         authorityList.add(new Authority("magazine-management", "Create or update magazine data"));
         authorityList.add(new Authority("magazine-list", "Magazines list"));
+        authorityList.add(new Authority("topic-management", "Create or update topic data"));
+        authorityList.add(new Authority("topic-list", "Topics list"));
 
         mongoTemplate.insertAll(authorityList);
     }

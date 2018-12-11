@@ -33,7 +33,7 @@ export class UserManagementModalComponent implements OnInit {
 
   saveUser() {
     this.userService.saveUser(this.user)
-      .subscribe(response => this.onSuccess(response),
+      .subscribe(response => this.onSuccess(response, this.user),
         response => this.onError(response));
   }
 
@@ -41,6 +41,22 @@ export class UserManagementModalComponent implements OnInit {
     this.userService.getUser(this.user)
       .subscribe(response => this.onSearchSuccess(response),
         response => this.onError(response));
+  }
+
+  private onSuccess(response, user) {
+    let msg = 'success.add';
+    if(user.id){
+      msg = 'success.edited';
+    }
+    this.user = response.body;
+    this.alertService.success(msg, null, null);
+    this.activeModal.dismiss('cancel');
+  }
+
+  private onError(response) {
+    let error = response.error;
+    let fields = error.fields;
+    this.alertService.error(error.error, fields, null);
   }
 
   private onSearchSuccess(result) {
@@ -55,17 +71,5 @@ export class UserManagementModalComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss('cancel');
-  }
-
-  private onSuccess(response) {
-    this.user = response.body;
-    this.alertService.success('success.add', null, null);
-    this.activeModal.dismiss('cancel');
-  }
-
-  private onError(response) {
-    let error = response.error;
-    let fields = error.fields;
-    this.alertService.error(error.error, fields, null);
   }
 }

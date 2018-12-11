@@ -17,6 +17,8 @@ import {CountryManagementComponent} from "./country/country-management/country-m
 import {CountryListComponent} from "./country/country-list/country-list.component";
 import {MagazineManagementComponent} from "./magazine/magazine-management/magazine-management.component";
 import {MagazineListComponent} from "./magazine/magazine-list/magazine-list.component";
+import {TopicListComponent} from "./topic/topic-list/topic-list.component";
+import {TopicManagementComponent} from "./topic/topic-management/topic-management.component";
 
 const routes: Routes = [
   {path: "login", component: LoginModalComponent},
@@ -147,6 +149,22 @@ const routes: Routes = [
     data: {
       authorities: ['magazine-list'],
       pageTitle: 'Magazine-List',
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "topic-list", component: TopicListComponent,
+    data: {
+      authorities: ['topic-list'],
+      pageTitle: 'Topic-List',
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "topic-management", component: TopicManagementComponent,
+    data: {
+      authorities: ['topic-management'],
+      pageTitle: 'Topic-Management',
     },
     canActivate: [RouteAccessService]
   }

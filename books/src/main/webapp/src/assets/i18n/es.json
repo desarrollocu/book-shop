@@ -15,7 +15,8 @@
     "signIn": "Autenticarse",
     "logout": "Desloguearse",
     "error": "La autenticación a fallado!",
-    "errorMore": "Por favor verifique sus credenciales y vuelva a intentarlo."
+    "errorMore": "Por favor verifique sus credenciales y vuelva a intentarlo.",
+    "register": "Registrarse"
   },
   "navBar": {
     "contact": "Contáctenos"
@@ -30,6 +31,7 @@
     "book": "Libro",
     "author": "Autor",
     "editor": "Editor",
+    "topic": "Temática",
     "country": "País",
     "publisher": "Editorial",
     "magazine": "Revista"
@@ -54,7 +56,45 @@
     "yes": "Sí",
     "no": "No",
     "delete": "Eliminar usuario",
-    "changePass": "Cambiar contraseña"
+    "changePass": "Cambiar contraseña",
+    "register": "Registar usuario"
+  },
+  "book": {
+    "add": " Adicionar libro",
+    "delete": "Eliminar libro",
+    "title": "Título",
+    "subTitle": "Subtítulo",
+    "editor": "Editor",
+    "topic": "Temática",
+    "authorList": "Autores",
+    "city": "Ciudad",
+    "editionDate": "Fecha de edición",
+    "pages": "Páginas",
+    "size": "Medidas",
+    "isbn": "ISBN",
+    "author": "Autor",
+    "salePrice": "Precio de venta",
+    "price": "Precio",
+    "coin": "Moneda",
+    "edition": "Edición"
+  },
+  "author": {
+    "add": " Adicionar autor",
+    "city": "Ciudad",
+    "delete": "Eliminar autor",
+    "bornDate": "Fecha nacimiento",
+    "deathDate": "Fecha muerte"
+  },
+  "editor": {
+    "name": "Nombre",
+    "add": " Adicionar editor",
+    "city": "Ciudad",
+    "delete": "Eliminar editor"
+  },
+  "topic": {
+    "name": "Nombre",
+    "add": " Add temática",
+    "delete": "Delete temática"
   },
   "error": {
     "duplicate": "El elemento ya existe.",
@@ -94,7 +134,9 @@
     "add": "El elemento fue adicionado.",
     "remove": "El elemento fue eliminado.",
     "language": "El idioma fue cambiado.",
-    "changePassword": "La contraseña fue cambiada."
+    "changePassword": "La contraseña fue cambiada.",
+    "register": "El usuario fue registrado.",
+    "edited": "El elemento fue editado."
   },
   "footer": {
     "info": "2000–2018 Tienda de libros, Inc. Todos los derechos reservados."

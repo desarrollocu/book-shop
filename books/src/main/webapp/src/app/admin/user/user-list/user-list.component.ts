@@ -54,25 +54,6 @@ export class UserListComponent implements OnInit {
       );
   }
 
-  private onSuccess(res) {
-    this.userList = res.body.elements;
-    this.totalItems = res.body.total;
-  }
-
-  private onError(response) {
-    let error = response.error;
-    let fields = error.fields;
-    this.alertService.error(error.error, fields, null);
-  }
-
-  sort() {
-    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
-    return result;
-  }
-
   addUser() {
     const modalRef = this.modalService.open(UserManagementModalComponent, {size: 'lg'});
     modalRef.componentInstance.user = new User();
@@ -91,16 +72,27 @@ export class UserListComponent implements OnInit {
     }))
   }
 
-  open(deleteUser, userId) {
-    this.deleteUserId = userId;
-    this.modalService.open(deleteUser);
-  }
-
   removeUser() {
     this.userService.deleteUser(this.deleteUserId)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
+  }
+
+  open(deleteUser, userId) {
+    this.deleteUserId = userId;
+    this.modalService.open(deleteUser);
+  }
+
+  private onSuccess(res) {
+    this.userList = res.body.elements;
+    this.totalItems = res.body.total;
+  }
+
+  private onError(response) {
+    let error = response.error;
+    let fields = error.fields;
+    this.alertService.error(error.error, fields, null);
   }
 
   onSuccessDelete() {
@@ -116,5 +108,13 @@ export class UserListComponent implements OnInit {
 
   cancel() {
     this.modalService.dismissAll('cancel')
+  }
+
+  sort() {
+    const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    if (this.predicate !== 'id') {
+      result.push('id');
+    }
+    return result;
   }
 }

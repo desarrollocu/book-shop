@@ -25,15 +25,19 @@ export class UserService {
     return this.http.post<User>('api/saveUser', user, {observe: 'response'});
   }
 
-  deleteUser(userId: string): Observable<HttpResponse<User>> {
+  deleteUser(userId: string): Observable<any> {
     return this.http.delete(`api/deleteUser/${userId}`, {observe: 'response'});
   }
 
-  changeLang(lang: string): Observable<HttpResponse<User>> {
+  registerUser(user: User): Observable<any> {
+    return this.http.put('api/registerUser', user, {observe: 'response'});
+  }
+
+  changeLang(lang: string): Observable<any> {
     return this.http.post('api/changeLang', lang, {observe: 'response'});
   }
 
-  changePassword(currentPassword: string, newPassword: string): Observable<HttpResponse<User>> {
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
     return this.http.post('api/changePassword', {currentPassword, newPassword}, {observe: 'response'});
   }
 }

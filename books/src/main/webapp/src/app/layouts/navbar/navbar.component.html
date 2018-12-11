@@ -141,6 +141,11 @@
                 <span [translate]="'login.signIn'">Sign in</span>
               </a>
             </li>
+            <li *ngSwitchCase="false">
+              <a class="dropdown-item" id="register" (click)="register()" href="javascript:void(0);">
+                <span [translate]="'login.register'">Register</span>
+              </a>
+            </li>
             <li *ngSwitchCase="true">
               <a class="dropdown-item" id="change-pass" (click)="changePassword(changeUserPass)"
                  href="javascript:void(0);">

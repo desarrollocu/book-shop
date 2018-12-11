@@ -15,7 +15,8 @@
     "signIn": "Sign in",
     "logout": "Sign out",
     "error": "Failed to sign in!",
-    "errorMore": "Please check your credentials and try again."
+    "errorMore": "Please check your credentials and try again.",
+    "register": "Register"
   },
   "navBar": {
     "contact": "Contact"
@@ -30,6 +31,7 @@
     "book": "Book",
     "author": "Author",
     "editor": "Editor",
+    "topic": "Topic",
     "country": "Country",
     "publisher": "Publisher",
     "magazine": "Magazine"
@@ -54,7 +56,45 @@
     "yes": "Yes",
     "no": "No",
     "delete": "Delete user",
-    "changePass": "Change password"
+    "changePass": "Change password",
+    "register": "Register user"
+  },
+  "book": {
+    "add": " Add book",
+    "delete": "Delete book",
+    "title": "Title",
+    "subTitle": "Subtitle",
+    "editor": "Editor",
+    "topic": "Topic",
+    "authorList": "Authors",
+    "city": "City",
+    "editionDate": "Edition date",
+    "pages": "Pages",
+    "size": "Sizes",
+    "isbn": "ISBN",
+    "author":"Author",
+    "salePrice": "Sale price",
+    "price": "Price",
+    "coin": "Coin",
+    "edition": "Edition"
+  },
+  "author": {
+    "add": " Add author",
+    "city": "City",
+    "delete": "Delete author",
+    "bornDate": "Born date",
+    "deathDate": "Death date"
+  },
+  "editor": {
+    "name": "Name",
+    "add": " Add editor",
+    "city": "City",
+    "delete": "Delete editor"
+  },
+  "topic": {
+    "name": "Name",
+    "add": " Add topic",
+    "delete": "Delete topic"
   },
   "error": {
     "duplicate": "Element exist.",
@@ -71,7 +111,10 @@
       "password": "Password is required.",
       "passwordTwo": "Confirm password is required.",
       "oldPassword": "Current password is required.",
-      "admin": "Administrator value is required."
+      "admin": "Administrator value is required.",
+      "city": "City is required.",
+      "name": "Name is required.",
+      "title": "Title is required."
     },
     "minLength": {
       "email": "Min 5 characters."
@@ -94,7 +137,9 @@
     "add": "The element was added.",
     "remove": "The element was removed.",
     "language": "Language was changed.",
-    "changePassword": "Password was changed."
+    "changePassword": "Password was changed.",
+    "register": "The user was registered.",
+    "edited": "The element was updated."
   },
   "footer": {
     "info": "2000–2018 BooksStore, Inc. All rights reserved."

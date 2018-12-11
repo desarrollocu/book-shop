@@ -1,3 +1,182 @@
-<p>
-  book-management works!
-</p>
+<div class="modal-header modal-title">
+  <h5 class="modal-sm" [translate]="'book.add'">Add book</h5>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="form" role="form" #bookManagementForm="ngForm" (ngSubmit)="saveBook()">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="title" [translate]="'book.title'">Title</label>
+            <input type="text"
+                   [(ngModel)]="book.title"
+                   class="form-control"
+                   id="title"
+                   name="title"
+                   placeholder="{{'book.title' | translate}}"
+                   #title="ngModel"
+                   required
+                   maxlength="150">
+            <div *ngIf="title.invalid && (title.dirty || title.touched)"
+                 class="error-msg">
+              <div *ngIf="title.errors.required" [translate]="'error.required.title'">
+                Title is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="subTitle" [translate]="'book.subTitle'">Subtitle</label>
+            <input type="text"
+                   [(ngModel)]="book.subTitle"
+                   class="form-control"
+                   id="subTitle"
+                   name="subTitle"
+                   placeholder="{{'book.subTitle' | translate}}"
+                   #subTitle="ngModel"
+                   maxlength="150">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="editor" [translate]="'book.editor'">Editor</label>
+            <input type="text"
+                   [(ngModel)]="book.editor"
+                   class="form-control"
+                   id="editor"
+                   name="editor"
+                   placeholder="{{'book.editor' | translate}}"
+                   #editor="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="authorList" [translate]="'book.authorList'">Authors</label>
+            <input type="text"
+                   [(ngModel)]="book.authorList"
+                   class="form-control"
+                   id="authorList"
+                   name="authorList"
+                   placeholder="{{'book.authorList' | translate}}"
+                   #authorList="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="city" [translate]="'book.city'">City</label>
+            <input type="text"
+                   [(ngModel)]="book.city"
+                   class="form-control"
+                   id="city"
+                   name="city"
+                   placeholder="{{'book.city' | translate}}"
+                   #city="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="editionDate" [translate]="'book.editionDate'">Edition date</label>
+            <input type="date"
+                   [(ngModel)]="book.editionDate"
+                   class="form-control"
+                   id="editionDate"
+                   name="editionDate"
+                   placeholder="{{'book.editionDate' | translate}}"
+                   #editionDate="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="topic" [translate]="'book.topic'">Topic</label>
+            <input type="text"
+                   [(ngModel)]="book.topic"
+                   class="form-control"
+                   id="topic"
+                   name="topic"
+                   placeholder="{{'book.topic' | translate}}"
+                   #topic="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="pages" [translate]="'book.pages'">Pages</label>
+            <input type="number"
+                   [(ngModel)]="book.pages"
+                   class="form-control"
+                   id="pages"
+                   name="pages"
+                   placeholder="{{'book.pages' | translate}}"
+                   #pages="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="size" [translate]="'book.size'">Size</label>
+            <input type="text"
+                   [(ngModel)]="book.size"
+                   class="form-control"
+                   id="size"
+                   name="size"
+                   placeholder="{{'book.size' | translate}}"
+                   #size="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="isbn" [translate]="'book.isbn'">Isbn</label>
+            <input type="text"
+                   [(ngModel)]="book.isbn"
+                   class="form-control"
+                   id="isbn"
+                   name="isbn"
+                   placeholder="{{'book.isbn' | translate}}"
+                   #isbn="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="salePrice" [translate]="'book.salePrice'">Sale price</label>
+            <input type="number"
+                   [(ngModel)]="book.salePrice"
+                   class="form-control"
+                   id="salePrice"
+                   name="salePrice"
+                   placeholder="{{'book.price' | translate}}"
+                   #salePrice="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="coin" [translate]="'book.coin'">Coin</label>
+            <input type="text"
+                   [(ngModel)]="book.coin"
+                   class="form-control"
+                   id="coin"
+                   name="coin"
+                   placeholder="{{'book.coin' | translate}}"
+                   #coin="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="coin" [translate]="'book.edition'">Edition</label>
+            <input type="text"
+                   [(ngModel)]="book.edition"
+                   class="form-control"
+                   id="edition"
+                   name="edition"
+                   placeholder="{{'book.edition' | translate}}"
+                   #edition="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!bookManagementForm.valid"
+                [translate]="'general.save'"> Save
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </form>
+    </div>
+
+    <div class="col-md-10" style="margin-top: 10px">
+      <app-alert></app-alert>
+    </div>
+  </div>
+</div>

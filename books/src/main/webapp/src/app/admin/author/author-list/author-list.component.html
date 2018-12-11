@@ -1,3 +1,133 @@
-<p>
-  author-list works!
-</p>
+<section class="mag-posts-area d-flex flex-wrap">
+  <div class="col-md-12" style="margin-top: 10px">
+    <app-alert></app-alert>
+  </div>
+  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
+    <form #authorSearchForm="ngForm" (submit)="getAuthors('btn')">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="firstName" [translate]="'user.name'">FirstName</label>
+          <input type="text"
+                 [(ngModel)]="author.firstName"
+                 class="form-control"
+                 id="firstName"
+                 name="firstName"
+                 placeholder="{{'user.name' | translate}}">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="lastName" [translate]="'user.lastName'">LastName</label>
+          <input type="text"
+                 [(ngModel)]="author.lastName"
+                 class="form-control"
+                 id="lastName"
+                 name="lastName"
+                 placeholder="{{'user.lastName' | translate}}">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="city" [translate]="'author.city'">City</label>
+          <input type="text"
+                 [(ngModel)]="author.city"
+                 class="form-control"
+                 id="city"
+                 name="city"
+                 placeholder="{{'author.city' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="bornDate" [translate]="'author.bornDate'">BornDate</label>
+          <input type="date"
+                 [(ngModel)]="author.bornDate"
+                 class="form-control"
+                 id="bornDate"
+                 name="bornDate"
+                 placeholder="{{'author.bornDate' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="deathDate" [translate]="'author.deathDate'">DeathDate</label>
+          <input type="date"
+                 [(ngModel)]="author.deathDate"
+                 class="form-control"
+                 id="deathDate"
+                 name="deathDate"
+                 placeholder="{{'author.deathDate' | translate}}">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary"
+              [translate]="'general.search'"><i class="fa fa-search"></i> Search
+      </button>
+      <button type="button" class="btn btn-success table-button-search"
+              (click)="addAuthor()"
+              [translate]="'author.add'"><i class="fa fa-plus-square"></i> Add author
+      </button>
+    </form>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col" [translate]="'user.name'">Name</th>
+        <th scope="col" [translate]="'user.lastName'">LastName</th>
+        <th scope="col" [translate]="'author.city'">City</th>
+        <th scope="col" [translate]="'author.bornDate'">BornDate</th>
+        <th scope="col" [translate]="'author.deathDate'">DeathDate</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="authorList.length === 0">
+        <td colspan="6" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+      </tr>
+      <tr *ngFor="let author of authorList; trackBy: trackById">
+        <td scope="row">{{author.firstName}}</td>
+        <td>{{author.lastName}}</td>
+        <td>{{author.city}}</td>
+        <td>{{author.bornDate}}</td>
+        <td>{{author.deathDate}}</td>
+        <td>
+          <button class="btn btn-primary table-button"
+                  (click)="editAuthor(author)"
+                  [translate]="'general.edit'"><i class="fa fa-edit"></i> Edit
+          </button>
+          <button class="btn btn-danger table-button-delete"
+                  (click)="open(deleteAuthor, author.id)"
+                  [translate]="'general.delete'"><i class="fa fa-trash"></i>
+            Delete
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<ngb-pagination class="d-flex justify-content-center"
+                [collectionSize]="totalItems"
+                [(page)]="page"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="getAuthors()"></ngb-pagination>
+
+<ng-template #deleteAuthor let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-sm" [translate]="'author.delete'">Delete author</h5>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-4">
+        <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
+      </div>
+      <div class="col-md-8" style="margin-left: 60%">
+        <button type="submit" class="btn btn-primary"
+                (click)="removeAuthor()"
+                [translate]="'general.confirm'"> Confirm
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

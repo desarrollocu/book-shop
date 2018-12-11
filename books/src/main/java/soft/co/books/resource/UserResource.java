@@ -57,6 +57,12 @@ public class UserResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PutMapping("/registerUser")
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserDTO userDTO) {
+        userService.registerUser(userDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PostMapping("/changeLang")
     public ResponseEntity<Void> changeLang(@RequestBody String lang) {
         userService.updateLang(lang);

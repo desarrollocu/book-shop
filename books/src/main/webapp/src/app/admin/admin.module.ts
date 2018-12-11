@@ -18,6 +18,8 @@ import {BookListComponent} from './book/book-list/book-list.component';
 import {BookManagementComponent} from './book/book-management/book-management.component';
 import {MagazineManagementComponent} from './magazine/magazine-management/magazine-management.component';
 import {MagazineListComponent} from './magazine/magazine-list/magazine-list.component';
+import {TopicManagementComponent} from './topic/topic-management/topic-management.component';
+import {TopicListComponent} from './topic/topic-list/topic-list.component';
 
 @NgModule({
   declarations: [
@@ -36,12 +38,15 @@ import {MagazineListComponent} from './magazine/magazine-list/magazine-list.comp
     CountryListComponent,
     CountryManagementComponent,
     MagazineManagementComponent,
-    MagazineListComponent],
+    MagazineListComponent,
+    TopicManagementComponent,
+    TopicListComponent],
   imports: [
     SharedModule,
     AdminRoutingModule
   ],
-  entryComponents: [UserManagementModalComponent]
+  entryComponents: [UserManagementModalComponent, AuthorManagementComponent,
+    TopicManagementComponent, BookManagementComponent, EditorManagementComponent]
 })
 export class AdminModule {
 }
