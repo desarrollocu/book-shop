@@ -21,7 +21,9 @@ public final class AuthoritiesConstants {
     //Book
     public static final String BOOK_MANAGEMENT = "book-management";
     public static final String BOOK_LIST = "book-list";
-
+    //Magazine
+    public static final String MAGAZINE_MANAGEMENT = "magazine-management";
+    public static final String MAGAZINE_LIST = "magazine-list";
 
     //Other
     public static final String ANONYMOUS = "ANONYMOUS";

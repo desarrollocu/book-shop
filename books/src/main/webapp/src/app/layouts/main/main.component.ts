@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {TranslateService} from '@ngx-translate/core';
+import {NgSelectConfig} from '@ng-select/ng-select';
+
 import {StateStorageService} from '../../core/auth/state-storage.service';
 
 @Component({
@@ -15,7 +17,8 @@ export class MainComponent implements OnInit {
   constructor(private titleService: Title,
               private router: Router,
               private stateStorageService: StateStorageService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private config: NgSelectConfig) {
     let language = this.stateStorageService.getLanguage();
     if (language) {
       translate.setDefaultLang(language);
@@ -23,6 +26,7 @@ export class MainComponent implements OnInit {
     else {
       translate.setDefaultLang('en');
     }
+    this.config.notFoundText = '';
   }
 
   private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {

@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {User} from '../../../core/user/user.model';
+
+import {AlertDialogService} from "../../../shared/alert/alert.dialog.service";
 import {UserService} from '../user.service';
-import {AlertService} from "../../../shared/alert/alert.service";
+
+import {User} from '../../../core/user/user.model';
 import {Value} from '../model/value';
 
 @Component({
@@ -18,7 +19,7 @@ export class UserManagementModalComponent implements OnInit {
   values: Value[];
 
   constructor(private userService: UserService,
-              private alertService: AlertService,
+              private alertService: AlertDialogService,
               public activeModal: NgbActiveModal) {
     this.values = [];
     this.pass = null;
@@ -45,7 +46,7 @@ export class UserManagementModalComponent implements OnInit {
 
   private onSuccess(response, user) {
     let msg = 'success.add';
-    if(user.id){
+    if (user.id) {
       msg = 'success.edited';
     }
     this.user = response.body;

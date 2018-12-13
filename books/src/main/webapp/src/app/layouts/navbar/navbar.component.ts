@@ -3,12 +3,12 @@ import {Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
+import {AlertDialogService} from "../../shared/alert/alert.dialog.service";
 import {LoginModalService} from '../../core/login/login-modal.service';
 import {LoginService} from '../../core/login/login.service';
 import {Principal} from '../../core/auth/principal.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
 import {UserService} from '../../admin/user/user.service';
-import {AlertService} from '../../shared/alert/alert.service';
 import {RegisterModalComponent} from "../../shared/register/register.modal.component";
 
 @Component({
@@ -26,7 +26,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private loginService: LoginService,
               private principal: Principal,
-              private alertService: AlertService,
+              private alertService: AlertDialogService,
               private modalService: NgbModal,
               private userService: UserService,
               private loginModalService: LoginModalService,

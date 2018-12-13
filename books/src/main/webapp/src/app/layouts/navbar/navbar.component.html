@@ -155,6 +155,16 @@
               </a>
             </li>
             <li *ngSwitchCase="true">
+              <a class="dropdown-item" id="api" routerLink="docs">
+                <span>API</span>
+              </a>
+            </li>
+            <li *ngSwitchCase="true">
+              <a class="dropdown-item" id="apki" routerLink="/v2/api-docs">
+                <span>APkI</span>
+              </a>
+            </li>
+            <li *ngSwitchCase="true">
               <a class="dropdown-item" id="logout" (click)="logout()" href="javascript:void(0);">
                 <!--<fa-icon icon="sign-in-alt" fixedWidth="true"></fa-icon>-->
                 <span [translate]="'login.logout'">Sign out</span>
@@ -207,13 +217,18 @@
                        placeholder="{{'user.password' | translate}}"
                        #password="ngModel"
                        required
+                       minlength="5"
                        maxlength="50">
                 <div *ngIf="password.invalid && (password.dirty || password.touched)"
                      class="error-msg">
                   <div *ngIf="password.errors.required" [translate]="'error.required.password'">
                     Password is required.
                   </div>
+                  <div *ngIf="password.errors.minlength" [translate]="'error.minLength.password'">
+                    Your password is required to be at least 5 characters.
+                  </div>
                 </div>
+                <jhi-password-strength-bar [passwordToCheck]="newPassword"></jhi-password-strength-bar>
               </div>
               <div class="form-group col-md-6">
                 <label for="passwordConfirm" [translate]="'user.passwordTwo'">Confirm password</label>
@@ -224,12 +239,16 @@
                        name="passwordConfirm"
                        placeholder="{{'user.passwordTwo' | translate}}"
                        #passwordConfirm="ngModel"
+                       minlength="5"
                        maxlength="50"
                        required>
                 <div *ngIf="passwordConfirm.invalid && (passwordConfirm.dirty || passwordConfirm.touched)"
                      class="error-msg">
                   <div *ngIf="passwordConfirm.errors.required" [translate]="'error.required.passwordTwo'">
                     Confirm password is required.
+                  </div>
+                  <div *ngIf="passwordConfirm.errors.minlength" [translate]="'error.minLength.password'">
+                    Confirm password is required to be at least 5 characters.
                   </div>
                 </div>
               </div>
@@ -245,7 +264,7 @@
         </div>
 
         <div class="col-md-10" style="margin-top: 10px">
-          <app-alert></app-alert>
+          <app-alert-dialog></app-alert-dialog>
         </div>
       </div>
     </div>

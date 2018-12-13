@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {AlertService} from "../../../shared/alert/alert.service";
-import {EditorService} from "../editor.service";
-import {Editor} from "../model/editor";
+import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
+import {EditorService} from '../editor.service';
+
+import {Editor} from '../model/editor';
 
 @Component({
   selector: 'app-editor-management',
@@ -13,7 +14,7 @@ import {Editor} from "../model/editor";
 export class EditorManagementComponent implements OnInit {
   @Input() editor;
 
-  constructor(private alertService: AlertService,
+  constructor(private alertService: AlertDialogService,
               private editorService: EditorService,
               public activeModal: NgbActiveModal) {
   }

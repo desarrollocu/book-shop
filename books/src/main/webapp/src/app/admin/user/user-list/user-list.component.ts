@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpResponse} from "@angular/common/http";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+
 import {UserService} from '../user.service';
 import {AlertService} from '../../../shared/alert/alert.service';
-import {User} from '../../../core/user/user.model';
 import {UserManagementModalComponent} from "../user-management/user-management.modal.component";
 
+import {User} from '../../../core/user/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -116,5 +117,9 @@ export class UserListComponent implements OnInit {
       result.push('id');
     }
     return result;
+  }
+
+  trackIdentity(index, item: User) {
+    return item.id;
   }
 }

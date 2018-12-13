@@ -47,11 +47,15 @@
                    placeholder="{{'user.username' | translate}}"
                    #username="ngModel"
                    required
+                   pattern="^[_.@A-Za-z0-9-]*$"
                    maxlength="50">
             <div *ngIf="username.invalid && (username.dirty || username.touched)"
                  class="error-msg">
               <div *ngIf="username.errors.required" [translate]="'error.required.username'">
                 Username is required.
+              </div>
+              <div *ngIf="username.errors.pattern" [translate]="'error.required.pattern'">
+                Username is invalid.
               </div>
             </div>
           </div>
@@ -132,7 +136,7 @@
     </div>
 
     <div class="col-md-10" style="margin-top: 10px">
-      <app-alert></app-alert>
+      <app-alert-dialog></app-alert-dialog>
     </div>
   </div>
 </div>

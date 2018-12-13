@@ -5,8 +5,14 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {BookManagementComponent} from '../book-management/book-management.component';
 import {AlertService} from '../../../shared/alert/alert.service';
 import {BookService} from '../book.service';
+import {TopicService} from '../../topic/topic.service';
+import {EditorService} from "../../editor/editor.service";
+import {AuthorService} from "../../author/author.service";
 
 import {Book} from '../model/book';
+import {Topic} from '../../topic/model/topic';
+import {Editor} from "../../editor/model/editor";
+import {Author} from "../../author/model/author";
 
 @Component({
   selector: 'app-book-list',
@@ -22,10 +28,16 @@ export class BookListComponent implements OnInit {
   predicate: any;
   reverse: any;
   deleteBookId: string;
+  topics: Topic[];
+  editors: Editor[];
+  authorList: Author[];
 
   constructor(private bookService: BookService,
               private alertService: AlertService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private topicService: TopicService,
+              private editorService: EditorService,
+              private authorService: AuthorService) {
     this.itemsPerPage = 5;
     this.predicate = 'id';
     this.reverse = true;
@@ -34,6 +46,9 @@ export class BookListComponent implements OnInit {
 
   ngOnInit() {
     this.getBooks(null);
+    this.findTopics();
+    this.findEditors();
+    this.findAuthors();
   }
 
   getBooks(param) {
@@ -80,6 +95,24 @@ export class BookListComponent implements OnInit {
     this.cancel();
   }
 
+  findTopics() {
+    this.topicService.getAllTopics()
+      .subscribe(response => this.onTopicsSuccess(response),
+        response => this.onError(response));
+  }
+
+  findEditors() {
+    this.editorService.getAllEditors()
+      .subscribe(response => this.onEditorsSuccess(response),
+        response => this.onError(response));
+  }
+
+  findAuthors() {
+    this.authorService.getAllAuthors()
+      .subscribe(response => this.onAuthorsSuccess(response),
+        response => this.onError(response));
+  }
+
   open(deleteBook, bookId) {
     this.deleteBookId = bookId;
     this.modalService.open(deleteBook);
@@ -107,12 +140,34 @@ export class BookListComponent implements OnInit {
     this.alertService.error(error.error, fields, null);
   }
 
+  private onTopicsSuccess(response) {
+    this.topics = [];
+    if (response)
+      this.topics = response;
+  }
+
+  private onEditorsSuccess(response) {
+    this.editors = [];
+    if (response)
+      this.editors = response;
+  }
+
+  private onAuthorsSuccess(response) {
+    this.authorList = [];
+    if (response)
+      this.authorList = response;
+  }
+
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
       result.push('id');
     }
     return result;
+  }
+
+  trackIdentity(index, item: Book) {
+    return item.id;
   }
 
   cancel() {

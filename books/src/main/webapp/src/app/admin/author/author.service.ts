@@ -17,6 +17,10 @@ export class AuthorService {
     return this.http.post<Author[]>('api/authors', req.authorDTO, {params: options, observe: 'response'});
   }
 
+  getAllAuthors(): Observable<Author[]> {
+    return this.http.post<Author[]>('api/allAuthors', {observe: 'response'});
+  }
+
   getAuthor(author: Author): Observable<HttpResponse<Author>> {
     return this.http.post<Author>('api/author', author, {observe: 'response'});
   }

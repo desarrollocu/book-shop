@@ -4,6 +4,7 @@
     "edit": " Edit",
     "delete": " Delete",
     "empty": "Elements not found",
+    "select": "Select",
     "save": " Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
@@ -52,6 +53,7 @@
     "password": "Password",
     "passwordTwo": "Confirm password",
     "oldPassword": "Current password",
+    "passwordStrength": "Strength:",
     "add": " Add user",
     "yes": "Yes",
     "no": "No",
@@ -69,14 +71,33 @@
     "authorList": "Authors",
     "city": "City",
     "editionDate": "Edition date",
+    "editionYear": "Edition year",
     "pages": "Pages",
     "size": "Sizes",
     "isbn": "ISBN",
-    "author":"Author",
+    "author": "Author",
     "salePrice": "Sale price",
     "price": "Price",
     "coin": "Coin",
-    "edition": "Edition"
+    "edition": "Edition",
+    "classification": "Classification",
+    "descriptors": "Descriptors (Example: history,all,day)",
+    "descriptorsPlaceHolder": "word,word,word"
+  },
+  "magazine": {
+    "add": " Add magazine",
+    "delete": "Delete magazine",
+    "title": "Title",
+    "editor": "Editor",
+    "topic": "Topic",
+    "city": "City",
+    "publishYear": "Publish year",
+    "frequency": "Frequency",
+    "stockNumber": "Stock",
+    "isbn": "ISBN",
+    "salePrice": "Sale price",
+    "price": "Price",
+    "coin": "Coin"
   },
   "author": {
     "add": " Add author",
@@ -96,12 +117,19 @@
     "add": " Add topic",
     "delete": "Delete topic"
   },
+  "classification": {
+    "used": "Old and used",
+    "new": "New"
+  },
   "error": {
     "duplicate": "Element exist.",
     "badRequest": "Bad request.",
     "general": "Server error! Contact with the administrator.",
     "password": {
       "equal": "Two password most be equals."
+    },
+    "pattern": {
+      "descriptors": "Bad format. Ex: word,word,word"
     },
     "required": {
       "firstName": "First name is required.",
@@ -114,10 +142,17 @@
       "admin": "Administrator value is required.",
       "city": "City is required.",
       "name": "Name is required.",
-      "title": "Title is required."
+      "title": "Title is required.",
+      "authors": "Author is required.",
+      "classification": "Classification is required.",
+      "coin": "Coin is required.",
+      "salePrice": "Sale price is required.",
+      "topic": "Topic is required.",
+      "stockNumber": "Stock is required."
     },
     "minLength": {
-      "email": "Min 5 characters."
+      "email": "Min 5 characters.",
+      "password": "Your password is required to be at least 5 characters."
     },
     "maxLength": {
       "email": "Max 254 characters."

@@ -47,7 +47,7 @@
       <tr *ngIf="editorList.length === 0">
         <td colspan="6" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
-      <tr *ngFor="let editor of editorList; trackBy: trackById">
+      <tr *ngFor="let editor of editorList; trackBy: trackIdentity">
         <td scope="row">{{editor.name}}</td>
         <td>{{editor.city}}</td>
         <td>
@@ -73,7 +73,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getEditors()"></ngb-pagination>
+                (pageChange)="getEditors(null)"></ngb-pagination>
 
 <ng-template #deleteEditor let-modal>
   <div class="modal-header modal-title">

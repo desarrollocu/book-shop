@@ -79,7 +79,7 @@
       <tr *ngIf="authorList.length === 0">
         <td colspan="6" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
-      <tr *ngFor="let author of authorList; trackBy: trackById">
+      <tr *ngFor="let author of authorList; trackBy: trackIdentity">
         <td scope="row">{{author.firstName}}</td>
         <td>{{author.lastName}}</td>
         <td>{{author.city}}</td>
@@ -108,7 +108,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getAuthors()"></ngb-pagination>
+                (pageChange)="getAuthors(null)"></ngb-pagination>
 
 <ng-template #deleteAuthor let-modal>
   <div class="modal-header modal-title">

@@ -3,6 +3,7 @@ package soft.co.books.domain.service.dto;
 import soft.co.books.configuration.Constants;
 import soft.co.books.domain.collection.Book;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
@@ -17,13 +18,14 @@ public class BookDTO {
 
     private String id;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @NotEmpty(message = Constants.ERR_NOT_NULL)
     private List<AuthorDTO> authorList = new ArrayList<>();
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String title;
 
-    @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String subTitle;
 
@@ -31,7 +33,10 @@ public class BookDTO {
 
     private EditorDTO editor;
 
-    private String editionDate;
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private ClassificationDTO classification;
+
+    private String editionYear;
 
     private int pages = 0;
 
@@ -39,20 +44,18 @@ public class BookDTO {
 
     private String isbn;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     private TopicDTO topic;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double salePrice;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     private String coin;
 
     private String image;
 
-    private String edition;
-
-    private EditorialDTO editorial;
-
-    private List<DescriptorDTO> descriptorList = new ArrayList<>();
+    private String descriptors;
 
     private Long visit = 0L;
 
@@ -75,24 +78,36 @@ public class BookDTO {
         this.subTitle = book.getSubTitle();
         this.city = book.getCity();
         this.editor = book.getEditorOrNull().map(EditorDTO::new).orElse(null);
-        this.editionDate = book.getEditionDate();
+        this.classification = book.getClassificationOrNull().map(ClassificationDTO::new).orElse(null);
+        this.editionYear = book.getEditionYear();
         this.pages = book.getPages();
         this.size = book.getSize();
         this.isbn = book.getIsbn();
         this.topic = book.getTopicOrNull().map(TopicDTO::new).orElse(null);
         this.salePrice = book.getSalePrice();
         this.coin = book.getCoin();
+        this.image = book.getImageUrl();
 
-        this.image = book.getImage();
-        this.edition = book.getEdition();
-        this.editorial = book.getEditorialOrNull().map(EditorialDTO::new).orElse(null);
-        this.descriptorList = book.getDescriptorList().stream().map(DescriptorDTO::new).collect(Collectors.toList());
+        for (int i = 0; i < book.getDescriptorList().size(); i++) {
+            if (i == 0)
+                this.descriptors = book.getDescriptorList().get(i);
+            else
+                this.descriptors += "," + book.getDescriptorList().get(i);
+        }
 
         this.visit = book.getVisit();
         this.createdBy = book.getCreatedBy();
         this.createdDate = book.getCreatedDate();
         this.lastModifiedBy = book.getLastModifiedBy();
         this.lastModifiedDate = book.getLastModifiedDate();
+    }
+
+    public ClassificationDTO getClassification() {
+        return classification;
+    }
+
+    public void setClassification(ClassificationDTO classification) {
+        this.classification = classification;
     }
 
     public String getSubTitle() {
@@ -215,36 +230,12 @@ public class BookDTO {
         this.image = image;
     }
 
-    public String getEdition() {
-        return edition;
-    }
-
-    public void setEdition(String edition) {
-        this.edition = edition;
-    }
-
     public double getSalePrice() {
         return salePrice;
     }
 
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
-    }
-
-    public String getEditionDate() {
-        return editionDate;
-    }
-
-    public void setEditionDate(String editionDate) {
-        this.editionDate = editionDate;
-    }
-
-    public EditorialDTO getEditorial() {
-        return editorial;
-    }
-
-    public void setEditorial(EditorialDTO editorial) {
-        this.editorial = editorial;
     }
 
     public List<AuthorDTO> getAuthorList() {
@@ -255,20 +246,28 @@ public class BookDTO {
         this.authorList = authorList;
     }
 
-    public List<DescriptorDTO> getDescriptorList() {
-        return descriptorList;
-    }
-
-    public void setDescriptorList(List<DescriptorDTO> descriptorList) {
-        this.descriptorList = descriptorList;
-    }
-
     public Long getVisit() {
         return visit;
     }
 
     public void setVisit(Long visit) {
         this.visit = visit;
+    }
+
+    public String getEditionYear() {
+        return editionYear;
+    }
+
+    public void setEditionYear(String editionYear) {
+        this.editionYear = editionYear;
+    }
+
+    public String getDescriptors() {
+        return descriptors;
+    }
+
+    public void setDescriptors(String descriptors) {
+        this.descriptors = descriptors;
     }
 
     @Override
@@ -278,12 +277,10 @@ public class BookDTO {
                 ", pages=" + pages +
                 ", coin='" + coin + '\'' +
                 ", image='" + image + '\'' +
-                ", edition='" + edition + '\'' +
                 ", salePrice=" + salePrice +
-                ", editionDate='" + editionDate + '\'' +
-                ", editorial=" + editorial +
+                ", editionYear='" + editionYear + '\'' +
                 ", authorList=" + authorList +
-                ", descriptorList=" + descriptorList +
+                ", descriptors=" + descriptors +
                 ", visit=" + visit +
                 '}';
     }

@@ -21,6 +21,8 @@ public class AuthorDTO {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
+    private String fullName;
+
     private String bornDate;
 
     private String deathDate;
@@ -46,6 +48,7 @@ public class AuthorDTO {
         this.id = author.getId();
         this.firstName = author.getFirstName();
         this.lastName = author.getLastName();
+        this.fullName = author.getFirstName() + " " + author.getLastName();
 //        this.country = author.getCountry().getName();
         this.bornDate = author.getBornDate();
         this.deathDate = author.getDeathDate();
@@ -74,6 +77,14 @@ public class AuthorDTO {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setLastName(String lastName) {

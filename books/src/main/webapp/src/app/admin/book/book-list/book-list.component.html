@@ -24,33 +24,40 @@
                  placeholder="{{'book.subTitle' | translate}}">
         </div>
         <div class="form-group col-md-4">
-          <label for="author" [translate]="'book.author'">Author</label>
-          <input type="text"
-                 [(ngModel)]="book.author"
-                 class="form-control"
-                 id="author"
-                 name="author"
-                 placeholder="{{'book.author' | translate}}">
+          <label for="authors" [translate]="'book.authorList'">Authors</label>
+          <ng-select [items]="authorList"
+                     id="authors"
+                     name="authors"
+                     bindLabel="fullName"
+                     [multiple]="true"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.authorList' | translate}}"
+                     [(ngModel)]="book.authorList">
+          </ng-select>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="editor" [translate]="'book.editor'">Editor</label>
-          <input type="text"
-                 [(ngModel)]="book.editor"
-                 class="form-control"
-                 id="editor"
-                 name="editor"
-                 placeholder="{{'book.editor' | translate}}">
+          <ng-select [items]="editors"
+                     id="editor"
+                     name="editor"
+                     bindLabel="name"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.editor' | translate}}"
+                     [(ngModel)]="book.editor">
+          </ng-select>
         </div>
         <div class="form-group col-md-4">
           <label for="topic" [translate]="'book.topic'">Topic</label>
-          <input type="text"
-                 [(ngModel)]="book.topic"
-                 class="form-control"
-                 id="topic"
-                 name="topic"
-                 placeholder="{{'book.topic' | translate}}">
+          <ng-select [items]="topics"
+                     id="topic"
+                     name="topic"
+                     bindLabel="name"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.topic' | translate}}"
+                     [(ngModel)]="book.topic">
+          </ng-select>
         </div>
       </div>
       <button type="submit" class="btn btn-primary"
@@ -78,13 +85,13 @@
       </thead>
       <tbody>
       <tr *ngIf="bookList.length === 0">
-        <td colspan="5" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+        <td colspan="7" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
-      <tr *ngFor="let book of bookList; trackBy: trackById">
+      <tr *ngFor="let book of bookList; trackBy: trackIdentity">
         <td scope="row">{{book.title}}</td>
         <td>{{book.subTitle}}</td>
-        <td>{{book.editor}}</td>
-        <td>{{book.topic}}</td>
+        <td>{{book.editor !== null ? book.editor.name : ''}}</td>
+        <td>{{book.topic !== null ? book.topic.name: ''}}</td>
         <td>{{book.coin}}</td>
         <td>{{book.salePrice}}</td>
         <td>
@@ -110,7 +117,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getBooks()"></ngb-pagination>
+                (pageChange)="getBooks(null)"></ngb-pagination>
 
 <ng-template #deleteBook let-modal>
   <div class="modal-header modal-title">

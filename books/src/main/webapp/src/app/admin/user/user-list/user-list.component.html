@@ -69,7 +69,7 @@
       <tr *ngIf="userList.length === 0">
         <td colspan="5" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
-      <tr *ngFor="let user of userList; trackBy: trackById">
+      <tr *ngFor="let user of userList; trackBy: trackIdentity">
         <td scope="row">{{user.firstName}}</td>
         <td>{{user.lastName}}</td>
         <td>{{user.userName}}</td>
@@ -97,7 +97,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getUsers()"></ngb-pagination>
+                (pageChange)="getUsers(null)"></ngb-pagination>
 
 <ng-template #deleteUser let-modal>
   <div class="modal-header modal-title">

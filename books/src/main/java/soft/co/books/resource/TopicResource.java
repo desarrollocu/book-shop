@@ -12,6 +12,8 @@ import soft.co.books.domain.service.dto.PageResultDTO;
 import soft.co.books.domain.service.dto.TopicDTO;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,12 @@ public class TopicResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.TOPIC_LIST + "\")")
     public PageResultDTO<TopicDTO> getAllTopics(@RequestBody TopicDTO topicDTO, Pageable pageable) {
         return topicService.findAll(topicDTO, pageable);
+    }
+
+    @PostMapping("/allTopics")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_MANAGEMENT + "\")")
+    public List<TopicDTO> allTopics() {
+        return topicService.findAll().stream().map(TopicDTO::new).collect(Collectors.toList());
     }
 
     @PostMapping("/topic")

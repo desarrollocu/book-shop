@@ -17,6 +17,10 @@ export class TopicService {
     return this.http.post<Topic[]>('api/topics', req.topicDTO, {params: options, observe: 'response'});
   }
 
+  getAllTopics(): Observable<Topic[]> {
+    return this.http.post<Topic[]>('api/allTopics', {observe: 'response'});
+  }
+
   getElement(topic: Topic): Observable<HttpResponse<Topic>> {
     return this.http.post<Topic>('api/topic', topic, {observe: 'response'});
   }

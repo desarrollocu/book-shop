@@ -12,9 +12,11 @@ import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.domain.collection.Author;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.repository.BookRepository;
+import soft.co.books.domain.service.dto.AuthorDTO;
 import soft.co.books.domain.service.dto.BookDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,18 +40,22 @@ public class BookService extends CustomBaseService<Book, String> {
 
     private final TopicService topicService;
 
+    private final ClassificationService classificationService;
+
     private MongoTemplate mongoTemplate;
 
     public BookService(BookRepository bookRepository,
                        MongoTemplate mongoTemplate,
                        TopicService topicService,
-                       AuthorService authorService, EditorService editorService) {
+                       AuthorService authorService,
+                       EditorService editorService, ClassificationService classificationService) {
         super(bookRepository);
         this.bookRepository = bookRepository;
         this.mongoTemplate = mongoTemplate;
         this.authorService = authorService;
         this.editorService = editorService;
         this.topicService = topicService;
+        this.classificationService = classificationService;
     }
 
     public PageResultDTO findAll(BookDTO bookDTO, Pageable pageable) {
@@ -64,12 +70,17 @@ public class BookService extends CustomBaseService<Book, String> {
             query.addCriteria(where("title").regex(bookDTO.getTitle()));
         if (bookDTO.getSubTitle() != null && !bookDTO.getSubTitle().isEmpty())
             query.addCriteria(where("subTitle").regex(bookDTO.getSubTitle()));
-        if (bookDTO.getCity() != null && !bookDTO.getCity().isEmpty())
-            query.addCriteria(where("city").regex(bookDTO.getCity()));
-        if (bookDTO.getEditionDate() != null && !bookDTO.getEditionDate().isEmpty())
-            query.addCriteria(where("editionDate").is(bookDTO.getEditionDate()));
         if (bookDTO.getEditor() != null)
-            query.addCriteria(where("editor.name").regex(bookDTO.getEditor().getName()));
+            query.addCriteria(where("editor.id").is(bookDTO.getEditor().getId()));
+        if (bookDTO.getTopic() != null)
+            query.addCriteria(where("topic.id").is(bookDTO.getTopic().getId()));
+        if (bookDTO.getAuthorList() != null) {
+            if (!bookDTO.getAuthorList().isEmpty()) {
+                query.addCriteria(where("authorList").in(bookDTO.getAuthorList().stream()
+                        .map(AuthorDTO::getId)
+                        .collect(Collectors.toList())));
+            }
+        }
 
         Page<Book> books = new PageImpl<>(mongoTemplate.find(query, Book.class));
         resultDTO.setElements(books.stream().map(BookDTO::new).collect(Collectors.toList()));
@@ -83,6 +94,13 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setSubTitle(bookDTO.getSubTitle());
         book.setCity(bookDTO.getCity());
 
+        if (bookDTO.getDescriptors() != null) {
+            if (bookDTO.getDescriptors() != "") {
+                String[] temp = bookDTO.getDescriptors().split(",");
+                book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
+            }
+        }
+
         List<Author> authorList = bookDTO.getAuthorList().stream()
                 .map(authorDTO -> authorService.findOne(authorDTO.getId()).get())
                 .collect(Collectors.toList());
@@ -91,27 +109,20 @@ public class BookService extends CustomBaseService<Book, String> {
         if (bookDTO.getEditor() != null) {
             book.setEditor(editorService.findOne(bookDTO.getEditor().getId()).get());
         }
-
-        book.setEditionDate(bookDTO.getEditionDate());
-        book.setPages(bookDTO.getPages());
-        book.setSize(bookDTO.getSize());
-        book.setIsbn(bookDTO.getIsbn());
-
+        if (bookDTO.getClassification() != null) {
+            book.setClassification(classificationService.findOne(bookDTO.getClassification().getId()).get());
+        }
         if (bookDTO.getTopic() != null) {
             book.setTopic(topicService.findOne(bookDTO.getTopic().getId()).get());
         }
-
+        book.setEditionYear(bookDTO.getEditionYear());
+        book.setPages(bookDTO.getPages());
+        book.setSize(bookDTO.getSize());
+        book.setIsbn(bookDTO.getIsbn());
         book.setSalePrice(bookDTO.getSalePrice());
         book.setCoin(bookDTO.getCoin());
-        book.setImage(bookDTO.getImage());
-        book.setEdition(bookDTO.getEdition());
-//        book.setEditorial();
-//        book.setDescriptorList();
+        book.setImageUrl(bookDTO.getImage());
         book.setVisit(bookDTO.getVisit());
-        book.setCreatedBy(bookDTO.getCreatedBy());
-        book.setCreatedDate(bookDTO.getCreatedDate());
-        book.setLastModifiedBy(bookDTO.getLastModifiedBy());
-        book.setLastModifiedDate(bookDTO.getLastModifiedDate());
 
         log.debug("Created Information for Book: {}", book);
         return Optional.of(bookRepository.save(book))
@@ -142,22 +153,29 @@ public class BookService extends CustomBaseService<Book, String> {
                     if (bookDTO.getEditor() != null) {
                         book.setEditor(editorService.findOne(bookDTO.getEditor().getId()).get());
                     }
-                    book.setEditionDate(bookDTO.getEditionDate());
-                    book.setPages(bookDTO.getPages());
-                    book.setSize(bookDTO.getSize());
-                    book.setIsbn(bookDTO.getIsbn());
-
+                    if (bookDTO.getClassification() != null) {
+                        book.setClassification(classificationService.findOne(bookDTO.getClassification().getId()).get());
+                    }
                     if (bookDTO.getTopic() != null) {
                         book.setTopic(topicService.findOne(bookDTO.getTopic().getId()).get());
                     }
-
+                    book.setEditionYear(bookDTO.getEditionYear());
+                    book.setPages(bookDTO.getPages());
+                    book.setSize(bookDTO.getSize());
+                    book.setIsbn(bookDTO.getIsbn());
                     book.setSalePrice(bookDTO.getSalePrice());
                     book.setCoin(bookDTO.getCoin());
-                    book.setImage(bookDTO.getImage());
-                    book.setEdition(bookDTO.getEdition());
-//                  book.setEditorial();
-//                  book.setDescriptorList();
+                    book.setImageUrl(bookDTO.getImage());
+
+                    if (bookDTO.getDescriptors() != null) {
+                        if (bookDTO.getDescriptors() != "") {
+                            String[] temp = bookDTO.getDescriptors().split(",");
+                            book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
+                        }
+                    }
+
                     book.setVisit(bookDTO.getVisit());
+
                     bookRepository.save(book);
                     log.debug("Changed Information for Book: {}", book);
                     return book;

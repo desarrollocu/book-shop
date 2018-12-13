@@ -1,3 +1,184 @@
-<p>
-  magazine-management works!
-</p>
+<div class="modal-header modal-title">
+  <h5 class="modal-sm" [translate]="'magazine.add'">Add magazine</h5>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="form" role="form" #magazineManagementForm="ngForm" (ngSubmit)="saveMagazine()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="title" [translate]="'magazine.title'">Title</label>
+            <input type="text"
+                   [(ngModel)]="magazine.title"
+                   class="form-control"
+                   id="title"
+                   name="title"
+                   placeholder="{{'magazine.title' | translate}}"
+                   #title="ngModel"
+                   required
+                   maxlength="150">
+            <div *ngIf="title.invalid && (title.dirty || title.touched)"
+                 class="error-msg">
+              <div *ngIf="title.errors.required" [translate]="'error.required.title'">
+                Title is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="editor" [translate]="'magazine.editor'">Editor</label>
+            <ng-select [items]="editors"
+                       id="editor"
+                       name="editor"
+                       bindLabel="name"
+                       [virtualScroll]="true"
+                       placeholder="{{'magazine.editor' | translate}}"
+                       [(ngModel)]="magazine.editor"
+                       #editor="ngModel">
+            </ng-select>
+            <!--<div *ngIf="editor.invalid && (editor.dirty || editor.touched)"-->
+            <!--class="error-msg">-->
+            <!--<div *ngIf="editor.errors.required" [translate]="'error.required.editor'">-->
+            <!--Editor is required.-->
+            <!--</div>-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="topic" [translate]="'magazine.topic'">Topic</label>
+            <ng-select [items]="topics"
+                       id="topic"
+                       name="topic"
+                       bindLabel="name"
+                       [virtualScroll]="true"
+                       placeholder="{{'magazine.topic' | translate}}"
+                       [(ngModel)]="magazine.topic"
+                       #topic="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="topic.invalid && (topic.dirty || topic.touched)"
+                 class="error-msg">
+              <div *ngIf="topic.errors.required" [translate]="'error.required.topic'">
+                Topic is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="publishYear" [translate]="'magazine.publishYear'">Publish year</label>
+            <ng-select [items]="years"
+                       id="publishYear"
+                       name="publishYear"
+                       [virtualScroll]="true"
+                       placeholder="{{'magazine.publishYear' | translate}}"
+                       [(ngModel)]="magazine.publishYear"
+                       #publishYear="ngModel">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="city" [translate]="'magazine.city'">City</label>
+            <input type="text"
+                   [(ngModel)]="magazine.city"
+                   class="form-control"
+                   id="city"
+                   name="city"
+                   placeholder="{{'magazine.city' | translate}}"
+                   #city="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="isbn" [translate]="'magazine.isbn'">Isbn</label>
+            <input type="text"
+                   [(ngModel)]="magazine.isbn"
+                   class="form-control"
+                   id="isbn"
+                   name="isbn"
+                   placeholder="{{'magazine.isbn' | translate}}"
+                   #isbn="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="frequency" [translate]="'magazine.frequency'">Sale price</label>
+            <input type="text"
+                   [(ngModel)]="magazine.frequency"
+                   class="form-control"
+                   id="frequency"
+                   name="frequency"
+                   placeholder="{{'magazine.frequency' | translate}}"
+                   #frequency="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="stockNumber" [translate]="'magazine.stockNumber'">Stock</label>
+            <input type="number"
+                   [(ngModel)]="magazine.stockNumber"
+                   class="form-control"
+                   id="stockNumber"
+                   name="stockNumber"
+                   placeholder="{{'magazine.stockNumber' | translate}}"
+                   #stockNumber="ngModel"
+                   maxlength="50"
+                   required>
+            <div *ngIf="stockNumber.invalid && (stockNumber.dirty || stockNumber.touched)"
+                 class="error-msg">
+              <div *ngIf="stockNumber.errors.required" [translate]="'error.required.stockNumber'">
+                Stock is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="salePrice" [translate]="'magazine.salePrice'">Sale price</label>
+            <input type="number"
+                   [(ngModel)]="magazine.salePrice"
+                   class="form-control"
+                   id="salePrice"
+                   name="salePrice"
+                   placeholder="{{'magazine.price' | translate}}"
+                   #salePrice="ngModel"
+                   maxlength="50"
+                   required>
+            <div *ngIf="salePrice.invalid && (salePrice.dirty || salePrice.touched)"
+                 class="error-msg">
+              <div *ngIf="salePrice.errors.required" [translate]="'error.required.salePrice'">
+                Sale price is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="coin" [translate]="'magazine.coin'">Coin</label>
+            <ng-select [items]="coinList"
+                       id="coin"
+                       name="coin"
+                       placeholder="{{'book.coin' | translate}}"
+                       [(ngModel)]="magazine.coin"
+                       #coin="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="coin.invalid && (coin.dirty || coin.touched)"
+                 class="error-msg">
+              <div *ngIf="coin.errors.required" [translate]="'error.required.coin'">
+                Coin is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!magazineManagementForm.valid"
+                [translate]="'general.save'"> Save
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </form>
+    </div>
+
+    <div class="col-md-10" style="margin-top: 10px">
+      <app-alert-dialog></app-alert-dialog>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
-import {AlertService} from "../../../shared/alert/alert.service";
-import {AuthorService} from "../author.service";
+import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
+import {AuthorService} from '../author.service';
+
 import {Author} from '../model/author';
 
 @Component({
@@ -13,7 +14,7 @@ import {Author} from '../model/author';
 export class AuthorManagementComponent implements OnInit {
   @Input() author;
 
-  constructor(private alertService: AlertService,
+  constructor(private alertService: AlertDialogService,
               private authorService: AuthorService,
               public activeModal: NgbActiveModal) {
   }

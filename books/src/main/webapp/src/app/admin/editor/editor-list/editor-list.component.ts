@@ -115,6 +115,10 @@ export class EditorListComponent implements OnInit {
     return result;
   }
 
+  trackIdentity(index, item: Editor) {
+    return item.id;
+  }
+
   cancel() {
     this.modalService.dismissAll('cancel')
   }

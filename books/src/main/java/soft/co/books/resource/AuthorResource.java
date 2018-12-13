@@ -12,6 +12,8 @@ import soft.co.books.domain.service.dto.AuthorDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -28,6 +30,12 @@ public class AuthorResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.AUTHOR_LIST + "\")")
     public PageResultDTO<AuthorDTO> getAllAuthors(@RequestBody AuthorDTO authorDTO, Pageable pageable) {
         return authorService.findAll(authorDTO, pageable);
+    }
+
+    @PostMapping("/allAuthors")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_MANAGEMENT + "\")")
+    public List<AuthorDTO> allAuthors() {
+        return authorService.findAll().stream().map(AuthorDTO::new).collect(Collectors.toList());
     }
 
     @PostMapping("/author")

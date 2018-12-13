@@ -32,7 +32,6 @@ public class AccountResource {
      * @return the login if the user is authenticated
      */
     @GetMapping("/auth")
-//    @Timed
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
@@ -45,7 +44,6 @@ public class AccountResource {
      * @throws RuntimeException 500 (Internal Server Error) if the user couldn't be returned
      */
     @GetMapping("/account")
-//    @Timed
     public UserDTO getAccount() {
         return userService.getUserWithAuthorities()
                 .map(UserDTO::new)

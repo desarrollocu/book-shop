@@ -115,6 +115,10 @@ export class AuthorListComponent implements OnInit {
     return result;
   }
 
+  trackIdentity(index, item: Author) {
+    return item.id;
+  }
+
   cancel() {
     this.modalService.dismissAll('cancel')
   }

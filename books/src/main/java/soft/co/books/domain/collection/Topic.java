@@ -2,8 +2,8 @@ package soft.co.books.domain.collection;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.AbstractAuditingEntity;
 
@@ -21,7 +21,7 @@ public class Topic extends AbstractAuditingEntity implements Serializable {
     @Id
     private String id;
 
-    @Field("first_name")
+    @Indexed(unique = true)
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String name;

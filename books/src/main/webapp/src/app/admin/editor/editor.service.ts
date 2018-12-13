@@ -17,6 +17,10 @@ export class EditorService {
     return this.http.post<Editor[]>('api/editors', req.editorDTO, {params: options, observe: 'response'});
   }
 
+  getAllEditors(req?: any): Observable<Editor[]> {
+    return this.http.post<Editor[]>('api/allEditors', {observe: 'response'});
+  }
+
   getEditor(editor: Editor): Observable<HttpResponse<Editor>> {
     return this.http.post<Editor>('api/editor', editor, {observe: 'response'});
   }

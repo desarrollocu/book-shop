@@ -4,6 +4,7 @@ import com.github.mongobee.changeset.ChangeLog;
 import com.github.mongobee.changeset.ChangeSet;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import soft.co.books.domain.collection.Authority;
+import soft.co.books.domain.collection.Classification;
 import soft.co.books.domain.collection.User;
 
 import java.time.Instant;
@@ -28,12 +29,8 @@ public class InitialDatabaseMigration {
         authorityList.add(new Authority("author-list", "Authors list"));
         authorityList.add(new Authority("editor-management", "Create or update editor data"));
         authorityList.add(new Authority("editor-list", "Editors list"));
-        authorityList.add(new Authority("publisher-management", "Create or update publisher data"));
-        authorityList.add(new Authority("publisher-list", "Publishers list"));
         authorityList.add(new Authority("descriptor-management", "Create or update descriptor data"));
         authorityList.add(new Authority("descriptor-list", "Descriptors list"));
-        authorityList.add(new Authority("country-management", "Create or update country data"));
-        authorityList.add(new Authority("country-list", "Countries list"));
         authorityList.add(new Authority("magazine-management", "Create or update magazine data"));
         authorityList.add(new Authority("magazine-list", "Magazines list"));
         authorityList.add(new Authority("topic-management", "Create or update topic data"));
@@ -54,8 +51,23 @@ public class InitialDatabaseMigration {
         user.setLangKey("en");
         user.setCreatedBy("system");
         user.setCreatedDate(Instant.now());
-
         user.setAuthorities(new HashSet<>(mongoTemplate.findAll(Authority.class)));
+
         mongoTemplate.save(user);
+    }
+
+    @ChangeSet(order = "03", author = "initiator", id = "03-addClassification")
+    public void addClassification(MongoTemplate mongoTemplate) {
+        Classification classification = new Classification();
+        classification.setName("classification.new");
+        classification.setCreatedBy("system");
+        classification.setCreatedDate(Instant.now());
+        mongoTemplate.save(classification);
+
+        Classification classificationTwo = new Classification();
+        classificationTwo.setName("classification.used");
+        classificationTwo.setCreatedBy("system");
+        classificationTwo.setCreatedDate(Instant.now());
+        mongoTemplate.save(classificationTwo);
     }
 }
