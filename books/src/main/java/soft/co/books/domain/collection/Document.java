@@ -40,7 +40,6 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
     @NotNull(message = Constants.ERR_NOT_NULL)
     private Topic topic;
 
-    @Size(max = 256)
     @Field("image_url")
     private String imageUrl;
 

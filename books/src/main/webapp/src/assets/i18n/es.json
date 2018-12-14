@@ -8,7 +8,12 @@
     "save": " Salvar",
     "cancel": "Cancelar",
     "confirm": "Confirmar",
-    "sureMessage": "¿Está seguro?"
+    "sureMessage": "¿Está seguro?",
+    "image": {
+      "error": "Solo seleccione imágenes.",
+      "errorSize": "El tamaño debe ser menor de 500KB.",
+      "text": "El tamaño de la imagen debe ser menor de 500KB. Cuando elija una imagen podrá ver como se visualizará la misma en las vistas del usuario básico."
+    }
   },
   "login": {
     "username": "Usuario",

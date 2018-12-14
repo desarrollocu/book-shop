@@ -10,9 +10,11 @@ import {PasswordStrengthBarComponent} from './auth/password-strength-bar.compone
   imports: [
     SharedLibsModule, SharedCommonModule
   ],
-  declarations: [LoginModalComponent, RegisterModalComponent, PasswordStrengthBarComponent, HasAnyAuthorityDirective],
+  declarations: [LoginModalComponent, RegisterModalComponent,
+    PasswordStrengthBarComponent, HasAnyAuthorityDirective],
   entryComponents: [LoginModalComponent, RegisterModalComponent],
-  exports: [SharedCommonModule, LoginModalComponent, RegisterModalComponent, PasswordStrengthBarComponent, HasAnyAuthorityDirective]
+  exports: [SharedCommonModule, LoginModalComponent, RegisterModalComponent,
+    PasswordStrengthBarComponent, HasAnyAuthorityDirective]
 })
 export class SharedModule {
   static forRoot() {

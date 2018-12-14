@@ -1,348 +1,349 @@
-<section class="mag-posts-area d-flex flex-wrap">
-  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
-    <form>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputEmail4">Name</label>
-          <input type="email" class="form-control" id="inputEmail4" placeholder="Name">
-        </div>
-        <div class="form-group col-md-6">
-          <label for="inputPassword4">Author</label>
-          <input type="password" class="form-control" id="inputPassword4" placeholder="Author">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-3">
-          <label for="country">Country</label>
-          <select id="country" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="editor">Editor</label>
-          <select id="editor" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-        <div class="form-group col-md-2">
-          <label for="year">Year</label>
-          <input type="text" class="form-control" id="year" placeholder="Year">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary" [translate]="'search.button'"><i class="fa fa-search"></i> Search</button>
-    </form>
-  </div>
+<!--<section class="mag-posts-area d-flex flex-wrap">-->
+  <!--<div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">-->
+    <!--<form>-->
+      <!--<div class="form-row">-->
+        <!--<div class="form-group col-md-6">-->
+          <!--<label for="inputEmail4">Name</label>-->
+          <!--<input type="email" class="form-control" id="inputEmail4" placeholder="Name">-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-6">-->
+          <!--<label for="inputPassword4">Author</label>-->
+          <!--<input type="password" class="form-control" id="inputPassword4" placeholder="Author">-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-row">-->
+        <!--<div class="form-group col-md-3">-->
+          <!--<label for="country">Country</label>-->
+          <!--<select id="country" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-4">-->
+          <!--<label for="editor">Editor</label>-->
+          <!--<select id="editor" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-2">-->
+          <!--<label for="year">Year</label>-->
+          <!--<input type="text" class="form-control" id="year" placeholder="Year">-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<button type="submit" class="btn btn-primary" [translate]="'search.button'"><i class="fa fa-search"></i> Search</button>-->
+    <!--</form>-->
+  <!--</div>-->
 
-  <div class="row text-center text-lg-left book-list-badge">
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);"
-           [ngbPopover]="popContent"
-           popoverClass="my-custom-class"
-           placement="right"
-           class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"
-           [ngbPopover]="popContent1"
-           popoverClass="my-custom-class"
-           placement="right">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent1>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"
-           [ngbPopover]="popContent2"
-           popoverClass="my-custom-class"
-           placement="right">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent2>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
+  <!--<div class="row text-center text-lg-left book-list-badge">-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="javascript:void(0);"-->
+           <!--[ngbPopover]="popContent"-->
+           <!--popoverClass="my-custom-class"-->
+           <!--placement="right"-->
+           <!--class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+        <!--<ng-template #popContent>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">-->
+            <!--<i class="fa fa-cart-plus"></i>-->
+          <!--</a>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">-->
+            <!--<i class="fa fa-book"></i>-->
+          <!--</a>-->
+        <!--</ng-template>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"-->
+           <!--[ngbPopover]="popContent1"-->
+           <!--popoverClass="my-custom-class"-->
+           <!--placement="right">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+        <!--<ng-template #popContent1>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">-->
+            <!--<i class="fa fa-cart-plus"></i>-->
+          <!--</a>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">-->
+            <!--<i class="fa fa-book"></i>-->
+          <!--</a>-->
+        <!--</ng-template>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"-->
+           <!--[ngbPopover]="popContent2"-->
+           <!--popoverClass="my-custom-class"-->
+           <!--placement="right">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+        <!--<ng-template #popContent2>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">-->
+            <!--<i class="fa fa-cart-plus"></i>-->
+          <!--</a>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">-->
+            <!--<i class="fa fa-book"></i>-->
+          <!--</a>-->
+        <!--</ng-template>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
     <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
     <!--</div>-->
-    <ngb-pagination class="my-pagination"
-                    [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
-  </div>
-</section>
+    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge">New</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/152479628X_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
+      <!--<div class="item">-->
+        <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
+          <!--<span class="notify-badge-used">Used</span>-->
+          <!--<figure>-->
+            <!--<img src="assets/images/books/1250069823_w.jpg" alt=""/>-->
+            <!--<figcaption>$250 - U$S 350</figcaption>-->
+            <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+      <!--</div>-->
+    <!--</div>-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figcaption>$250 - U$S 350</figcaption>&ndash;&gt;-->
+    <!--&lt;!&ndash;</figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figcaption>$250 - U$S 350</figcaption>&ndash;&gt;-->
+    <!--&lt;!&ndash;</figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figcaption>$250 - U$S 350</figcaption>&ndash;&gt;-->
+    <!--&lt;!&ndash;</figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<figcaption>$250 - U$S 350</figcaption>&ndash;&gt;-->
+    <!--&lt;!&ndash;</figure>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-lg-3 col-md-4 col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<a href="#" class="d-block mb-4 h-100 img-text">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">&ndash;&gt;-->
+    <!--&lt;!&ndash;<p>$250 - U$S 350</p>&ndash;&gt;-->
+    <!--&lt;!&ndash;</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<ngb-pagination class="my-pagination"-->
+                    <!--[collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>-->
+  <!--</div>-->
+<!--</section>-->
+Not yet!

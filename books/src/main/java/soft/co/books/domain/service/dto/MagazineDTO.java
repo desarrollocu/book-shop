@@ -38,8 +38,7 @@ public class MagazineDTO {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String coin;
 
-    @Size(max = 256)
-    private String imageUrl;
+    private String image;
 
     private String publishYear;
 
@@ -72,7 +71,7 @@ public class MagazineDTO {
         this.salePrice = magazine.getSalePrice();
         this.stockNumber = magazine.getStockNumber();
         this.coin = magazine.getCoin();
-        this.imageUrl = magazine.getImageUrl();
+        this.image = magazine.getImageUrl();
         this.visit = magazine.getVisit();
         this.createdBy = magazine.getCreatedBy();
         this.createdDate = magazine.getCreatedDate();
@@ -152,12 +151,12 @@ public class MagazineDTO {
         this.coin = coin;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getPublishYear() {
@@ -221,7 +220,7 @@ public class MagazineDTO {
         return "MagazineDTO{" +
                 "title='" + title + '\'' +
                 ", coin='" + coin + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", image='" + image + '\'' +
                 ", salePrice=" + salePrice +
                 ", publishYear='" + publishYear + '\'' +
                 ", stockNumber=" + stockNumber +

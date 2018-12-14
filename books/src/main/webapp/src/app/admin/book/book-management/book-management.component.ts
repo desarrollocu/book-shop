@@ -29,6 +29,10 @@ export class BookManagementComponent implements OnInit {
   coinList: string[];
   years: string[];
 
+  imagePath;
+  message: string;
+  imageSize: any;
+
   constructor(private alertService: AlertDialogService,
               private bookService: BookService,
               private topicService: TopicService,
@@ -150,5 +154,52 @@ export class BookManagementComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss('cancel');
+  }
+
+  preview(event) {
+    let files = event.target.files;
+    if (files.length === 0)
+      return;
+
+    let mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = this.translateService.instant('general.image.error');
+      return;
+    }
+    else {
+      this.message = null;
+    }
+
+    this.imageSize = this.returnFileSize(files[0].size);
+
+    if ((this.imageSize.number > 500 && this.imageSize.type === 'KB') || this.imageSize.type === 'MB') {
+      this.message = this.translateService.instant('general.image.errorSize');
+      return;
+    }
+    else {
+      let reader = new FileReader();
+      this.imagePath = files;
+      reader.readAsDataURL(files[0]);
+      reader.onload = (_event) => {
+        this.book.image = reader.result;
+      }
+    }
+  }
+
+  resetImage() {
+    this.imageSize = '';
+    this.imagePath = '';
+    this.book.image = null;
+    this.message = null;
+  }
+
+  returnFileSize(number) {
+    if (number < 1024) {
+      return {number: number, type: 'bytes'};
+    } else if (number >= 1024 && number < 1048576) {
+      return {number: (number / 1024).toFixed(1), type: 'KB'};
+    } else if (number >= 1048576) {
+      return {number: (number / 1048576).toFixed(1), type: 'MB'};
+    }
   }
 }

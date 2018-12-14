@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {TranslateService} from '@ngx-translate/core';
 
 import {MagazineService} from '../magazine.service';
 import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
@@ -23,10 +24,15 @@ export class MagazineManagementComponent implements OnInit {
   coinList: string[];
   years: string[];
 
+  imagePath;
+  message: string;
+  imageSize: any;
+
   constructor(private alertService: AlertDialogService,
               private magazineService: MagazineService,
               private topicService: TopicService,
               private editorService: EditorService,
+              private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
     this.coinList = ['$', 'U$S'];
     this.years = [];
@@ -107,5 +113,52 @@ export class MagazineManagementComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss('cancel');
+  }
+
+  preview(event) {
+    let files = event.target.files;
+    if (files.length === 0)
+      return;
+
+    let mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = this.translateService.instant('general.image.error');
+      return;
+    }
+    else {
+      this.message = null;
+    }
+
+    this.imageSize = this.returnFileSize(files[0].size);
+
+    if ((this.imageSize.number > 500 && this.imageSize.type === 'KB') || this.imageSize.type === 'MB') {
+      this.message = this.translateService.instant('general.image.errorSize');
+      return;
+    }
+    else {
+      let reader = new FileReader();
+      this.imagePath = files;
+      reader.readAsDataURL(files[0]);
+      reader.onload = (_event) => {
+        this.magazine.image = reader.result;
+      }
+    }
+  }
+
+  resetImage() {
+    this.imageSize = '';
+    this.imagePath = '';
+    this.magazine.image = null;
+    this.message = null;
+  }
+
+  returnFileSize(number) {
+    if (number < 1024) {
+      return {number: number, type: 'bytes'};
+    } else if (number >= 1024 && number < 1048576) {
+      return {number: (number / 1024).toFixed(1), type: 'KB'};
+    } else if (number >= 1048576) {
+      return {number: (number / 1048576).toFixed(1), type: 'MB'};
+    }
   }
 }

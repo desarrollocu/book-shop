@@ -82,7 +82,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         magazine.setIsbn(magazineDTO.getIsbn());
         magazine.setSalePrice(magazineDTO.getSalePrice());
         magazine.setCoin(magazineDTO.getCoin());
-        magazine.setImageUrl(magazineDTO.getImageUrl());
+        magazine.setImageUrl(magazineDTO.getImage());
         magazine.setVisit(magazineDTO.getVisit());
 
         log.debug("Created Information for Magazine: {}", magazine);
@@ -116,7 +116,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                     magazine.setIsbn(magazineDTO.getIsbn());
                     magazine.setSalePrice(magazineDTO.getSalePrice());
                     magazine.setCoin(magazineDTO.getCoin());
-                    magazine.setImageUrl(magazineDTO.getImageUrl());
+                    magazine.setImageUrl(magazineDTO.getImage());
                     magazine.setVisit(magazineDTO.getVisit());
 
                     magazineRepository.save(magazine);

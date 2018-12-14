@@ -8,7 +8,12 @@
     "save": " Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
-    "sureMessage": "Are you sure?"
+    "sureMessage": "Are you sure?",
+    "image": {
+      "error":"Only images are supported.",
+      "errorSize":"The size most be lest than 500KB.",
+      "text": "The image size most be lest than 500KB. When you choose an image you can see how will be visualice in the basic user view."
+    }
   },
   "login": {
     "username": "Username",
@@ -31,7 +36,7 @@
     "user": "User",
     "book": "Book",
     "author": "Author",
-    "editor": "Editor",
+    "editor": "Publisher",
     "topic": "Topic",
     "country": "Country",
     "publisher": "Publisher",
@@ -66,7 +71,7 @@
     "delete": "Delete book",
     "title": "Title",
     "subTitle": "Subtitle",
-    "editor": "Editor",
+    "editor": "Publisher",
     "topic": "Topic",
     "authorList": "Authors",
     "city": "City",
@@ -88,7 +93,7 @@
     "add": " Add magazine",
     "delete": "Delete magazine",
     "title": "Title",
-    "editor": "Editor",
+    "editor": "Publisher",
     "topic": "Topic",
     "city": "City",
     "publishYear": "Publish year",
@@ -108,9 +113,9 @@
   },
   "editor": {
     "name": "Name",
-    "add": " Add editor",
+    "add": " Add publisher",
     "city": "City",
-    "delete": "Delete editor"
+    "delete": "Delete publisher"
   },
   "topic": {
     "name": "Name",

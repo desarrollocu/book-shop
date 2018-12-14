@@ -167,6 +167,39 @@
             </div>
           </div>
         </div>
+        <div class="form-row">
+          <div class="col-md-9">
+            <br>
+            <br>
+            <div class="alert-info msg"><p [translate]="'general.image.text'"></p></div>
+          </div>
+          <div class="col-md-3">
+            <div *ngIf="magazine.image">
+              <figure>
+                <img [src]="magazine.image" height="190" width="125">
+              </figure>
+            </div>
+            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!magazine.image"></div>
+            <div>
+              <input #fileInput type="file"
+                     style="display: none"
+                     accept='image/png, image/jpeg'
+                     (change)="preview($event)"/>
+              <button style="width: 125px; margin-top: 5px" type="button" class="btn btn-primary"
+                      *ngIf="!magazine.image"
+                      (click)="fileInput.click()">Select File
+              </button>
+              <button style="width: 125px; margin-top: -10px" type="button" class="btn btn-danger"
+                      *ngIf="magazine.image"
+                      (click)="resetImage()">Reset File
+              </button>
+              <div class="error-msg">
+                <div *ngIf="message">{{message}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
         <button type="submit" class="btn btn-primary"
                 [disabled]="!magazineManagementForm.valid"
                 [translate]="'general.save'"> Save

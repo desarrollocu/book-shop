@@ -1,366 +1,97 @@
-<section class="mag-posts-area d-flex flex-wrap">
-  <div class="col-md-12" style="margin-top: 10px">
-    <app-alert></app-alert>
-  </div>
-  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
-    <form>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputEmail4">Name</label>
-          <input type="email" class="form-control" id="inputEmail4" placeholder="Name">
-        </div>
-        <div class="form-group col-md-4">
-          <label for="inputPassword4">Author</label>
-          <input type="password" class="form-control" id="inputPassword4" placeholder="Author">
-        </div>
-        <div class="form-group col-md-2">
-          <label for="category">Category</label>
-          <select id="category" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-3">
-          <label for="country">Country</label>
-          <select id="country" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="inputState">Editorial</label>
-          <select id="inputState" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <label for="edition">Edition</label>
-          <select id="edition" class="form-control">
-            <option selected>Choose...</option>
-            <option>...</option>
-          </select>
-        </div>
-        <div class="form-group col-md-2">
-          <label for="year">Year</label>
-          <input type="text" class="form-control" id="year" placeholder="Year">
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary" [translate]="'search.button'"><i class="fa fa-search"></i> Search
-      </button>
-    </form>
-  </div>
+<!--<section class="mag-posts-area d-flex flex-wrap">-->
+  <!--<div class="col-md-12" style="margin-top: 10px">-->
+    <!--<app-alert></app-alert>-->
+  <!--</div>-->
+  <!--<div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">-->
+    <!--<form>-->
+      <!--<div class="form-row">-->
+        <!--<div class="form-group col-md-6">-->
+          <!--<label for="inputEmail4">Name</label>-->
+          <!--<input type="email" class="form-control" id="inputEmail4" placeholder="Name">-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-4">-->
+          <!--<label for="inputPassword4">Author</label>-->
+          <!--<input type="password" class="form-control" id="inputPassword4" placeholder="Author">-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-2">-->
+          <!--<label for="category">Category</label>-->
+          <!--<select id="category" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="form-row">-->
+        <!--<div class="form-group col-md-3">-->
+          <!--<label for="country">Country</label>-->
+          <!--<select id="country" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-4">-->
+          <!--<label for="inputState">Editorial</label>-->
+          <!--<select id="inputState" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-3">-->
+          <!--<label for="edition">Edition</label>-->
+          <!--<select id="edition" class="form-control">-->
+            <!--<option selected>Choose...</option>-->
+            <!--<option>...</option>-->
+          <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-2">-->
+          <!--<label for="year">Year</label>-->
+          <!--<input type="text" class="form-control" id="year" placeholder="Year">-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<button type="submit" class="btn btn-primary" [translate]="'search.button'"><i class="fa fa-search"></i> Search-->
+      <!--</button>-->
+    <!--</form>-->
+  <!--</div>-->
 
-  <div class="row text-center text-lg-left book-list-badge">
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);"
-           [ngbPopover]="popContent"
-           popoverClass="my-custom-class"
-           placement="right"
-           class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"
-           [ngbPopover]="popContent1"
-           popoverClass="my-custom-class"
-           placement="right">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent1>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="javascript:void(0);" class="d-block mb-4 h-100 img-text"
-           [ngbPopover]="popContent2"
-           popoverClass="my-custom-class"
-           placement="right">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-        <ng-template #popContent2>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">
-            <i class="fa fa-cart-plus"></i>
-          </a>
-          <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">
-            <i class="fa fa-book"></i>
-          </a>
-        </ng-template>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge">New</span>
-          <figure>
-            <img src="assets/images/books/152479628X_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <div class="col-lg-3 col-md-4 col-xs-6">
-      <div class="item">
-        <a href="#" class="d-block mb-4 h-100 img-text">
-          <span class="notify-badge-used">Used</span>
-          <figure>
-            <img src="assets/images/books/1250069823_w.jpg" alt=""/>
-            <figcaption>$250 - U$S 350</figcaption>
-            <!--<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-          </figure>
-        </a>
-      </div>
-    </div>
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
+  <!--<div class="row text-center text-lg-left book-list-badge">-->
+    <!--<div class="col-lg-3 col-md-4 col-xs-6"-->
+         <!--*ngFor="let book of bookList; trackBy: trackIdentity">-->
+      <!--<div class="item">-->
+        <!--<a href="javascript:void(0);"-->
+           <!--[ngbPopover]="popContent+book.id"-->
+           <!--popoverClass="my-custom-class"-->
+           <!--placement="right"-->
+           <!--class="d-block mb-4 h-100 img-text">-->
+          <!--&lt;!&ndash;<span class="notify-badge">New</span>&ndash;&gt;-->
+          <!--<figure>-->
+            <!--<img src="{{book.image}}" height="190" width="125" alt=""/>-->
+            <!--<figcaption>-->
+              <!--{{book.coin + book.salePrice}}-->
+            <!--</figcaption>-->
+            <!--<figcaption>-->
+              <!--{{book.title}}-->
+            <!--</figcaption>-->
+            <!--&lt;!&ndash;&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>&ndash;&gt;-->
+          <!--</figure>-->
+        <!--</a>-->
+        <!--<ng-template #popContent+book.id>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="Add to car">-->
+            <!--<i class="fa fa-cart-plus"></i>-->
+          <!--</a>-->
+          <!--<a href="javascript:void(0);" data-toggle="tooltip" data-placement="left" title="View details">-->
+            <!--<i class="fa fa-book"></i>-->
+          <!--</a>-->
+        <!--</ng-template>-->
+      <!--</div>-->
     <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<figure>-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<figcaption>$250 - U$S 350</figcaption>-->
-    <!--</figure>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1250069823_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/152479628X_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <!--<div class="col-lg-3 col-md-4 col-xs-6">-->
-    <!--<a href="#" class="d-block mb-4 h-100 img-text">-->
-    <!--<img class="img-fluid img-thumbnail" src="assets/images/books/1538761572_w.jpg" alt="">-->
-    <!--<p>$250 - U$S 350</p>-->
-    <!--</a>-->
-    <!--</div>-->
-    <ngb-pagination class="my-pagination"
-                    [collectionSize]="70" [(page)]="page" aria-label="Default pagination"></ngb-pagination>
-  </div>
-</section>
+  <!--</div>-->
+<!--</section>-->
+<!--<ngb-pagination class="d-flex justify-content-center"-->
+                <!--[collectionSize]="totalItems"-->
+                <!--[(page)]="page"-->
+                <!--[pageSize]="itemsPerPage"-->
+                <!--[maxSize]="5"-->
+                <!--[rotate]="true"-->
+                <!--[boundaryLinks]="true"-->
+                <!--(pageChange)="getBooks(null)"></ngb-pagination>-->
+Not yet!
