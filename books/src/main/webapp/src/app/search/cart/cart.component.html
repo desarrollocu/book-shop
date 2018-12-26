@@ -1,0 +1,67 @@
+<section class="mag-posts-area d-flex flex-wrap">
+  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
+    <button [translate]="'shopping.backBooks'" routerLink="/search-book"
+            class="btn btn-primary button-size">Back to shopping books
+    </button>
+    <button [translate]="'shopping.backMagazines'" routerLink="/search-magazine"
+            class="btn btn-primary button-size table-button-search">Back to shopping magazines
+    </button>
+    <p style="padding-top: 20px" [translate]="'general.emptyCart'"
+       *ngIf="elementList.length === 0 && load"></p>
+    <div style="padding-top: 20px" class="table-responsive" *ngIf="elementList.length > 0">
+      <table class="table">
+        <thead class="thead-light">
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" [translate]="'book.title'">Title</th>
+          <th scope="col" [translate]="'shopping.cant'">Cant</th>
+          <th scope="col" [translate]="'shopping.price'">Price</th>
+          <th scope="col" [translate]="'shopping.total'">Total</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let element of elementList; trackBy: trackIdentity">
+          <td>
+            <img *ngIf="element.image" src="{{element.image}}" height="190px" width="125px">
+            <img *ngIf="!element.image" src="assets/images/img.jpg" height="190px" width="125px">
+          </td>
+          <td style="padding-top: 13%"><strong>{{element.title}}</strong></td>
+          <td style="padding-top: 12%"><input style="width: 75px"
+                                              class="form-control"
+                                              type="number"
+                                              min="1"
+                                              (change)="sumTotal(element)"
+                                              [(ngModel)]="element.cant"></td>
+          <td style="padding-top: 13%"><strong>{{element.coin + element.salePrice}}</strong></td>
+          <td style="padding-top: 12.5%; font-size: 20px">
+            <strong>
+              {{element.coin + (element.salePrice * element.cant)}}
+            </strong>
+          </td>
+          <td style="padding-top: 12%">
+            <button class="btn btn-danger table-button-delete"
+                    (click)="removeProduct(element)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="elementList.length > 0">
+          <td></td>
+          <td></td>
+          <td style="font-size: 20px" colspan="2"><strong [translate]="'shopping.totalAmount'">Total amount</strong>
+          </td>
+          <td style="font-size: 22px">
+            <strong>${{total}}</strong>
+          </td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button *ngIf="elementList.length > 0" style="height: 70px;width: 155px;"
+            [translate]="'shopping.buy'"
+            class="btn btn-dark button-size">Buy
+    </button>
+  </div>
+</section>

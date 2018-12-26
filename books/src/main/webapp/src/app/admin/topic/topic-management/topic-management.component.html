@@ -1,0 +1,56 @@
+<div class="modal-header modal-title">
+  <h5 class="modal-sm" [translate]="'topic.add'">Add topic</h5>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="form" role="form" #topicManagementForm="ngForm" (ngSubmit)="saveTopic()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="englishName" [translate]="'topic.englishName'">englishName</label>
+            <input type="text"
+                   [(ngModel)]="topic.englishName"
+                   class="form-control"
+                   id="englishName"
+                   name="englishName"
+                   placeholder="{{'topic.name' | translate}}"
+                   #englishName="ngModel"
+                   required
+                   maxlength="50">
+            <div *ngIf="englishName.invalid && (englishName.dirty || englishName.touched)"
+                 class="error-msg">
+              <div *ngIf="englishName.errors.required" [translate]="'error.required.englishName'">
+                englishName is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="spanishName" [translate]="'topic.spanishName'">spanishName</label>
+            <input type="text"
+                   [(ngModel)]="topic.spanishName"
+                   class="form-control"
+                   id="spanishName"
+                   name="spanishName"
+                   placeholder="{{'topic.name' | translate}}"
+                   #spanishName="ngModel"
+                   required
+                   maxlength="50">
+            <div *ngIf="spanishName.invalid && (spanishName.dirty || spanishName.touched)"
+                 class="error-msg">
+              <div *ngIf="spanishName.errors.required" [translate]="'error.required.spanishName'">
+                spanishName is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!topicManagementForm.valid"
+                [translate]="'general.save'"> Save
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
