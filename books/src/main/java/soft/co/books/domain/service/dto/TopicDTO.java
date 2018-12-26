@@ -1,6 +1,7 @@
 package soft.co.books.domain.service.dto;
 
 import soft.co.books.configuration.Constants;
+import soft.co.books.configuration.security.other.SecurityUtils;
 import soft.co.books.domain.collection.Topic;
 
 import javax.validation.constraints.NotNull;
@@ -16,6 +17,12 @@ public class TopicDTO {
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
+    private String englishName;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String spanishName;
+
     private String name;
 
     private String createdBy;
@@ -32,7 +39,8 @@ public class TopicDTO {
 
     public TopicDTO(Topic topic) {
         this.id = topic.getId();
-        this.name = topic.getName();
+        this.spanishName = topic.getSpanishName();
+        this.englishName = topic.getEnglishName();
         this.createdBy = topic.getCreatedBy();
         this.createdDate = topic.getCreatedDate();
         this.lastModifiedBy = topic.getLastModifiedBy();
@@ -47,12 +55,20 @@ public class TopicDTO {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getEnglishName() {
+        return englishName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
+    }
+
+    public String getSpanishName() {
+        return spanishName;
+    }
+
+    public void setSpanishName(String spanishName) {
+        this.spanishName = spanishName;
     }
 
     public String getCreatedBy() {
@@ -87,10 +103,19 @@ public class TopicDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "TopicDTO{" +
-                "name='" + name + '\'' +
+                "spanishName='" + spanishName + '\'' +
+                "englishName='" + englishName + '\'' +
                 '}';
     }
 }

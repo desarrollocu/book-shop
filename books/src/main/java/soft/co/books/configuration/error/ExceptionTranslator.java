@@ -26,8 +26,7 @@ public class ExceptionTranslator {
             ((MethodArgumentNotValidException) ex).getBindingResult().getFieldErrors().stream()
                     .forEach(fieldError -> fields.add(fieldError.getDefaultMessage()));
             errorDTO.setFields(new ArrayList<>(fields));
-        }
-        else if (ex instanceof DuplicateKeyException) {
+        } else if (ex instanceof DuplicateKeyException) {
             if (ex.getCause() instanceof MongoWriteException) {
                 if (((MongoWriteException) ex.getCause()).getCode() == 11000) {
                     errorDTO.setError("error.duplicate");
@@ -38,6 +37,8 @@ public class ExceptionTranslator {
                     errorDTO.setFields(values);
                 }
             }
+        } else if (ex instanceof CustomizeException) {
+            errorDTO.setError(ex.getMessage());
         } else {
             errorDTO.setError("error.general");
         }

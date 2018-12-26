@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.repository.MagazineRepository;
@@ -20,9 +21,10 @@ import java.util.stream.Collectors;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
- * Service class for managing topics.
+ * Service class for managing magazines.
  */
 @Service
+@Transactional
 public class MagazineService extends CustomBaseService<Magazine, String> {
 
     private final Logger log = LoggerFactory.getLogger(MagazineService.class);
@@ -54,7 +56,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         query.with(pageable.getSort());
 
         if (magazineDTO.getTitle() != null && !magazineDTO.getTitle().isEmpty())
-            query.addCriteria(where("title").regex(magazineDTO.getTitle()));
+            query.addCriteria(where("title").regex(magazineDTO.getTitle(), "i"));
         if (magazineDTO.getEditor() != null)
             query.addCriteria(where("editor.id").is(magazineDTO.getEditor().getId()));
         if (magazineDTO.getTopic() != null)

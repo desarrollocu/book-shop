@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.domain.collection.Author;
 import soft.co.books.domain.collection.Book;
@@ -28,6 +29,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * Service class for managing books.
  */
 @Service
+@Transactional
 public class BookService extends CustomBaseService<Book, String> {
 
     private final Logger log = LoggerFactory.getLogger(BookService.class);
@@ -67,9 +69,9 @@ public class BookService extends CustomBaseService<Book, String> {
         query.with(pageable.getSort());
 
         if (bookDTO.getTitle() != null && !bookDTO.getTitle().isEmpty())
-            query.addCriteria(where("title").regex(bookDTO.getTitle()));
+            query.addCriteria(where("title").regex(bookDTO.getTitle(), "i"));
         if (bookDTO.getSubTitle() != null && !bookDTO.getSubTitle().isEmpty())
-            query.addCriteria(where("subTitle").regex(bookDTO.getSubTitle()));
+            query.addCriteria(where("subTitle").regex(bookDTO.getSubTitle(), "i"));
         if (bookDTO.getEditor() != null)
             query.addCriteria(where("editor.id").is(bookDTO.getEditor().getId()));
         if (bookDTO.getTopic() != null)
@@ -120,6 +122,7 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setSize(bookDTO.getSize());
         book.setIsbn(bookDTO.getIsbn());
         book.setSalePrice(bookDTO.getSalePrice());
+        book.setStockNumber(bookDTO.getStockNumber());
         book.setCoin(bookDTO.getCoin());
         book.setImageUrl(bookDTO.getImage());
         book.setVisit(bookDTO.getVisit());
@@ -166,6 +169,8 @@ public class BookService extends CustomBaseService<Book, String> {
                     book.setSalePrice(bookDTO.getSalePrice());
                     book.setCoin(bookDTO.getCoin());
                     book.setImageUrl(bookDTO.getImage());
+                    book.setStockNumber(bookDTO.getStockNumber());
+                    book.setVisit(bookDTO.getVisit());
 
                     if (bookDTO.getDescriptors() != null) {
                         if (bookDTO.getDescriptors() != "") {
@@ -173,8 +178,6 @@ public class BookService extends CustomBaseService<Book, String> {
                             book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
                         }
                     }
-
-                    book.setVisit(bookDTO.getVisit());
 
                     bookRepository.save(book);
                     log.debug("Changed Information for Book: {}", book);

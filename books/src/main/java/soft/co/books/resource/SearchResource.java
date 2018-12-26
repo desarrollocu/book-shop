@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import soft.co.books.domain.service.SearchService;
 import soft.co.books.domain.service.dto.BookDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
+import soft.co.books.domain.service.dto.SearchDTO;
 
 @RestController
 @RequestMapping("/api")
@@ -21,8 +22,13 @@ public class SearchResource {
         this.searchService = searchService;
     }
 
-    @PostMapping("/generalSearch")
-    public PageResultDTO<BookDTO> generalSearch(@RequestBody BookDTO bookDTO, Pageable pageable) {
-        return searchService.generalSearch(bookDTO, pageable);
+    @PostMapping("/searchBook")
+    public PageResultDTO<BookDTO> searchBook(@RequestBody SearchDTO searchDTO, Pageable pageable) {
+        return searchService.bookSearch(searchDTO, pageable);
+    }
+
+    @PostMapping("/searchMagazine")
+    public PageResultDTO<BookDTO> searchMagazine(@RequestBody SearchDTO searchDTO, Pageable pageable) {
+        return searchService.magazineSearch(searchDTO, pageable);
     }
 }

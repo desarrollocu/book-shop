@@ -69,6 +69,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String password;
 
     @DBRef
+    private Country country;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String state;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String city;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String cp;
+
+    private int phone;
+
+    @DBRef
     private Set<Authority> authorities = new HashSet<>();
 
     private boolean activated = false;
@@ -174,6 +188,46 @@ public class User extends AbstractAuditingEntity implements Serializable {
                 ", address=" + address +
                 ", version=" + version +
                 '}';
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCp() {
+        return cp;
+    }
+
+    public void setCp(String cp) {
+        this.cp = cp;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
     }
 
     @Override

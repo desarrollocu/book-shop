@@ -10,8 +10,7 @@ import {Editor} from '../model/editor';
 
 @Component({
   selector: 'app-editor-list',
-  templateUrl: './editor-list.component.html',
-  styleUrls: ['./editor-list.component.css']
+  templateUrl: './editor-list.component.html'
 })
 export class EditorListComponent implements OnInit {
   page: number;
@@ -21,7 +20,7 @@ export class EditorListComponent implements OnInit {
   editorList: Editor[];
   predicate: any;
   reverse: any;
-  deleteEditorId: string;
+  remEditor: Editor;
 
   constructor(private editorService: EditorService,
               private alertService: AlertService,
@@ -74,14 +73,14 @@ export class EditorListComponent implements OnInit {
   }
 
   removeEditor() {
-    this.editorService.deleteEditor(this.deleteEditorId)
+    this.editorService.deleteEditor(this.remEditor.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
   }
 
-  open(deleteEditor, editorId) {
-    this.deleteEditorId = editorId;
+  openDialog(deleteEditor, editor) {
+    this.remEditor = editor;
     this.modalService.open(deleteEditor);
   }
 

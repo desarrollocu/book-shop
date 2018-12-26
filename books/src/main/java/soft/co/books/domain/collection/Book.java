@@ -135,6 +135,7 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
                 ", editionYear='" + editionYear + '\'' +
                 ", pages=" + pages +
                 ", classification=" + classification +
+                ", stockNumber=" + getStockNumber() +
                 ", size='" + size + '\'' +
                 ", isbn='" + getIsbn() + '\'' +
                 ", topic=" + getTopic() +

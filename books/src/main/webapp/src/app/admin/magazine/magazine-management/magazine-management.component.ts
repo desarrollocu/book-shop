@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {MagazineService} from '../magazine.service';
 import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
@@ -15,7 +15,7 @@ import {Magazine} from '../model/magazine';
 @Component({
   selector: 'app-magazine-management',
   templateUrl: './magazine-management.component.html',
-  styleUrls: ['./magazine-management.component.css']
+  styleUrls: ['./magazine-management.component.scss']
 })
 export class MagazineManagementComponent implements OnInit {
   @Input() magazine;
@@ -23,6 +23,7 @@ export class MagazineManagementComponent implements OnInit {
   editors: Editor[];
   coinList: string[];
   years: string[];
+  currentLang: string;
 
   imagePath;
   message: string;
@@ -35,6 +36,7 @@ export class MagazineManagementComponent implements OnInit {
               private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
     this.coinList = ['$', 'U$S'];
+    this.currentLang = this.translateService.currentLang;
     this.years = [];
     for (let i = 1800; i < 2100; i++) {
       this.years.push(String(i));
@@ -45,6 +47,11 @@ export class MagazineManagementComponent implements OnInit {
     this.findMagazine();
     this.findTopics();
     this.findEditors();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.topicLanguage();
+    });
   }
 
   findMagazine() {
@@ -73,8 +80,20 @@ export class MagazineManagementComponent implements OnInit {
 
   private onTopicsSuccess(response) {
     this.topics = [];
-    if (response)
+    if (response) {
       this.topics = response;
+      this.topicLanguage();
+    }
+  }
+
+  private topicLanguage() {
+    let temp = this.topics;
+    this.topics = [];
+    if (temp) {
+      for (let i in temp) {
+        this.topics = [...this.topics, temp[i]];
+      }
+    }
   }
 
   private onEditorsSuccess(response) {

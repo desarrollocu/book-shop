@@ -2,9 +2,7 @@ package soft.co.books.domain.collection;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import soft.co.books.configuration.Constants;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -18,10 +16,6 @@ public class Magazine extends soft.co.books.domain.collection.Document implement
 
     @Field("publish_year")
     private String publishYear;
-
-    @Field("stock_number")
-    @NotNull(message = Constants.ERR_NOT_NULL)
-    private int stockNumber;
 
     public Magazine() {
     }
@@ -40,14 +34,6 @@ public class Magazine extends soft.co.books.domain.collection.Document implement
 
     public void setPublishYear(String publishYear) {
         this.publishYear = publishYear;
-    }
-
-    public int getStockNumber() {
-        return stockNumber;
-    }
-
-    public void setStockNumber(int stockNumber) {
-        this.stockNumber = stockNumber;
     }
 
     @Override
@@ -72,7 +58,7 @@ public class Magazine extends soft.co.books.domain.collection.Document implement
                 ", editor=" + getEditor() +
                 ", publishYear='" + publishYear + '\'' +
                 ", frequency='" + frequency + '\'' +
-                ", stockNumber='" + stockNumber + '\'' +
+                ", stockNumber='" + getStockNumber() + '\'' +
                 ", isbn='" + getIsbn() + '\'' +
                 ", topic=" + getTopic() +
                 ", salePrice=" + getSalePrice() +

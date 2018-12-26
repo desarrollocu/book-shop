@@ -50,6 +50,11 @@ public class UserResource {
             return userService.updateUser(userDTO).get();
     }
 
+    @PostMapping("/updateAccount")
+    public UserDTO updateAccount(@Valid @RequestBody UserDTO userDTO) {
+        return userService.updateUser(userDTO).get();
+    }
+
     @DeleteMapping("/deleteUser/{userId}")
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER_MANAGEMENT + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable String userId) {

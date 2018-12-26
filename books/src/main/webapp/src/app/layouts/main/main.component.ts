@@ -3,13 +3,14 @@ import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 import {TranslateService} from '@ngx-translate/core';
 import {NgSelectConfig} from '@ng-select/ng-select';
+import 'rxjs/add/operator/filter'
 
 import {StateStorageService} from '../../core/auth/state-storage.service';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
   sidebarOpen = false;

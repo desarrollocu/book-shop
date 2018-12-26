@@ -4,25 +4,32 @@
     "edit": " Editar",
     "delete": " Eliminar",
     "empty": "No hay elementos",
+    "emptyBook": "No se encontraron libros",
+    "emptyMagazine": "No se encontraron revistas",
+    "emptyCart": "No se encontraron productos en el carrito. Por favor, Adicione productos.",
     "select": "Seleccione",
     "save": " Salvar",
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "sureMessage": "¿Está seguro?",
+    "sureMessage1":" va a ser eliminado(a)",
     "image": {
       "error": "Solo seleccione imágenes.",
       "errorSize": "El tamaño debe ser menor de 500KB.",
       "text": "El tamaño de la imagen debe ser menor de 500KB. Cuando elija una imagen podrá ver como se visualizará la misma en las vistas del usuario básico."
-    }
+    },
+    "addCar": " Adicionar al carrito",
+    "close": " Cerrar"
   },
   "login": {
     "username": "Usuario",
     "password": "Contraseña",
-    "signIn": "Autenticarse",
+    "signIn": "Iniciar sesión",
     "logout": "Desloguearse",
     "error": "La autenticación a fallado!",
     "errorMore": "Por favor verifique sus credenciales y vuelva a intentarlo.",
-    "register": "Registrarse"
+    "register": "Registrarse",
+    "info": "Información de la cuenta"
   },
   "navBar": {
     "contact": "Contáctenos"
@@ -40,7 +47,8 @@
     "topic": "Temática",
     "country": "País",
     "publisher": "Editorial",
-    "magazine": "Revista"
+    "magazine": "Revista",
+    "car": "Carrito de compras"
   },
   "search": {
     "title": "Título",
@@ -54,6 +62,8 @@
     "email": "Correo",
     "account": " Cuenta",
     "admin": "Administrador",
+    "cp": "Código postal",
+    "phone": "Teléfono",
     "language": "Idioma",
     "password": "Contraseña",
     "passwordTwo": "Repita la contraseña",
@@ -87,7 +97,10 @@
     "edition": "Edición",
     "classification": "Clasificación",
     "descriptors": "Descriptores (Ejemplo: historia,todo,día)",
-    "descriptorsPlaceHolder": "palabra,palabra,palabra"
+    "descriptorsPlaceHolder": "palabra,palabra,palabra",
+    "descriptor": "Descriptor",
+    "descriptorPlaceHolder": "Palabra",
+    "detail": "Detalles del libro"
   },
   "magazine": {
     "add": " Adicionar revista",
@@ -102,11 +115,14 @@
     "isbn": "ISBN",
     "salePrice": "Precio de venta",
     "price": "Precio",
-    "coin": "Moneda"
+    "coin": "Moneda",
+    "detail": "Detalles de la revista"
   },
   "author": {
     "add": " Adicionar autor",
     "city": "Ciudad",
+    "country": "País",
+    "state": "Estado",
     "delete": "Eliminar autor",
     "bornDate": "Fecha nacimiento",
     "deathDate": "Fecha muerte"
@@ -115,10 +131,14 @@
     "name": "Nombre",
     "add": " Adicionar editor",
     "city": "Ciudad",
+    "country": "País",
+    "state": "Estado",
     "delete": "Eliminar editor"
   },
   "topic": {
     "name": "Nombre",
+    "englishName": "Nombre en ingles",
+    "spanishName": "Nombre en español",
     "add": " Add temática",
     "delete": "Delete temática"
   },
@@ -126,7 +146,18 @@
     "used": "Antiguos y usados",
     "new": "Nuevos"
   },
+  "shopping": {
+    "cant": "Cantidad",
+    "total": "Total",
+    "buy": "Comprar",
+    "price": "Precio",
+    "success": "Elemento adicionado al carrito.",
+    "backBooks": "Volver a comprar libros",
+    "backMagazines": "Volver a comprar revistas",
+    "totalAmount": "Monto total"
+  },
   "error": {
+    "title": "Error",
     "duplicate": "El elemento ya existe.",
     "badRequest": "Petición incorrecta.",
     "general": "Error en el servidor! Contacte con el administrador.",
@@ -153,7 +184,10 @@
       "coin": "El campo moneda es requerido.",
       "salePrice": "El precio de venta es requerido.",
       "topic": "La temática es requerida.",
-      "stockNumber": "El campo números disponibles es requerido."
+      "stockNumber": "El campo números disponibles es requerido.",
+      "spanishName": "El campo nombre en español es requerido.",
+      "englishName": "El campo nombre en ingles es requerido.",
+      "country": "El país es requerido."
     },
     "minLength": {
       "email": "Mínimo 5 caracteres.",
@@ -163,6 +197,7 @@
       "email": "Máximo 254 caracteres."
     },
     "E50": "Máximo 50 caracteres.",
+    "E60": "Máximo 100 caracteres.",
     "E51": "Mínimo 1 y máximo 50 caracteres.",
     "E52": "Nombre de usuario inválido.",
     "E53": "Mínimo 5 y máximo 254 caracteres.",
@@ -171,9 +206,15 @@
     "E56": "Hay elementos que no pueden ser vacíos.",
     "E57": "Mínimo 1000 caracteres.",
     "E58": "Mínimo 1 y máximo 150 caracteres.",
-    "E59": "Contraseña incorrecta."
+    "E59": "Contraseña incorrecta.",
+    "E61": "El elemento esta asociado a un documento.",
+    "E62": "No puede eliminar su propio usuario."
+  },
+  "info": {
+    "title": "Información"
   },
   "success": {
+    "title": "Satisfactorio",
     "add": "El elemento fue adicionado.",
     "remove": "El elemento fue eliminado.",
     "language": "El idioma fue cambiado.",

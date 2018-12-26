@@ -1,3 +1,5 @@
+import {Country} from "../../admin/user/model/country";
+
 export class User {
   constructor(
     public id?: any,
@@ -9,6 +11,11 @@ export class User {
     public activated?: boolean,
     public langKey?: string,
     public authorities?: any[],
+    public city?: string,
+    public state?: string,
+    public cp?: string,
+    public phone?: number,
+    public country?: Country,
     public isAdmin?: string,
     public createdBy?: string,
     public createdDate?: Date,

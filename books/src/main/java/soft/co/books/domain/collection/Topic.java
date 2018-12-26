@@ -24,7 +24,12 @@ public class Topic extends AbstractAuditingEntity implements Serializable {
     @Indexed(unique = true)
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
-    private String name;
+    private String englishName;
+
+    @Indexed(unique = true)
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String spanishName;
 
     @Version
     private Long version;
@@ -40,12 +45,20 @@ public class Topic extends AbstractAuditingEntity implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getEnglishName() {
+        return englishName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
+    }
+
+    public String getSpanishName() {
+        return spanishName;
+    }
+
+    public void setSpanishName(String spanishName) {
+        this.spanishName = spanishName;
     }
 
     @Override
@@ -65,7 +78,8 @@ public class Topic extends AbstractAuditingEntity implements Serializable {
     @Override
     public String toString() {
         return "Topic{" +
-                "name='" + name + '\'' +
+                "spanishName='" + spanishName + '\'' +
+                "englishName='" + englishName + '\'' +
                 ", version=" + version +
                 '}';
     }

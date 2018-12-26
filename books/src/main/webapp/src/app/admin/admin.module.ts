@@ -14,7 +14,7 @@ import {MagazineManagementComponent} from './magazine/magazine-management/magazi
 import {MagazineListComponent} from './magazine/magazine-list/magazine-list.component';
 import {TopicManagementComponent} from './topic/topic-management/topic-management.component';
 import {TopicListComponent} from './topic/topic-list/topic-list.component';
-import {DocsComponent} from './docs/docs.component';
+
 
 @NgModule({
   declarations: [
@@ -29,8 +29,8 @@ import {DocsComponent} from './docs/docs.component';
     MagazineManagementComponent,
     MagazineListComponent,
     TopicManagementComponent,
-    TopicListComponent,
-    DocsComponent],
+    TopicListComponent
+  ],
   imports: [
     SharedModule,
     AdminRoutingModule

@@ -10,7 +10,7 @@ import {Value} from '../model/value';
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.modal.component.html',
-  styleUrls: ['./user-management.modal.component.css']
+  styleUrls: ['./user-management.modal.component.scss']
 })
 export class UserManagementModalComponent implements OnInit {
   @Input() user;

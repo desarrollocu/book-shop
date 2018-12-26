@@ -1,7 +1,4 @@
 <section class="mag-posts-area d-flex flex-wrap">
-  <div class="col-md-12" style="margin-top: 10px">
-    <app-alert></app-alert>
-  </div>
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
     <form #editorSearchForm="ngForm" (submit)="getEditors('btn')">
       <div class="form-row">
@@ -52,13 +49,10 @@
         <td>{{editor.city}}</td>
         <td>
           <button class="btn btn-primary table-button"
-                  (click)="editEditor(editor)"
-                  [translate]="'general.edit'"><i class="fa fa-edit"></i> Edit
+                  (click)="editEditor(editor)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
-                  (click)="open(deleteEditor, editor.id)"
-                  [translate]="'general.delete'"><i class="fa fa-trash"></i>
-            Delete
+                  (click)="openDialog(deleteEditor, editor)"><i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -81,7 +75,8 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-12">
+        <h5><strong>{{remEditor.name}}</strong> <span [translate]="'general.sureMessage1'"></span></h5>
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">

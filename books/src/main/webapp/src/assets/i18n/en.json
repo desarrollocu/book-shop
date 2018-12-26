@@ -4,16 +4,22 @@
     "edit": " Edit",
     "delete": " Delete",
     "empty": "Elements not found",
+    "emptyBook": "No Books Found",
+    "emptyMagazine": "No Magazines Found",
+    "emptyCart": "No Products Found in Cart. Please, Add product to Cart.",
     "select": "Select",
     "save": " Save",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "sureMessage": "Are you sure?",
+    "sureMessage1": " are going to be removed",
     "image": {
-      "error":"Only images are supported.",
-      "errorSize":"The size most be lest than 500KB.",
+      "error": "Only images are supported.",
+      "errorSize": "The size most be lest than 500KB.",
       "text": "The image size most be lest than 500KB. When you choose an image you can see how will be visualice in the basic user view."
-    }
+    },
+    "addCar": " Add to cart",
+    "close": " Close"
   },
   "login": {
     "username": "Username",
@@ -22,7 +28,8 @@
     "logout": "Sign out",
     "error": "Failed to sign in!",
     "errorMore": "Please check your credentials and try again.",
-    "register": "Register"
+    "register": "Register",
+    "info": "Account info"
   },
   "navBar": {
     "contact": "Contact"
@@ -40,7 +47,8 @@
     "topic": "Topic",
     "country": "Country",
     "publisher": "Publisher",
-    "magazine": "Magazine"
+    "magazine": "Magazine",
+    "car": "Cart"
   },
   "search": {
     "title": "Title",
@@ -54,6 +62,8 @@
     "email": "Email",
     "account": " Account",
     "admin": "Administrator",
+    "cp": "Postal code",
+    "phone": "Phone",
     "language": "Language",
     "password": "Password",
     "passwordTwo": "Confirm password",
@@ -87,7 +97,10 @@
     "edition": "Edition",
     "classification": "Classification",
     "descriptors": "Descriptors (Example: history,all,day)",
-    "descriptorsPlaceHolder": "word,word,word"
+    "descriptorsPlaceHolder": "word,word,word",
+    "descriptor": "Descriptor",
+    "descriptorPlaceHolder": "Word",
+    "detail": "Book details"
   },
   "magazine": {
     "add": " Add magazine",
@@ -102,11 +115,14 @@
     "isbn": "ISBN",
     "salePrice": "Sale price",
     "price": "Price",
-    "coin": "Coin"
+    "coin": "Coin",
+    "detail": "Magazine details"
   },
   "author": {
     "add": " Add author",
     "city": "City",
+    "country": "Country",
+    "state": "State",
     "delete": "Delete author",
     "bornDate": "Born date",
     "deathDate": "Death date"
@@ -119,6 +135,8 @@
   },
   "topic": {
     "name": "Name",
+    "englishName": "Name in english",
+    "spanishName": "Name in spanish",
     "add": " Add topic",
     "delete": "Delete topic"
   },
@@ -126,7 +144,18 @@
     "used": "Old and used",
     "new": "New"
   },
+  "shopping": {
+    "cant": "Cant",
+    "total": "Total",
+    "buy": "Checkout",
+    "price": "Price",
+    "success": "Element added to the cart.",
+    "backBooks": "Back to shopping books",
+    "backMagazines": "Back to shopping magazines",
+    "totalAmount": "Total amount"
+  },
   "error": {
+    "title": "Error",
     "duplicate": "Element exist.",
     "badRequest": "Bad request.",
     "general": "Server error! Contact with the administrator.",
@@ -153,7 +182,10 @@
       "coin": "Coin is required.",
       "salePrice": "Sale price is required.",
       "topic": "Topic is required.",
-      "stockNumber": "Stock is required."
+      "stockNumber": "Stock is required.",
+      "spanishName": "Spanish name is required.",
+      "englishName": "English name is required.",
+      "country": "Country is required."
     },
     "minLength": {
       "email": "Min 5 characters.",
@@ -163,6 +195,7 @@
       "email": "Max 254 characters."
     },
     "E50": "Max 50 characters.",
+    "E60": "Max 100 characters.",
     "E51": "Min 1 and max 50 characters.",
     "E52": "Username invalid.",
     "E53": "Min 5 and max 254 characters.",
@@ -171,9 +204,16 @@
     "E56": "Cant not by elements empty.",
     "E57": "Max 1000 characters.",
     "E58": "Min 1 and max 150 characters.",
-    "E59": "Incorrect password."
+    "E59": "Incorrect password.",
+    "E61": "Element its related with a document.",
+    "E62": "You cant remove yourself."
+  },
+  "info": {
+    "title": "Info"
   },
   "success": {
+    "title": "Success",
+    "addCar": "",
     "add": "The element was added.",
     "remove": "The element was removed.",
     "language": "Language was changed.",

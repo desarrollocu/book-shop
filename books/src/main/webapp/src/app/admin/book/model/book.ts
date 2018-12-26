@@ -15,13 +15,15 @@ export class Book {
     public topic?: any,
     public salePrice?: number,
     public coin?: string,
+    public stockNumber?: number,
     public image?: string,
     public descriptorList?: any[],
     public visit?: number,
     public createdBy?: string,
     public createdDate?: string,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: string,
+    public lastModifiedDate?: string
   ) {
+    this.stockNumber = 0;
   }
 }

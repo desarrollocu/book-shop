@@ -2,6 +2,7 @@ package soft.co.books.domain.collection;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
@@ -30,17 +31,24 @@ public class Author extends AbstractAuditingEntity implements Serializable {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
+    @Field("full_name")
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String fullName;
+
     @Field("born_date")
     private String bornDate;
 
     @Field("death_date")
     private String deathDate;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
-    private String city;
+    @DBRef
+    private Country country;
 
-//    @DBRef
-//    private Country country;
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String state;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String city;
 
     @Version
     private Long version;
@@ -96,13 +104,29 @@ public class Author extends AbstractAuditingEntity implements Serializable {
         this.city = city;
     }
 
-//    public Country getCountry() {
-//        return country;
-//    }
-//
-//    public void setCountry(Country country) {
-//        this.country = country;
-//    }
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     @Override
     public boolean equals(Object o) {

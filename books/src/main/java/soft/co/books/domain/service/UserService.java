@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
@@ -29,6 +30,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * Service class for managing users.
  */
 @Service
+@Transactional
 public class UserService extends CustomBaseService<User, String> {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -39,12 +41,17 @@ public class UserService extends CustomBaseService<User, String> {
 
     private final AuthorityService authorityService;
 
+    private final CountryService countryService;
+
     private MongoTemplate mongoTemplate;
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
-                       AuthorityService authorityService, MongoTemplate mongoTemplate) {
+                       AuthorityService authorityService,
+                       MongoTemplate mongoTemplate,
+                       CountryService countryService) {
         super(userRepository);
         this.userRepository = userRepository;
+        this.countryService = countryService;
         this.passwordEncoder = passwordEncoder;
         this.authorityService = authorityService;
         this.mongoTemplate = mongoTemplate;
@@ -59,13 +66,13 @@ public class UserService extends CustomBaseService<User, String> {
         query.with(pageable.getSort());
 
         if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty())
-            query.addCriteria(where("firstName").regex(userDTO.getFirstName()));
+            query.addCriteria(where("firstName").regex(userDTO.getFirstName(), "i"));
         if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty())
-            query.addCriteria(where("lastName").regex(userDTO.getLastName()));
+            query.addCriteria(where("lastName").regex(userDTO.getLastName(), "i"));
         if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty())
-            query.addCriteria(where("userName").regex(userDTO.getUserName().toLowerCase()));
+            query.addCriteria(where("userName").regex(userDTO.getUserName().toLowerCase(), "i"));
         if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty())
-            query.addCriteria(where("email").regex(userDTO.getEmail()));
+            query.addCriteria(where("email").regex(userDTO.getEmail(), "i"));
 
         Page<User> users = new PageImpl<>(mongoTemplate.find(query, User.class));
         resultDTO.setElements(users.stream().map(UserDTO::new).collect(Collectors.toList()));
@@ -106,6 +113,11 @@ public class UserService extends CustomBaseService<User, String> {
         user.setLastName(userDTO.getLastName());
         user.setUserName(userDTO.getUserName().toLowerCase());
         user.setId(userDTO.getId());
+        user.setCity(userDTO.getCity());
+        user.setCountry(countryService.findOne(userDTO.getCountry().getId()).get());
+        user.setState(userDTO.getState());
+        user.setCp(userDTO.getCp());
+        user.setPhone(userDTO.getPhone());
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
 
@@ -135,6 +147,11 @@ public class UserService extends CustomBaseService<User, String> {
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
                     user.setEmail(userDTO.getEmail());
+                    user.setCity(userDTO.getCity());
+                    user.setCountry(countryService.findOne(userDTO.getCountry().getId()).get());
+                    user.setState(userDTO.getState());
+                    user.setCp(userDTO.getCp());
+                    user.setPhone(userDTO.getPhone());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
 
@@ -160,17 +177,29 @@ public class UserService extends CustomBaseService<User, String> {
     }
 
     public void deleteUser(String login) {
-        userRepository.findOneByUserName(login).ifPresent(user -> {
-            userRepository.delete(user);
-            log.debug("Deleted User: {}", user);
-        });
+        if (SecurityUtils.getCurrentUserLogin().equals(login)) {
+            throw new CustomizeException(Constants.ERR_USER);
+        } else {
+            userRepository.findOneByUserName(login).ifPresent(user -> {
+                userRepository.delete(user);
+                log.debug("Deleted User: {}", user);
+            });
+        }
     }
 
     public void delete(String id) {
-        userRepository.findById(id).ifPresent(user -> {
-            userRepository.delete(user);
-            log.debug("Deleted User: {}", user);
-        });
+        SecurityUtils.getCurrentUserLogin()
+                .flatMap(userRepository::findOneByUserName)
+                .ifPresent(user -> {
+                    if (user.getId().equals(id)) {
+                        throw new CustomizeException(Constants.ERR_USER);
+                    } else {
+                        userRepository.findById(id).ifPresent(userById -> {
+                            userRepository.delete(userById);
+                            log.debug("Deleted User: {}", userById);
+                        });
+                    }
+                });
     }
 
     public void changePassword(String currentClearTextPassword, String newPassword) {

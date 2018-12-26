@@ -25,6 +25,10 @@ export class UserService {
     return this.http.post<User>('api/saveUser', user, {observe: 'response'});
   }
 
+  updateAccount(user: User): Observable<HttpResponse<User>> {
+    return this.http.post<User>('api/updateAccount', user, {observe: 'response'});
+  }
+
   deleteUser(userId: string): Observable<any> {
     return this.http.delete(`api/deleteUser/${userId}`, {observe: 'response'});
   }

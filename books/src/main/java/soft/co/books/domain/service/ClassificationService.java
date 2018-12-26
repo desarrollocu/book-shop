@@ -8,7 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
+import soft.co.books.configuration.error.CustomizeException;
+import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Classification;
 import soft.co.books.domain.repository.ClassificationRepository;
 import soft.co.books.domain.service.dto.ClassificationDTO;
@@ -23,6 +27,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * Service class for managing classifications.
  */
 @Service
+@Transactional
 public class ClassificationService extends CustomBaseService<Classification, String> {
 
     private final Logger log = LoggerFactory.getLogger(ClassificationService.class);
@@ -46,7 +51,7 @@ public class ClassificationService extends CustomBaseService<Classification, Str
         query.with(pageable.getSort());
 
         if (classificationDTO.getName() != null && !classificationDTO.getName().isEmpty())
-            query.addCriteria(where("name").regex(classificationDTO.getName()));
+            query.addCriteria(where("name").regex(classificationDTO.getName(), "i"));
 
         Page<Classification> classifications = new PageImpl<>(mongoTemplate.find(query, Classification.class));
         resultDTO.setElements(classifications.stream().map(ClassificationDTO::new).collect(Collectors.toList()));
@@ -85,9 +90,15 @@ public class ClassificationService extends CustomBaseService<Classification, Str
     }
 
     public void delete(String id) {
-        classificationRepository.findById(id).ifPresent(topic -> {
-            classificationRepository.delete(topic);
-            log.debug("Deleted Editor: {}", topic);
-        });
+        Query query = new Query();
+        query.addCriteria(where("classification.id").is(id));
+        if (mongoTemplate.count(query, Book.class) > 0) {
+            throw new CustomizeException(Constants.ERR_DELETE);
+        } else {
+            classificationRepository.findById(id).ifPresent(topic -> {
+                classificationRepository.delete(topic);
+                log.debug("Deleted Editor: {}", topic);
+            });
+        }
     }
 }

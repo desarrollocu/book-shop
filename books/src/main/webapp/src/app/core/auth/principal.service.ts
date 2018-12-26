@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
+import {TranslateService} from '@ngx-translate/core';
+
 import {AccountService} from './account.service';
 import {StateStorageService} from './state-storage.service';
-import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,19 @@ export class Principal {
   private userIdentity: any;
   private authenticated = false;
   private authenticationState = new Subject<any>();
+  private fullNameSubject = new Subject<string>();
 
   constructor(private account: AccountService,
               private translate: TranslateService,
               private stateStorageService: StateStorageService) {
+    this.fullNameSubject.asObservable();
   }
 
   authenticate(identity) {
     this.userIdentity = identity;
     this.authenticated = identity !== null;
     this.authenticationState.next(this.userIdentity);
+    this.fullNameSubject.next(this.userIdentity !== null ? this.userIdentity.fullName : null);
   }
 
   hasAnyAuthority(url: string): Promise<boolean> {
@@ -86,6 +90,7 @@ export class Principal {
           this.stateStorageService.resetLanguage();
         }
         this.authenticationState.next(this.userIdentity);
+        this.fullNameSubject.next(this.userIdentity !== null ? this.userIdentity.fullName : null);
         return this.userIdentity;
       })
       .catch(err => {
@@ -97,12 +102,16 @@ export class Principal {
       });
   }
 
+  getFullNameSubject() {
+    return this.fullNameSubject;
+  }
+
   isAuthenticated(): boolean {
     return this.authenticated;
   }
 
-  fullName(): string {
-    return this.isIdentityResolved() ? this.userIdentity.fullName : null;
+  fullName() {
+    return this.fullNameSubject;
   }
 
   isAdmin(): boolean {
@@ -123,6 +132,6 @@ export class Principal {
   }
 
   getImageUrl(): string {
-    return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
+    return this.isIdentityResolved() ? this.userIdentity.image : null;
   }
 }

@@ -2,6 +2,7 @@ package soft.co.books.domain.service.dto;
 
 import soft.co.books.configuration.Constants;
 import soft.co.books.domain.collection.Author;
+import soft.co.books.domain.collection.Country;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,10 +28,13 @@ public class AuthorDTO {
 
     private String deathDate;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
-    private String city;
+    private Country country;
 
-//    private String country;
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String state;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String city;
 
     private String createdBy;
 
@@ -49,7 +53,8 @@ public class AuthorDTO {
         this.firstName = author.getFirstName();
         this.lastName = author.getLastName();
         this.fullName = author.getFirstName() + " " + author.getLastName();
-//        this.country = author.getCountry().getName();
+        this.country = author.getCountry();
+        this.state = author.getState();
         this.bornDate = author.getBornDate();
         this.deathDate = author.getDeathDate();
         this.city = author.getCity();
@@ -115,13 +120,21 @@ public class AuthorDTO {
         this.city = city;
     }
 
-    //    public String getCountry() {
-//        return country;
-//    }
-//
-//    public void setCountry(String country) {
-//        this.country = country;
-//    }
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getCreatedBy() {
         return createdBy;
@@ -160,6 +173,8 @@ public class AuthorDTO {
         return "AuthorDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 '}';
     }

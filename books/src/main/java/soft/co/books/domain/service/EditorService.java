@@ -8,8 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
+import soft.co.books.configuration.error.CustomizeException;
+import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Editor;
+import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.repository.EditorRepository;
 import soft.co.books.domain.service.dto.EditorDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
@@ -23,6 +28,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
  * Service class for managing editors.
  */
 @Service
+@Transactional
 public class EditorService extends CustomBaseService<Editor, String> {
 
     private final Logger log = LoggerFactory.getLogger(EditorService.class);
@@ -46,9 +52,9 @@ public class EditorService extends CustomBaseService<Editor, String> {
         query.with(pageable.getSort());
 
         if (editorDTO.getName() != null && !editorDTO.getName().isEmpty())
-            query.addCriteria(where("name").regex(editorDTO.getName()));
+            query.addCriteria(where("name").regex(editorDTO.getName(), "i"));
         if (editorDTO.getCity() != null && !editorDTO.getCity().isEmpty())
-            query.addCriteria(where("city").regex(editorDTO.getCity()));
+            query.addCriteria(where("city").regex(editorDTO.getCity(), "i"));
 
         Page<Editor> editors = new PageImpl<>(mongoTemplate.find(query, Editor.class));
         resultDTO.setElements(editors.stream().map(EditorDTO::new).collect(Collectors.toList()));
@@ -89,9 +95,15 @@ public class EditorService extends CustomBaseService<Editor, String> {
     }
 
     public void delete(String id) {
-        editorRepository.findById(id).ifPresent(editor -> {
-            editorRepository.delete(editor);
-            log.debug("Deleted Editor: {}", editor);
-        });
+        Query query = new Query();
+        query.addCriteria(where("editor.id").is(id));
+        if (mongoTemplate.count(query, Book.class) > 0 || mongoTemplate.count(query, Magazine.class) > 0) {
+            throw new CustomizeException(Constants.ERR_DELETE);
+        } else {
+            editorRepository.findById(id).ifPresent(editor -> {
+                editorRepository.delete(editor);
+                log.debug("Deleted Editor: {}", editor);
+            });
+        }
     }
 }

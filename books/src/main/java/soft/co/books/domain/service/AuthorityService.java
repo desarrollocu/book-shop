@@ -3,6 +3,7 @@ package soft.co.books.domain.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.domain.collection.Authority;
 import soft.co.books.domain.repository.AuthorityRepository;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
  * Service class for managing authorities.
  */
 @Service
+@Transactional
 public class AuthorityService extends CustomBaseService<Authority, String> {
 
     private final Logger log = LoggerFactory.getLogger(AuthorityService.class);

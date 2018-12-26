@@ -53,6 +53,9 @@ public class BookDTO {
     @NotNull(message = Constants.ERR_NOT_NULL)
     private String coin;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private int stockNumber = 0;
+
     private String image;
 
     private String descriptors;
@@ -86,6 +89,7 @@ public class BookDTO {
         this.topic = book.getTopicOrNull().map(TopicDTO::new).orElse(null);
         this.salePrice = book.getSalePrice();
         this.coin = book.getCoin();
+        this.stockNumber = book.getStockNumber();
         this.image = book.getImageUrl();
 
         for (int i = 0; i < book.getDescriptorList().size(); i++) {
@@ -236,6 +240,14 @@ public class BookDTO {
 
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public int getStockNumber() {
+        return stockNumber;
+    }
+
+    public void setStockNumber(int stockNumber) {
+        this.stockNumber = stockNumber;
     }
 
     public List<AuthorDTO> getAuthorList() {

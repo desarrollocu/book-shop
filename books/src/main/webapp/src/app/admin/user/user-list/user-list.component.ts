@@ -11,7 +11,7 @@ import {User} from '../../../core/user/user.model';
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
   page: number;
@@ -21,7 +21,7 @@ export class UserListComponent implements OnInit {
   userList: User[];
   predicate: any;
   reverse: any;
-  deleteUserId: string;
+  remUser: User;
 
   constructor(private userService: UserService,
               private alertService: AlertService,
@@ -74,14 +74,14 @@ export class UserListComponent implements OnInit {
   }
 
   removeUser() {
-    this.userService.deleteUser(this.deleteUserId)
+    this.userService.deleteUser(this.remUser.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
   }
 
-  open(deleteUser, userId) {
-    this.deleteUserId = userId;
+  openDialog(deleteUser, user) {
+    this.remUser = user;
     this.modalService.open(deleteUser);
   }
 

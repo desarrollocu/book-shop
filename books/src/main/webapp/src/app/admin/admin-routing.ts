@@ -13,7 +13,7 @@ import {MagazineManagementComponent} from './magazine/magazine-management/magazi
 import {MagazineListComponent} from './magazine/magazine-list/magazine-list.component';
 import {TopicListComponent} from './topic/topic-list/topic-list.component';
 import {TopicManagementComponent} from './topic/topic-management/topic-management.component';
-import {DocsComponent} from './docs/docs.component';
+
 
 const routes: Routes = [
   {path: "login", component: LoginModalComponent},
@@ -114,13 +114,6 @@ const routes: Routes = [
       pageTitle: 'Topic-Management',
     },
     canActivate: [RouteAccessService]
-  },
-  {
-    path: 'docs',
-    component: DocsComponent,
-    data: {
-      pageTitle: 'API'
-    }
   }
 ];
 

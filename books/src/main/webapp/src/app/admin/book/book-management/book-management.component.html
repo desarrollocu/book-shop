@@ -82,7 +82,7 @@
             <ng-select [items]="topics"
                        id="topic"
                        name="topic"
-                       bindLabel="name"
+                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                        [virtualScroll]="true"
                        placeholder="{{'book.topic' | translate}}"
                        [(ngModel)]="book.topic"
@@ -146,6 +146,7 @@
                    class="form-control"
                    id="pages"
                    name="pages"
+                   min="0"
                    placeholder="{{'book.pages' | translate}}"
                    #pages="ngModel"
                    maxlength="50">
@@ -181,6 +182,7 @@
                    class="form-control"
                    id="salePrice"
                    name="salePrice"
+                   min="0"
                    placeholder="{{'book.price' | translate}}"
                    #salePrice="ngModel"
                    maxlength="50"
@@ -211,7 +213,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-12">
+          <div class="form-group col-md-8">
             <label for="descriptors" [translate]="'book.descriptors'">Descriptors</label>
             <input type="text"
                    [(ngModel)]="book.descriptors"
@@ -226,6 +228,25 @@
                  class="error-msg">
               <div *ngIf="descriptors.errors.pattern" [translate]="'error.pattern.descriptors'">
                 Descriptors are required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="stockNumber" [translate]="'magazine.stockNumber'">Stock</label>
+            <input type="number"
+                   [(ngModel)]="book.stockNumber"
+                   class="form-control"
+                   id="stockNumber"
+                   name="stockNumber"
+                   min="0"
+                   placeholder="{{'magazine.stockNumber' | translate}}"
+                   #stockNumber="ngModel"
+                   maxlength="50"
+                   required>
+            <div *ngIf="stockNumber.invalid && (stockNumber.dirty || stockNumber.touched)"
+                 class="error-msg">
+              <div *ngIf="stockNumber.errors.required" [translate]="'error.required.stockNumber'">
+                Stock is required.
               </div>
             </div>
           </div>
@@ -271,10 +292,6 @@
                 [translate]="'general.cancel'"> Cancel
         </button>
       </form>
-    </div>
-
-    <div class="col-md-10" style="margin-top: 10px">
-      <app-alert-dialog></app-alert-dialog>
     </div>
   </div>
 </div>

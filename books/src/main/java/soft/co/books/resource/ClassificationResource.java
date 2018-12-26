@@ -25,7 +25,6 @@ public class ClassificationResource {
     }
 
     @PostMapping("/allClassification")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_MANAGEMENT + "\")")
     public List<ClassificationDTO> allClassification() {
         return classificationService.findAll().stream().map(ClassificationDTO::new).collect(Collectors.toList());
     }

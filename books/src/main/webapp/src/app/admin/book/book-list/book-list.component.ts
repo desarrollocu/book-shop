@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpResponse} from '@angular/common/http';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {BookManagementComponent} from '../book-management/book-management.component';
 import {AlertService} from '../../../shared/alert/alert.service';
@@ -17,7 +18,7 @@ import {Author} from "../../author/model/author";
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
-  styleUrls: ['./book-list.component.css']
+  styleUrls: ['./book-list.component.scss']
 })
 export class BookListComponent implements OnInit {
   page: number;
@@ -27,21 +28,24 @@ export class BookListComponent implements OnInit {
   bookList: Book[];
   predicate: any;
   reverse: any;
-  deleteBookId: string;
+  remBook: Book;
   topics: Topic[];
   editors: Editor[];
   authorList: Author[];
+  currentLang: string;
 
   constructor(private bookService: BookService,
               private alertService: AlertService,
               private modalService: NgbModal,
               private topicService: TopicService,
+              private translateService: TranslateService,
               private editorService: EditorService,
               private authorService: AuthorService) {
     this.itemsPerPage = 5;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
@@ -49,6 +53,11 @@ export class BookListComponent implements OnInit {
     this.findTopics();
     this.findEditors();
     this.findAuthors();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.topicLanguage();
+    });
   }
 
   getBooks(param) {
@@ -89,7 +98,7 @@ export class BookListComponent implements OnInit {
   }
 
   removeBook() {
-    this.bookService.deleteBook(this.deleteBookId)
+    this.bookService.deleteBook(this.remBook.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
@@ -113,8 +122,8 @@ export class BookListComponent implements OnInit {
         response => this.onError(response));
   }
 
-  open(deleteBook, bookId) {
-    this.deleteBookId = bookId;
+  openDialog(deleteBook, book) {
+    this.remBook = book;
     this.modalService.open(deleteBook);
   }
 
@@ -142,8 +151,20 @@ export class BookListComponent implements OnInit {
 
   private onTopicsSuccess(response) {
     this.topics = [];
-    if (response)
+    if (response) {
       this.topics = response;
+      this.topicLanguage();
+    }
+  }
+
+  private topicLanguage() {
+    let temp = this.topics;
+    this.topics = [];
+    if (temp) {
+      for (let i in temp) {
+        this.topics = [...this.topics, temp[i]];
+      }
+    }
   }
 
   private onEditorsSuccess(response) {

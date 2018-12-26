@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 import {AlertDialogService} from "../../shared/alert/alert.dialog.service";
@@ -10,11 +10,12 @@ import {Principal} from '../../core/auth/principal.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
 import {UserService} from '../../admin/user/user.service';
 import {RegisterModalComponent} from "../../shared/register/register.modal.component";
+import {AccountModalComponent} from "../../shared/account/account.modal.component";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
   navbarOpen: boolean;
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit {
   newPassword: string;
   confirmPassword: string;
   modalRef: NgbModalRef;
+  userData: string;
 
   constructor(private loginService: LoginService,
               private principal: Principal,
@@ -44,6 +46,13 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.enActive = event.lang === 'en' ? true : false;
+    });
+
+    this.principal.fullName().subscribe((value => {
+      this.userData = value;
+    }))
   }
 
   useLanguage(language: string) {
@@ -55,6 +64,9 @@ export class NavbarComponent implements OnInit {
       this.userService.changeLang(language)
         .subscribe(response => this.onSuccess(response, 'lang'),
           response => this.onError(response));
+    }
+    else{
+      this.alertService.success('success.language', null, null);
     }
   }
 
@@ -86,7 +98,11 @@ export class NavbarComponent implements OnInit {
   }
 
   register() {
-    const modalRef = this.modalService.open(RegisterModalComponent, {size: 'lg'});
+    this.modalService.open(RegisterModalComponent, {size: 'lg'});
+  }
+
+  accountInfo() {
+    this.modalService.open(AccountModalComponent, {size: 'lg'});
   }
 
   private onSuccess(response, key) {
@@ -102,10 +118,6 @@ export class NavbarComponent implements OnInit {
     let error = response.error;
     let fields = error.fields;
     this.alertService.error(error.error, fields, null);
-  }
-
-  getUserData() {
-    return this.principal.fullName();
   }
 
   isAuthenticated() {

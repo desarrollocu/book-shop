@@ -1,7 +1,7 @@
 <aside id="sidebar">
   <div class="sidebar-header">
     <h3><i class="fa fa-bookmark"></i> {{'sideBar.menu' | translate}}</h3>
-    <strong [translate]="'sideBar.menu-resp'">BS</strong>
+    <strong [translate]="'sideBar.menuResp'">BS</strong>
   </div>
 
   <ul class="list-unstyled components">
@@ -21,12 +21,12 @@
         {{'sideBar.magazines' | translate}}
       </a>
     </li>
-    <!--<li>-->
-    <!--<a class="a-sidebar" href="javascript:void(0);">-->
-    <!--<i class="fa fa-question"></i>-->
-    <!--FAQ-->
-    <!--</a>-->
-    <!--</li>-->
+    <li routerLinkActive="active">
+      <a routerLink="cart" class="a-sidebar">
+        <i class="fa fa-shopping-cart"></i>
+        {{'sideBar.car' | translate}} <span style="color: chocolate">({{cartCant}})</span>
+      </a>
+    </li>
   </ul>
   <ul class="list-unstyled components">
     <li *hasAnyAuthority="'user-list'" routerLinkActive="active">
@@ -49,25 +49,52 @@
         {{'sideBar.editor' | translate}}
       </a>
     </li>
-    <!--<li *hasAnyAuthority="'country-list'" routerLinkActive="active">-->
-    <!--<a routerLink="country-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>-->
-    <!--{{'sideBar.country' | translate}}-->
-    <!--</a>-->
-    <!--</li>-->
     <li *hasAnyAuthority="'topic-list'" routerLinkActive="active">
       <a routerLink="topic-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
         {{'sideBar.topic' | translate}}
       </a>
     </li>
-    <!--<li *hasAnyAuthority="'publisher-list'" routerLinkActive="active">-->
-      <!--<a routerLink="publisher-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>-->
-        <!--{{'sideBar.publisher' | translate}}-->
-      <!--</a>-->
-    <!--</li>-->
     <li *hasAnyAuthority="'magazine-list'" routerLinkActive="active">
       <a routerLink="magazine-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
         {{'sideBar.magazine' | translate}}
       </a>
     </li>
   </ul>
+  <!--<div class="my-carousel img-text">-->
+    <!--<ngb-carousel *ngIf="images" [interval]="3000" [showNavigationIndicators]="true"-->
+                  <!--[showNavigationArrows]="false">-->
+      <!--<ng-template ngbSlide>-->
+        <!--<div class="item">-->
+          <!--<a href="javascript:void(0);"-->
+             <!--class="d-block mb-4 h-100 img-text">-->
+            <!--<figure>-->
+              <!--<img src="assets/images/img.jpg" height="190" width="125" alt=""/>-->
+              <!--<figcaption>-->
+                <!--$ghjghj-->
+              <!--</figcaption>-->
+              <!--<figcaption>-->
+                <!--ghjghjgh-->
+              <!--</figcaption>-->
+            <!--</figure>-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</ng-template>-->
+      <!--<ng-template ngbSlide>-->
+        <!--<div class="item">-->
+          <!--<a href="javascript:void(0);"-->
+             <!--class="d-block mb-4 h-100 img-text">-->
+            <!--<figure>-->
+              <!--<img src="assets/images/login.png" height="190" width="125" alt=""/>-->
+              <!--<figcaption>-->
+                <!--$ghjghj-->
+              <!--</figcaption>-->
+              <!--<figcaption>-->
+                <!--ghjghjgh-->
+              <!--</figcaption>-->
+            <!--</figure>-->
+          <!--</a>-->
+        <!--</div>-->
+      <!--</ng-template>-->
+    <!--</ngb-carousel>-->
+  <!--</div>-->
 </aside>

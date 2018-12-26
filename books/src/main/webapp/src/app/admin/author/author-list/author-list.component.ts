@@ -1,17 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpResponse} from "@angular/common/http";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
-import {AuthorManagementComponent} from "../author-management/author-management.component";
-import {AlertService} from "../../../shared/alert/alert.service";
-import {AuthorService} from "../author.service";
+import {AuthorManagementComponent} from '../author-management/author-management.component';
+import {AlertService} from '../../../shared/alert/alert.service';
+import {AuthorService} from '../author.service';
 
 import {Author} from '../model/author';
+import {Country} from "../../user/model/country";
 
 @Component({
   selector: 'app-author-list',
   templateUrl: './author-list.component.html',
-  styleUrls: ['./author-list.component.css']
+  styleUrls: ['./author-list.component.scss']
 })
 export class AuthorListComponent implements OnInit {
   page: number;
@@ -21,19 +23,38 @@ export class AuthorListComponent implements OnInit {
   authorList: Author[];
   predicate: any;
   reverse: any;
-  deleteAuthorId: string;
+  remAuthor: Author;
+  countryList: Country[];
+  currentLang: string;
 
   constructor(private authorService: AuthorService,
               private alertService: AlertService,
+              private translateService: TranslateService,
               private modalService: NgbModal) {
     this.itemsPerPage = 5;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
     this.getAuthors(null);
+    this.getCountries();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.countryLanguage();
+    });
+  }
+
+  private countryLanguage() {
+    let temp = this.countryList;
+    this.countryList = [];
+    if (temp) {
+      for (let i in temp) {
+        this.countryList = [...this.countryList, temp[i]];
+      }
+    }
   }
 
   getAuthors(param) {
@@ -74,15 +95,27 @@ export class AuthorListComponent implements OnInit {
   }
 
   removeAuthor() {
-    this.authorService.deleteAuthor(this.deleteAuthorId)
+    this.authorService.deleteAuthor(this.remAuthor.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
   }
 
-  open(deleteAuthor, authorId) {
-    this.deleteAuthorId = authorId;
+  openDialog(deleteAuthor, author) {
+    this.remAuthor = author;
     this.modalService.open(deleteAuthor);
+  }
+
+  getCountries() {
+    this.authorService.getCountries()
+      .subscribe(response => this.onCountrySuccess(response),
+        response => this.onError(response));
+  }
+
+  private onCountrySuccess(result) {
+    this.countryList = [];
+    if (result !== null)
+      this.countryList = result;
   }
 
   private onSuccess(res) {

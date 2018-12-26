@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {TranslateService} from "@ngx-translate/core";
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
 import {BookService} from '../book.service';
@@ -18,7 +18,7 @@ import {Classification} from '../../classification/model/classification';
 @Component({
   selector: 'app-book-management',
   templateUrl: './book-management.component.html',
-  styleUrls: ['./book-management.component.css']
+  styleUrls: ['./book-management.component.scss']
 })
 export class BookManagementComponent implements OnInit {
   @Input() book;
@@ -28,6 +28,7 @@ export class BookManagementComponent implements OnInit {
   classifications: Classification[];
   coinList: string[];
   years: string[];
+  currentLang: string;
 
   imagePath;
   message: string;
@@ -42,6 +43,7 @@ export class BookManagementComponent implements OnInit {
               private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
     this.coinList = ['$', 'U$S'];
+    this.currentLang = this.translateService.currentLang;
     this.years = [];
     for (let i = 1800; i < 2100; i++) {
       this.years.push(String(i));
@@ -54,6 +56,11 @@ export class BookManagementComponent implements OnInit {
     this.findEditors();
     this.findAuthors();
     this.findClassifications();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.topicLanguage();
+    });
   }
 
   findBook() {
@@ -94,8 +101,20 @@ export class BookManagementComponent implements OnInit {
 
   private onTopicsSuccess(response) {
     this.topics = [];
-    if (response)
+    if (response) {
       this.topics = response;
+      this.topicLanguage();
+    }
+  }
+
+  private topicLanguage() {
+    let temp = this.topics;
+    this.topics = [];
+    if (temp) {
+      for (let i in temp) {
+        this.topics = [...this.topics, temp[i]];
+      }
+    }
   }
 
   private onEditorsSuccess(response) {
@@ -136,6 +155,13 @@ export class BookManagementComponent implements OnInit {
     if (result.body !== null) {
       if (result.body.classification) {
         result.body.classification.name = this.translateService.instant(result.body.classification.name);
+        let lang = this.translateService.currentLang;
+        if (result.body.topic) {
+          if (lang === 'en')
+            result.body.topic.name = result.body.topic.englishName;
+          else
+            result.body.topic.name = result.body.topic.spanishName;
+        }
       }
       this.book = result.body;
     }

@@ -1,26 +1,33 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
 
 import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
 import {AuthorService} from '../author.service';
 
 import {Author} from '../model/author';
+import {Country} from '../../user/model/country';
 
 @Component({
   selector: 'app-author-management',
   templateUrl: './author-management.component.html',
-  styleUrls: ['./author-management.component.css']
+  styleUrls: ['./author-management.component.scss']
 })
 export class AuthorManagementComponent implements OnInit {
   @Input() author;
+  countryList: Country[];
+  currentLang: string;
 
   constructor(private alertService: AlertDialogService,
               private authorService: AuthorService,
+              private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
     this.findAuthor();
+    this.getCountries();
   }
 
   findAuthor() {
@@ -32,6 +39,12 @@ export class AuthorManagementComponent implements OnInit {
   saveAuthor() {
     this.authorService.saveAuthor(this.author)
       .subscribe(response => this.onSuccess(response, this.author),
+        response => this.onError(response));
+  }
+
+  getCountries() {
+    this.authorService.getCountries()
+      .subscribe(response => this.onCountrySuccess(response),
         response => this.onError(response));
   }
 
@@ -51,6 +64,12 @@ export class AuthorManagementComponent implements OnInit {
     else {
       this.author = new Author();
     }
+  }
+
+  private onCountrySuccess(result) {
+    this.countryList = [];
+    if (result !== null)
+      this.countryList = result;
   }
 
   private onError(response) {

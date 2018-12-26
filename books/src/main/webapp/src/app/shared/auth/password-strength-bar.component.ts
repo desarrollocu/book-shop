@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, Renderer} from '@angular/core';
 
 @Component({
-  selector: 'jhi-password-strength-bar',
+  selector: 'app-password-strength-bar',
   template: `
     <div id="strength">
       <small [translate]="'user.passwordStrength'">Password strength:</small>
@@ -13,7 +13,7 @@ import {Component, ElementRef, Input, Renderer} from '@angular/core';
         <li class="point"></li>
       </ul>
     </div>`,
-  styleUrls: ['password-strength-bar.css']
+  styleUrls: ['password-strength-bar.scss']
 })
 export class PasswordStrengthBarComponent {
   colors = ['#F00', '#F90', '#FF0', '#9F0', '#0F0'];

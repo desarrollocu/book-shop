@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {HttpResponse} from '@angular/common/http';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+
+import {MagazineManagementComponent} from "../magazine-management/magazine-management.component";
 
 import {TopicService} from "../../topic/topic.service";
 import {EditorService} from "../../editor/editor.service";
@@ -9,15 +13,13 @@ import {AlertService} from "../../../shared/alert/alert.service";
 import {Topic} from "../../topic/model/topic";
 import {Editor} from "../../editor/model/editor";
 import {Magazine} from "../model/magazine";
-import {HttpResponse} from "@angular/common/http";
 import {Book} from "../../book/model/book";
-import {MagazineManagementComponent} from "../magazine-management/magazine-management.component";
 
 
 @Component({
   selector: 'app-magazine-list',
   templateUrl: './magazine-list.component.html',
-  styleUrls: ['./magazine-list.component.css']
+  styleUrls: ['./magazine-list.component.scss']
 })
 export class MagazineListComponent implements OnInit {
   page: number;
@@ -27,25 +29,33 @@ export class MagazineListComponent implements OnInit {
   magazineList: Magazine[];
   predicate: any;
   reverse: any;
-  deleteMagazineId: string;
+  remMagazine: Magazine;
   topics: Topic[];
   editors: Editor[];
+  currentLang: string;
 
   constructor(private magazineService: MagazineService,
               private alertService: AlertService,
               private modalService: NgbModal,
               private topicService: TopicService,
+              private translateService: TranslateService,
               private editorService: EditorService) {
     this.itemsPerPage = 5;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
     this.getMagazines(null);
     this.findTopics();
     this.findEditors();
+
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.topicLanguage();
+    });
   }
 
   getMagazines(param) {
@@ -86,7 +96,7 @@ export class MagazineListComponent implements OnInit {
   }
 
   removeMagazine() {
-    this.magazineService.deleteMagazine(this.deleteMagazineId)
+    this.magazineService.deleteMagazine(this.remMagazine.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
     this.cancel();
@@ -104,8 +114,8 @@ export class MagazineListComponent implements OnInit {
         response => this.onError(response));
   }
 
-  open(deleteMagazine, magazineId) {
-    this.deleteMagazineId = magazineId;
+  openDialog(deleteMagazine, magazine) {
+    this.remMagazine = magazine;
     this.modalService.open(deleteMagazine);
   }
 
@@ -133,8 +143,20 @@ export class MagazineListComponent implements OnInit {
 
   private onTopicsSuccess(response) {
     this.topics = [];
-    if (response)
+    if (response) {
       this.topics = response;
+      this.topicLanguage();
+    }
+  }
+
+  private topicLanguage() {
+    let temp = this.topics;
+    this.topics = [];
+    if (temp) {
+      for (let i in temp) {
+        this.topics = [...this.topics, temp[i]];
+      }
+    }
   }
 
   private onEditorsSuccess(response) {

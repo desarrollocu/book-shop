@@ -5,7 +5,6 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
-
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from './core/core.module';
 import {AdminModule} from './admin/admin.module';
@@ -19,6 +18,7 @@ import {NavbarComponent} from './layouts/navbar/navbar.component';
 import {ErrorComponent} from './layouts/error/error.component';
 import {SidebarComponent} from './layouts/sidebar/sidebar.component';
 import {FooterComponent} from './layouts/footer/footer.component';
+import {NgxAlertsModule} from "@ngx-plus/ngx-alerts";
 
 @NgModule({
   imports: [
@@ -33,6 +33,7 @@ import {FooterComponent} from './layouts/footer/footer.component';
     }),
     NgxWebstorageModule.forRoot(),
     SharedModule.forRoot(),
+    NgxAlertsModule.forRoot(),
     CoreModule,
     AdminModule,
     SearchModule,

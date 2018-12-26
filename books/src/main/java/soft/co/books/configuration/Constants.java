@@ -21,6 +21,9 @@ public final class Constants {
     public static final String ERR_MAX1000 = "error.E57";
     public static final String ERR_MIN1_MAX150 = "error.E58";
     public static final String ERR_INCORRECT_PASSWORD = "error.E59";
+    public static final String ERR_MAX100 = "error.E60";
+    public static final String ERR_DELETE = "error.E61";
+    public static final String ERR_USER = "error.E62";
 
     private Constants() {
     }

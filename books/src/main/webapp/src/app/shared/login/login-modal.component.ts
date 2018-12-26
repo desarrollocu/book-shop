@@ -7,7 +7,7 @@ import {StateStorageService} from '../../core/auth/state-storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login-modal.component.html',
-  styleUrls: ['./login-modal.component.css']
+  styleUrls: ['./login-modal.component.scss']
 })
 export class LoginModalComponent implements AfterViewInit {
   authenticationError: boolean;

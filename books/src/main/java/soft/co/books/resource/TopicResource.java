@@ -33,7 +33,6 @@ public class TopicResource {
     }
 
     @PostMapping("/allTopics")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_MANAGEMENT + "\")")
     public List<TopicDTO> allTopics() {
         return topicService.findAll().stream().map(TopicDTO::new).collect(Collectors.toList());
     }

@@ -47,6 +47,10 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String coin;
 
+    @Field("stock_number")
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private int stockNumber = 0;
+
     private Long visit = 0L;
 
     @Version
@@ -138,5 +142,13 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     public void setCoin(String coin) {
         this.coin = coin;
+    }
+
+    public int getStockNumber() {
+        return stockNumber;
+    }
+
+    public void setStockNumber(int stockNumber) {
+        this.stockNumber = stockNumber;
     }
 }

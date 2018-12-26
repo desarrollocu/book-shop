@@ -1,7 +1,4 @@
 <section class="mag-posts-area d-flex flex-wrap">
-  <div class="col-md-12" style="margin-top: 10px">
-    <app-alert></app-alert>
-  </div>
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
     <form #magazineSearchForm="ngForm" (submit)="getMagazines('btn')">
       <div class="form-row">
@@ -30,7 +27,7 @@
           <ng-select [items]="topics"
                      id="topic"
                      name="topic"
-                     bindLabel="name"
+                     bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                      [virtualScroll]="true"
                      placeholder="{{'magazine.topic' | translate}}"
                      [(ngModel)]="magazine.topic">
@@ -66,18 +63,15 @@
       <tr *ngFor="let magazine of magazineList; trackBy: trackIdentity">
         <td scope="row">{{magazine.title}}</td>
         <td>{{magazine.editor !== null ? magazine.editor.name : ''}}</td>
-        <td>{{magazine.topic !== null ? magazine.topic.name: ''}}</td>
+        <td>{{currentLang === 'en' ? magazine.topic.englishName: magazine.topic.spanishName}}</td>
         <td>{{magazine.coin}}</td>
         <td>{{magazine.salePrice}}</td>
         <td>
           <button class="btn btn-primary table-button"
-                  (click)="editMagazine(magazine)"
-                  [translate]="'general.edit'"><i class="fa fa-edit"></i> Edit
+                  (click)="editMagazine(magazine)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
-                  (click)="open(deleteMagazine, magazine.id)"
-                  [translate]="'general.delete'"><i class="fa fa-trash"></i>
-            Delete
+                  (click)="openDialog(deleteMagazine, magazine)"><i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
@@ -100,7 +94,8 @@
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-12">
+        <h5><strong>{{remMagazine.title}}</strong> <span [translate]="'general.sureMessage1'"></span></h5>
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">
