@@ -1,0 +1,137 @@
+<section class="mag-posts-area d-flex flex-wrap">
+  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
+    <form #bookSearchForm="ngForm" (submit)="getBooks('btn')">
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="title" [translate]="'book.title'">Title</label>
+          <input type="text"
+                 [(ngModel)]="book.title"
+                 class="form-control"
+                 id="title"
+                 name="title"
+                 placeholder="{{'book.title' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="subTitle" [translate]="'book.subTitle'">Subtitle</label>
+          <input type="text"
+                 [(ngModel)]="book.subTitle"
+                 class="form-control"
+                 id="subTitle"
+                 name="subTitle"
+                 placeholder="{{'book.subTitle' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="authors" [translate]="'book.authorList'">Authors</label>
+          <ng-select [items]="authorList"
+                     id="authors"
+                     name="authors"
+                     bindLabel="fullName"
+                     [multiple]="true"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.authorList' | translate}}"
+                     [(ngModel)]="book.authorList">
+          </ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="editor" [translate]="'book.editor'">Editor</label>
+          <ng-select [items]="editors"
+                     id="editor"
+                     name="editor"
+                     bindLabel="name"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.editor' | translate}}"
+                     [(ngModel)]="book.editor">
+          </ng-select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="topic" [translate]="'book.topic'">Topic</label>
+          <ng-select [items]="topics"
+                     id="topic"
+                     name="topic"
+                     bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.topic' | translate}}"
+                     [(ngModel)]="book.topic">
+          </ng-select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary"
+              [translate]="'general.search'"><i class="fa fa-search"></i> Search
+      </button>
+      <button type="button" class="btn btn-success table-button-search"
+              (click)="addBook()"
+              [translate]="'book.add'"><i class="fa fa-plus-square"></i> Add book
+      </button>
+    </form>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col" [translate]="'book.title'">Title</th>
+        <th scope="col" [translate]="'book.subTitle'">Subtitle</th>
+        <th scope="col" [translate]="'book.editor'">Editor</th>
+        <th scope="col" [translate]="'book.topic'">Topic</th>
+        <th scope="col" [translate]="'book.coin'">Coin</th>
+        <th scope="col" [translate]="'book.price'">Price</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="bookList.length === 0">
+        <td colspan="7" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+      </tr>
+      <tr *ngFor="let book of bookList; trackBy: trackIdentity">
+        <td scope="row">{{book.title}}</td>
+        <td>{{book.subTitle}}</td>
+        <td>{{book.editor !== null ? book.editor.name : ''}}</td>
+        <td>{{book.topic !== null ? currentLang === 'en' ? book.topic.englishName: book.topic.spanishName : ''}}</td>
+        <td>{{book.coin}}</td>
+        <td>{{book.salePrice}}</td>
+        <td>
+          <button class="btn btn-primary table-button"
+                  (click)="editBook(book)"><i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-danger table-button-delete"
+                  (click)="openDialog(deleteBook, book)"><i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<ngb-pagination class="d-flex justify-content-center"
+                [collectionSize]="totalItems"
+                [(page)]="page"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="getBooks(null)"></ngb-pagination>
+
+<ng-template #deleteBook let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-sm" [translate]="'book.delete'">Delete book</h5>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h5><strong>{{remBook.title}}</strong> <span [translate]="'general.sureMessage1'"></span></h5>
+        <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
+      </div>
+      <div class="col-md-8" style="margin-left: 60%">
+        <button type="submit" class="btn btn-primary"
+                (click)="removeBook()"
+                [translate]="'general.confirm'"> Confirm
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

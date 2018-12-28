@@ -1,0 +1,209 @@
+<section class="mag-posts-area d-flex flex-wrap">
+  <!--<div class="col-md-12" style="margin-top: 10px">-->
+  <!--<app-alert></app-alert>-->
+  <!--</div>-->
+  <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
+    <form #generalSearchForm="ngForm" (submit)="getBooks('btn')">
+      <div *ngIf="searchMore">
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="author" [translate]="'search.author'">Author</label>
+            <input type="text"
+                   [(ngModel)]="search.author" name="author"
+                   class="form-control" id="author" placeholder="{{'search.author' | translate}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="title" [translate]="'search.title'">Title</label>
+            <input type="text"
+                   [(ngModel)]="search.title"
+                   class="form-control" id="title" name="title" placeholder="{{'search.title' | translate}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="classification" [translate]="'book.classification'">Classification</label>
+            <ng-select [items]="classifications"
+                       id="classification"
+                       name="classification"
+                       bindLabel="name"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.classification' | translate}}"
+                       [(ngModel)]="search.classification">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="city" [translate]="'book.city'">City</label>
+            <input class="form-control"
+                   id="city" type="text" name="city"
+                   [(ngModel)]="search.city"
+                   placeholder="{{'book.city' | translate}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="publisher" [translate]="'book.editor'">Publisher</label>
+            <input class="form-control"
+                   [(ngModel)]="search.editor"
+                   id="publisher" name="publisher" type="text"
+                   placeholder="{{'book.editor' | translate}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="editionYear" [translate]="'book.editionYear'">Edition year</label>
+            <ng-select [items]="years"
+                       id="editionYear"
+                       name="editionYear"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.editionYear' | translate}}"
+                       [(ngModel)]="search.editionYear">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="descriptors" [translate]="'book.descriptor'">Descriptor</label>
+            <input class="form-control"
+                   [(ngModel)]="search.descriptors"
+                   id="descriptors" name="descriptors" type="text"
+                   placeholder="{{'book.descriptorPlaceHolder' | translate}}">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="topic" [translate]="'book.topic'">Topic</label>
+            <ng-select [items]="topics"
+                       id="topic"
+                       name="topic"
+                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.topic' | translate}}"
+                       [(ngModel)]="search.topic">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!searchMore">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="authorMore" [translate]="'search.author'">Author</label>
+            <input type="text"
+                   [(ngModel)]="search.author"
+                   class="form-control" id="authorMore" name="authorMore" placeholder="{{'search.author' | translate}}">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="titleMore" [translate]="'search.title'">Title</label>
+            <input type="text"
+                   [(ngModel)]="search.title"
+                   class="form-control" id="titleMore" name="titleMore" placeholder="{{'search.title' | translate}}">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-8 col-sm-8">
+          <button type="submit" class="btn btn-primary button-size" [translate]="'search.button'"><i
+            class="fa fa-search"></i> Search
+          </button>
+        </div>
+        <div class="form-group col-md-4 col-sm-4">
+          <a style="margin-left: 94%; font-size: 15px" *ngIf="!searchMore" href="javascript:void(0);"
+             (click)="searchMoreChange()"><i class="fa fa-plus-square"></i></a>
+          <a style="margin-left: 94%; font-size: 15px" *ngIf="searchMore" href="javascript:void(0);"
+             (click)="searchMoreChange()"><i class="fa fa-minus-square"></i></a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+<div class="row text-center text-lg-left book-list">
+  <div class="col-lg-3 col-md-5 col-sm-6" *ngFor="let book of bookList; trackBy: trackIdentity">
+    <div class="item">
+      <a href="javascript:void(0);"
+         [ngbPopover]="popContent"
+         popoverClass="my-custom-class"
+         placement="right"
+         (click)="selectBook(book)"
+         class="d-block mb-4 h-100 img-text">
+        <figure>
+          <img *ngIf="book.image" src="{{book.image}}" height="190" width="125" alt=""/>
+          <img *ngIf="!book.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
+          <figcaption>
+            <strong>{{book.coin + book.salePrice}}</strong>
+          </figcaption>
+          <figcaption>
+            <strong>{{book.title}}</strong>
+          </figcaption>
+          <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
+        </figure>
+      </a>
+      <ng-template #popContent>
+        <a href="javascript:void(0);" (click)="addToCar();" data-toggle="tooltip"
+           data-placement="left"
+           title="{{'general.addCar' | translate}}">
+          <i class="fa fa-cart-plus"></i>
+        </a>
+        <a href="javascript:void(0);" (click)="bookDetails(details)" data-toggle="tooltip" data-placement="left"
+           title="View details">
+          <i class="fa fa-book"></i>
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-center"
+     style="padding-bottom: 20px; font-size: 34px;"
+     *ngIf="bookList.length === 0 && load" [translate]="'general.emptyBook'">No Books Found
+</div>
+<ngb-pagination class="d-flex justify-content-center"
+                [collectionSize]="totalItems"
+                [(page)]="page"
+                [pageSize]="itemsPerPage"
+                [maxSize]="5"
+                [rotate]="true"
+                [boundaryLinks]="true"
+                (pageChange)="getBooks(null)"></ngb-pagination>
+
+<ng-template #details let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-sm" [translate]="'book.detail'">Book details</h5>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-8" style="border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.title'">Title</h4>
+          <p style="margin-bottom: 10px;">{{selectedBook.title}}</p>
+        </div>
+        <div class="col-4">
+          <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"
+               style="position: absolute">
+          <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
+               style="position: absolute">
+        </div>
+        <div class="col-8" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.author'">Author</h4>
+          <p style="margin-bottom: 10px">
+            <span *ngFor="let author of selectedBook.authorList">
+                {{author.fullName}}
+            </span>
+          </p>
+        </div>
+        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.editor.name}}</p>
+        </div>
+        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.city'">City</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.city}}</p>
+        </div>
+        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.coin + selectedBook.salePrice}}</p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 20px">
+      <button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i
+        class="fa fa-cart-plus"></i> Add to car
+      </button>
+      <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">
+        <i
+          class="fa fa-window-close"></i> Close
+      </button>
+    </div>
+  </div>
+</ng-template>

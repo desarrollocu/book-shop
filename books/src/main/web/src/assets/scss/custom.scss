@@ -1,0 +1,23 @@
+// ngx-plus color scheme
+$ngx-plus-red       : #d32f2f !default;
+$ngx-plus-primary   : #011f4b !default;
+$ngx-plus-blue      : #61b5d9 !default;
+$ngx-plus-yellow    : #fdd835 !default;
+$ngx-plus-green     : #66bb6a !default;
+$ngx-plus-background: #243447 !default;
+
+// Override Bootstrap
+$info               : $ngx-plus-blue !default;
+$primary            : $ngx-plus-primary !default;
+$success            : $ngx-plus-green !default;
+$warning            : $ngx-plus-yellow !default;
+$danger             : $ngx-plus-red !default;
+$secondary          : $ngx-plus-background !default;
+$btn-warning-color  : $ngx-plus-background !default;
+$action-color       : $ngx-plus-blue !default;
+$output-color       : $ngx-plus-blue !default;
+
+$nav-height         : 80px;
+$nav-brand-width    : 200px;
+$nav-logo-url       : '~@ngx-plus/ngx-logos/svg/ngx-logo-red.svg';
+$nav-logo-size      : 70px;

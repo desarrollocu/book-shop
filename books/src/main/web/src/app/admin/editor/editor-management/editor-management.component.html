@@ -1,0 +1,49 @@
+<div class="modal-header modal-title">
+  <h5 class="modal-sm" [translate]="'editor.add'">Add editor</h5>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="form" role="form" #editorManagementForm="ngForm" (ngSubmit)="saveEditor()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="name" [translate]="'editor.name'">Name</label>
+            <input type="text"
+                   [(ngModel)]="editor.name"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   placeholder="{{'editor.name' | translate}}"
+                   #name="ngModel"
+                   required
+                   maxlength="50">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                 class="error-msg">
+              <div *ngIf="name.errors.required" [translate]="'error.required.name'">
+                Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="city" [translate]="'editor.city'">City</label>
+            <input type="text"
+                   [(ngModel)]="editor.city"
+                   class="form-control"
+                   id="city"
+                   name="city"
+                   placeholder="{{'editor.city' | translate}}"
+                   #city="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!editorManagementForm.valid"
+                [translate]="'general.save'"> Save
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

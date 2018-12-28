@@ -1,0 +1,312 @@
+<div class="modal-header modal-title">
+  <h5 class="modal-sm" [translate]="'book.add'">Add book</h5>
+</div>
+<div class="modal-body">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form class="form" role="form" #bookManagementForm="ngForm" (ngSubmit)="saveBook()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="title" [translate]="'book.title'">Title</label>
+            <input type="text"
+                   [(ngModel)]="book.title"
+                   class="form-control"
+                   id="title"
+                   name="title"
+                   placeholder="{{'book.title' | translate}}"
+                   #title="ngModel"
+                   required
+                   maxlength="150">
+            <div *ngIf="title.invalid && (title.dirty || title.touched)"
+                 class="error-msg">
+              <div *ngIf="title.errors.required" [translate]="'error.required.title'">
+                Title is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="subTitle" [translate]="'book.subTitle'">Subtitle</label>
+            <input type="text"
+                   [(ngModel)]="book.subTitle"
+                   class="form-control"
+                   id="subTitle"
+                   name="subTitle"
+                   placeholder="{{'book.subTitle' | translate}}"
+                   #subTitle="ngModel"
+                   maxlength="500">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="authors" [translate]="'book.authorList'">Authors</label>
+            <ng-select [items]="authorList"
+                       id="authors"
+                       name="authors"
+                       bindLabel="fullName"
+                       [multiple]="true"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.authorList' | translate}}"
+                       [(ngModel)]="book.authorList"
+                       #authors="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="authors.invalid && (authors.dirty || authors.touched)"
+                 class="error-msg">
+              <div *ngIf="authors.errors.required" [translate]="'error.required.authors'">
+                Author is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="editor" [translate]="'book.editor'">Editor</label>
+            <ng-select [items]="editors"
+                       id="editor"
+                       name="editor"
+                       bindLabel="name"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.editor' | translate}}"
+                       [(ngModel)]="book.editor"
+                       #editor="ngModel">
+            </ng-select>
+            <!--<div *ngIf="editor.invalid && (editor.dirty || editor.touched)"-->
+            <!--class="error-msg">-->
+            <!--<div *ngIf="editor.errors.required" [translate]="'error.required.editor'">-->
+            <!--Editor is required.-->
+            <!--</div>-->
+            <!--</div>-->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="topic" [translate]="'book.topic'">Topic</label>
+            <ng-select [items]="topics"
+                       id="topic"
+                       name="topic"
+                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.topic' | translate}}"
+                       [(ngModel)]="book.topic"
+                       #topic="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="topic.invalid && (topic.dirty || topic.touched)"
+                 class="error-msg">
+              <div *ngIf="topic.errors.required" [translate]="'error.required.topic'">
+                Topic is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="classification" [translate]="'book.classification'">Classification</label>
+            <ng-select [items]="classifications"
+                       id="classification"
+                       name="classification"
+                       bindLabel="name"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.classification' | translate}}"
+                       [(ngModel)]="book.classification"
+                       #classification="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="classification.invalid && (classification.dirty || classification.touched)"
+                 class="error-msg">
+              <div *ngIf="classification.errors.required" [translate]="'error.required.classification'">
+                Classification is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="editionYear" [translate]="'book.editionYear'">Edition year</label>
+            <ng-select [items]="years"
+                       id="editionYear"
+                       name="editionYear"
+                       [virtualScroll]="true"
+                       placeholder="{{'book.editionYear' | translate}}"
+                       [(ngModel)]="book.editionYear"
+                       #editionYear="ngModel">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="city" [translate]="'book.city'">City</label>
+            <input type="text"
+                   [(ngModel)]="book.city"
+                   class="form-control"
+                   id="city"
+                   name="city"
+                   placeholder="{{'book.city' | translate}}"
+                   #city="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="pages" [translate]="'book.pages'">Pages</label>
+            <input type="number"
+                   [(ngModel)]="book.pages"
+                   class="form-control"
+                   id="pages"
+                   name="pages"
+                   min="0"
+                   placeholder="{{'book.pages' | translate}}"
+                   #pages="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="size" [translate]="'book.size'">Size</label>
+            <input type="text"
+                   [(ngModel)]="book.size"
+                   class="form-control"
+                   id="size"
+                   name="size"
+                   placeholder="{{'book.size' | translate}}"
+                   #size="ngModel"
+                   maxlength="50">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="isbn" [translate]="'book.isbn'">Isbn</label>
+            <input type="text"
+                   [(ngModel)]="book.isbn"
+                   class="form-control"
+                   id="isbn"
+                   name="isbn"
+                   placeholder="{{'book.isbn' | translate}}"
+                   #isbn="ngModel"
+                   maxlength="50">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="salePrice" [translate]="'book.salePrice'">Sale price</label>
+            <input type="number"
+                   [(ngModel)]="book.salePrice"
+                   class="form-control"
+                   id="salePrice"
+                   name="salePrice"
+                   min="0"
+                   placeholder="{{'book.price' | translate}}"
+                   #salePrice="ngModel"
+                   maxlength="50"
+                   required>
+            <div *ngIf="salePrice.invalid && (salePrice.dirty || salePrice.touched)"
+                 class="error-msg">
+              <div *ngIf="salePrice.errors.required" [translate]="'error.required.salePrice'">
+                Sale price is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="coin" [translate]="'book.coin'">Coin</label>
+            <ng-select [items]="coinList"
+                       id="coin"
+                       name="coin"
+                       placeholder="{{'book.coin' | translate}}"
+                       [(ngModel)]="book.coin"
+                       #coin="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="coin.invalid && (coin.dirty || coin.touched)"
+                 class="error-msg">
+              <div *ngIf="coin.errors.required" [translate]="'error.required.coin'">
+                Coin is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="stockNumber" [translate]="'magazine.stockNumber'">Stock</label>
+            <input type="number"
+                   [(ngModel)]="book.stockNumber"
+                   class="form-control"
+                   id="stockNumber"
+                   name="stockNumber"
+                   min="0"
+                   placeholder="{{'magazine.stockNumber' | translate}}"
+                   #stockNumber="ngModel"
+                   maxlength="50"
+                   required>
+            <div *ngIf="stockNumber.invalid && (stockNumber.dirty || stockNumber.touched)"
+                 class="error-msg">
+              <div *ngIf="stockNumber.errors.required" [translate]="'error.required.stockNumber'">
+                Stock is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="descriptors" [translate]="'book.descriptors'">Descriptors</label>
+            <input type="text"
+                   [(ngModel)]="book.descriptors"
+                   class="form-control"
+                   id="descriptors"
+                   name="descriptors"
+                   placeholder="{{'book.descriptorsPlaceHolder' | translate}}"
+                   #descriptors="ngModel"
+                   pattern="[a-zA-Z0-9]+[,][a-zA-Z0-9]+[,][a-zA-Z0-9]+"
+                   maxlength="500">
+            <div *ngIf="descriptors.invalid && (descriptors.dirty || descriptors.touched)"
+                 class="error-msg">
+              <div *ngIf="descriptors.errors.pattern" [translate]="'error.pattern.descriptors'">
+                Descriptors are required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="toShow" [translate]="'book.toShow'">ToShow</label>
+            <ng-select [items]="toShowList"
+                       id="toShow"
+                       name="toShow"
+                       bindLabel="elem"
+                       placeholder="{{'book.toShowPlaceholder' | translate}}"
+                       [(ngModel)]="book.toShow"
+                       #toShow="ngModel">
+            </ng-select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-9">
+            <br>
+            <br>
+            <div class="alert-info msg"><p [translate]="'general.image.text'"></p></div>
+          </div>
+          <div class="col-md-3">
+            <div *ngIf="book.image">
+              <figure>
+                <img [src]="book.image" height="190" width="125">
+              </figure>
+            </div>
+            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!book.image">
+              <img src="assets/images/image.gif" alt="">
+            </div>
+            <div>
+              <input #fileInput type="file"
+                     style="display: none"
+                     accept='image/png, image/jpeg'
+                     (change)="preview($event)"/>
+              <button style="width: 125px; margin-top: 5px" type="button" class="btn btn-primary"
+                      *ngIf="!book.image"
+                      (click)="fileInput.click()">Select File
+              </button>
+              <button style="width: 125px; margin-top: -10px" type="button" class="btn btn-danger"
+                      *ngIf="book.image"
+                      (click)="resetImage()">Reset File
+              </button>
+              <div class="error-msg">
+                <div *ngIf="message">{{message}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!bookManagementForm.valid"
+                [translate]="'general.save'"> Save
+        </button>
+        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+                [translate]="'general.cancel'"> Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

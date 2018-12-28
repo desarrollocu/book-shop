@@ -1,0 +1,112 @@
+.mag-posts-content-carousel {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 calc(100% - 630px);
+  flex: 0 0 calc(100% - 630px);
+  max-width: calc(100% - 0px);
+  width: calc(100% - 0px);
+  height: 310px;
+  margin-left: 90px;
+}
+
+.mag-posts-content-most-sale {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 calc(100% - 630px);
+  flex: 0 0 calc(100% - 630px);
+  max-width: calc(100% - 0px);
+  width: calc(100% - 0px);
+}
+
+.align-figure {
+  margin-left: 0%;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1499px) {
+  .mag-posts-content-carousel {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 650px);
+    flex: 0 0 calc(100% - 30px);
+    max-width: 650px;
+    width: 650px;
+    margin-left: 90px;
+  }
+
+  .mag-posts-content-most-sale {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 650px);
+    flex: 0 0 calc(100% - 30px);
+    max-width: 380px;
+    width: 380px;
+    margin-left: 20px;
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .mag-posts-content-carousel {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 30px);
+    flex: 0 0 calc(100% - 130px);
+    max-width: calc(100% - 130px);
+    width: calc(100% - 30px);
+    margin-left: 90px;
+  }
+
+  .mag-posts-content-most-sale {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 650px);
+    flex: 0 0 calc(100% - 30px);
+    max-width: 380px;
+    width: 380px;
+    margin-left: 20px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .mag-posts-content-carousel {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 30px);
+    flex: 0 0 calc(100% - 30px);
+    max-width: calc(100% - 30px);
+    width: calc(100% - 30px);
+    margin-left: 12px;
+  }
+
+  .mag-posts-content-most-sale {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 650px);
+    flex: 0 0 calc(100% - 30px);
+    width: 380px;
+    margin-left: calc(100% - 90%);
+  }
+
+  .align-figure {
+    margin-left: 50%;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .mag-posts-content-carousel {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 30px);
+    flex: 0 0 calc(100% - 30px);
+    max-width: calc(100% - 80px);
+    width: calc(100% - 80px);
+    margin-left: 12px;
+  }
+
+  .mag-posts-content-most-sale {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 calc(100% - 650px);
+    flex: 0 0 calc(100% - 30px);
+    width: 300px;
+    margin-left: calc(100% - 90%);
+  }
+
+  .align-figure {
+    margin-left: calc(100% - 55%);;
+  }
+}
+
+.one-item {
+  margin-left: 88px;
+}
+
