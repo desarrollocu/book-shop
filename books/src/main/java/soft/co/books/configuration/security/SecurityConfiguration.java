@@ -90,6 +90,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .and()
+                .requiresChannel().anyRequest().requiresSecure()
+                .and()
                 .sessionManagement().maximumSessions(1);
     }
 
