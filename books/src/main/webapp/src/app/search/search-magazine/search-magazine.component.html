@@ -79,7 +79,7 @@
          class="d-block mb-4 h-100 img-text">
         <figure>
           <img *ngIf="magazine.image" src="{{magazine.image}}" height="190" width="125" alt=""/>
-          <img *ngIf="!magazine.image" src="assets/images/img.jpg" height="190" width="125" alt=""/>
+          <img *ngIf="!magazine.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
           <figcaption>
             <strong>{{magazine.coin + magazine.salePrice}}</strong>
           </figcaption>
@@ -127,7 +127,7 @@
           <p style="margin-bottom: 10px;">{{selectedMagazine.title}}</p>
         </div>
         <div class="col-4">
-          <img *ngIf="!selectedMagazine.image" height="190" width="125" alt="" src="assets/images/img.jpg"
+          <img *ngIf="!selectedMagazine.image" height="190" width="125" alt="" src="assets/images/image.gif"
                style="position: absolute">
           <img *ngIf="selectedMagazine.image" height="190" width="125" alt="" src="{{selectedMagazine.image}}"
                style="position: absolute">

@@ -62,6 +62,8 @@ public class BookDTO {
 
     private Long visit = 0L;
 
+    private ShowDTO toShow;
+
     private String createdBy;
 
     private Instant createdDate;
@@ -91,6 +93,10 @@ public class BookDTO {
         this.coin = book.getCoin();
         this.stockNumber = book.getStockNumber();
         this.image = book.getImageUrl();
+        ShowDTO showDTO = new ShowDTO();
+        showDTO.setElem(book.isToShow() == true ? "user.yes" : "user.no");
+        showDTO.setVal(book.isToShow());
+        this.toShow = showDTO;
 
         for (int i = 0; i < book.getDescriptorList().size(); i++) {
             if (i == 0)
@@ -104,6 +110,14 @@ public class BookDTO {
         this.createdDate = book.getCreatedDate();
         this.lastModifiedBy = book.getLastModifiedBy();
         this.lastModifiedDate = book.getLastModifiedDate();
+    }
+
+    public ShowDTO getToShow() {
+        return toShow;
+    }
+
+    public void setToShow(ShowDTO toShow) {
+        this.toShow = toShow;
     }
 
     public ClassificationDTO getClassification() {

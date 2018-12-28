@@ -55,6 +55,10 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         query.skip(pageable.getPageNumber() * pageable.getPageSize());
         query.with(pageable.getSort());
 
+        if (magazineDTO.getToShow() != null) {
+            if (magazineDTO.getToShow().isVal())
+                query.addCriteria(where("toShow").is(true));
+        }
         if (magazineDTO.getTitle() != null && !magazineDTO.getTitle().isEmpty())
             query.addCriteria(where("title").regex(magazineDTO.getTitle(), "i"));
         if (magazineDTO.getEditor() != null)
@@ -79,6 +83,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
             magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
         }
         magazine.setPublishYear(magazineDTO.getPublishYear());
+        magazine.setToShow(magazineDTO.getToShow().isVal());
         magazine.setStockNumber(magazineDTO.getStockNumber());
         magazine.setFrequency(magazineDTO.getFrequency());
         magazine.setIsbn(magazineDTO.getIsbn());
@@ -113,6 +118,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                         magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
                     }
                     magazine.setPublishYear(magazineDTO.getPublishYear());
+                    magazine.setToShow(magazineDTO.getToShow().isVal());
                     magazine.setStockNumber(magazineDTO.getStockNumber());
                     magazine.setFrequency(magazineDTO.getFrequency());
                     magazine.setIsbn(magazineDTO.getIsbn());

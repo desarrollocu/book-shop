@@ -68,6 +68,10 @@ public class BookService extends CustomBaseService<Book, String> {
         query.skip(pageable.getPageNumber() * pageable.getPageSize());
         query.with(pageable.getSort());
 
+        if (bookDTO.getToShow() != null) {
+            if (bookDTO.getToShow().isVal())
+                query.addCriteria(where("toShow").is(true));
+        }
         if (bookDTO.getTitle() != null && !bookDTO.getTitle().isEmpty())
             query.addCriteria(where("title").regex(bookDTO.getTitle(), "i"));
         if (bookDTO.getSubTitle() != null && !bookDTO.getSubTitle().isEmpty())
@@ -122,6 +126,7 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setSize(bookDTO.getSize());
         book.setIsbn(bookDTO.getIsbn());
         book.setSalePrice(bookDTO.getSalePrice());
+        book.setToShow(bookDTO.getToShow().isVal());
         book.setStockNumber(bookDTO.getStockNumber());
         book.setCoin(bookDTO.getCoin());
         book.setImageUrl(bookDTO.getImage());
@@ -171,6 +176,7 @@ public class BookService extends CustomBaseService<Book, String> {
                     book.setImageUrl(bookDTO.getImage());
                     book.setStockNumber(bookDTO.getStockNumber());
                     book.setVisit(bookDTO.getVisit());
+                    book.setToShow(bookDTO.getToShow().isVal());
 
                     if (bookDTO.getDescriptors() != null) {
                         if (bookDTO.getDescriptors() != "") {

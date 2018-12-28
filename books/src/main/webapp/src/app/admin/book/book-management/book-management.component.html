@@ -213,25 +213,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-8">
-            <label for="descriptors" [translate]="'book.descriptors'">Descriptors</label>
-            <input type="text"
-                   [(ngModel)]="book.descriptors"
-                   class="form-control"
-                   id="descriptors"
-                   name="descriptors"
-                   placeholder="{{'book.descriptorsPlaceHolder' | translate}}"
-                   #descriptors="ngModel"
-                   pattern="[a-zA-Z0-9]+[,][a-zA-Z0-9]+[,][a-zA-Z0-9]+"
-                   maxlength="500">
-            <div *ngIf="descriptors.invalid && (descriptors.dirty || descriptors.touched)"
-                 class="error-msg">
-              <div *ngIf="descriptors.errors.pattern" [translate]="'error.pattern.descriptors'">
-                Descriptors are required.
-              </div>
-            </div>
-          </div>
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label for="stockNumber" [translate]="'magazine.stockNumber'">Stock</label>
             <input type="number"
                    [(ngModel)]="book.stockNumber"
@@ -250,6 +232,37 @@
               </div>
             </div>
           </div>
+          <div class="form-group col-md-6">
+            <label for="descriptors" [translate]="'book.descriptors'">Descriptors</label>
+            <input type="text"
+                   [(ngModel)]="book.descriptors"
+                   class="form-control"
+                   id="descriptors"
+                   name="descriptors"
+                   placeholder="{{'book.descriptorsPlaceHolder' | translate}}"
+                   #descriptors="ngModel"
+                   pattern="[a-zA-Z0-9]+[,][a-zA-Z0-9]+[,][a-zA-Z0-9]+"
+                   maxlength="500">
+            <div *ngIf="descriptors.invalid && (descriptors.dirty || descriptors.touched)"
+                 class="error-msg">
+              <div *ngIf="descriptors.errors.pattern" [translate]="'error.pattern.descriptors'">
+                Descriptors are required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="toShow" [translate]="'book.toShow'">ToShow</label>
+            <ng-select [items]="toShowList"
+                       id="toShow"
+                       name="toShow"
+                       bindLabel="elem"
+                       placeholder="{{'book.toShowPlaceholder' | translate}}"
+                       [(ngModel)]="book.toShow"
+                       #toShow="ngModel">
+            </ng-select>
+          </div>
         </div>
         <div class="form-row">
           <div class="col-md-9">
@@ -263,7 +276,9 @@
                 <img [src]="book.image" height="190" width="125">
               </figure>
             </div>
-            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!book.image"></div>
+            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!book.image">
+              <img src="assets/images/image.gif" alt="">
+            </div>
             <div>
               <input #fileInput type="file"
                      style="display: none"

@@ -47,6 +47,8 @@ public class MagazineDTO {
 
     private Long visit = 0L;
 
+    private ShowDTO toShow;
+
     private String createdBy;
 
     private Instant createdDate;
@@ -70,6 +72,10 @@ public class MagazineDTO {
         this.topic = magazine.getTopicOrNull().map(TopicDTO::new).orElse(null);
         this.salePrice = magazine.getSalePrice();
         this.stockNumber = magazine.getStockNumber();
+        ShowDTO showDTO = new ShowDTO();
+        showDTO.setElem(magazine.isToShow() == true ? "user.yes" : "user.no");
+        showDTO.setVal(magazine.isToShow());
+        this.toShow = showDTO;
         this.coin = magazine.getCoin();
         this.image = magazine.getImageUrl();
         this.visit = magazine.getVisit();
@@ -77,6 +83,14 @@ public class MagazineDTO {
         this.createdDate = magazine.getCreatedDate();
         this.lastModifiedBy = magazine.getLastModifiedBy();
         this.lastModifiedDate = magazine.getLastModifiedDate();
+    }
+
+    public ShowDTO getToShow() {
+        return toShow;
+    }
+
+    public void setToShow(ShowDTO toShow) {
+        this.toShow = toShow;
     }
 
     public String getId() {

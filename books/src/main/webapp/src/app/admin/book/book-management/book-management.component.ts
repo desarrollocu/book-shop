@@ -29,7 +29,7 @@ export class BookManagementComponent implements OnInit {
   coinList: string[];
   years: string[];
   currentLang: string;
-
+  toShowList: any[];
   imagePath;
   message: string;
   imageSize: any;
@@ -43,6 +43,8 @@ export class BookManagementComponent implements OnInit {
               private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
     this.coinList = ['$', 'U$S'];
+    this.toShowList = [{elem: this.translateService.instant('user.yes'), val: true},
+      {elem: this.translateService.instant('user.no'), val: false}];
     this.currentLang = this.translateService.currentLang;
     this.years = [];
     for (let i = 1800; i < 2100; i++) {
@@ -153,6 +155,8 @@ export class BookManagementComponent implements OnInit {
 
   private onSearchSuccess(result) {
     if (result.body !== null) {
+      if (result.body.toShow)
+        result.body.toShow.elem = this.translateService.instant(result.body.toShow.elem);
       if (result.body.classification) {
         result.body.classification.name = this.translateService.instant(result.body.classification.name);
         let lang = this.translateService.currentLang;

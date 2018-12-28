@@ -120,7 +120,7 @@
          class="d-block mb-4 h-100 img-text">
         <figure>
           <img *ngIf="book.image" src="{{book.image}}" height="190" width="125" alt=""/>
-          <img *ngIf="!book.image" src="assets/images/img.jpg" height="190" width="125" alt=""/>
+          <img *ngIf="!book.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
           <figcaption>
             <strong>{{book.coin + book.salePrice}}</strong>
           </figcaption>
@@ -169,7 +169,7 @@
           <p style="margin-bottom: 10px;">{{selectedBook.title}}</p>
         </div>
         <div class="col-4">
-          <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/img.jpg"
+          <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"
                style="position: absolute">
           <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
                style="position: absolute">

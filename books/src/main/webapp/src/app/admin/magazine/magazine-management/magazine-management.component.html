@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="coin" [translate]="'magazine.coin'">Coin</label>
             <ng-select [items]="coinList"
                        id="coin"
@@ -149,7 +149,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="salePrice" [translate]="'magazine.salePrice'">Sale price</label>
             <input type="number"
                    [(ngModel)]="magazine.salePrice"
@@ -168,6 +168,17 @@
               </div>
             </div>
           </div>
+          <div class="form-group col-md-4">
+            <label for="toShow" [translate]="'book.toShow'">ToShow</label>
+            <ng-select [items]="toShowList"
+                       id="toShow"
+                       name="toShow"
+                       bindLabel="elem"
+                       placeholder="{{'book.toShowPlaceholder' | translate}}"
+                       [(ngModel)]="magazine.toShow"
+                       #toShow="ngModel">
+            </ng-select>
+          </div>
         </div>
         <div class="form-row">
           <div class="col-md-9">
@@ -181,7 +192,9 @@
                 <img [src]="magazine.image" height="190" width="125">
               </figure>
             </div>
-            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!magazine.image"></div>
+            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!magazine.image">
+              <img src="assets/images/image.gif" alt="">
+            </div>
             <div>
               <input #fileInput type="file"
                      style="display: none"

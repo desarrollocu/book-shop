@@ -19,7 +19,8 @@
       "text": "The image size most be lest than 500KB. When you choose an image you can see how will be visualice in the basic user view."
     },
     "addCar": " Add to cart",
-    "close": " Close"
+    "close": " Close",
+    "details": "View details"
   },
   "login": {
     "username": "Username",
@@ -100,7 +101,10 @@
     "descriptorsPlaceHolder": "word,word,word",
     "descriptor": "Descriptor",
     "descriptorPlaceHolder": "Word",
-    "detail": "Book details"
+    "detail": "Book details",
+    "toShow": "Most sale",
+    "toShowPlaceholder": "Most sale",
+    "mostSale":"Most sales books"
   },
   "magazine": {
     "add": " Add magazine",
@@ -116,7 +120,8 @@
     "salePrice": "Sale price",
     "price": "Price",
     "coin": "Coin",
-    "detail": "Magazine details"
+    "detail": "Magazine details",
+    "mostSale":"Most sales magazines"
   },
   "author": {
     "add": " Add author",

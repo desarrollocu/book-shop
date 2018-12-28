@@ -12,7 +12,7 @@ export class SidebarComponent implements OnInit {
   cartCant: number;
 
   constructor(private principal: Principal, private cartService: CartService) {
-    this.images = ["assets/images/img.jpg", "assets/images/login.png", "assets/images/img.jpg"];
+    this.images = ["assets/images/image.gif", "assets/images/login.gif", "assets/images/image.gif"];
     this.cartCant = this.cartService.getProductList().length;
   }
 

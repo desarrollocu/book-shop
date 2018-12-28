@@ -25,4 +25,14 @@ export class SearchService {
     const options = createRequestOption(req.pageable);
     return this.http.post<Magazine[]>('api/searchMagazine', req.searchDTO, {params: options, observe: 'response'});
   }
+
+  searchMagazines(req?: any): Observable<Magazine[]> {
+    const options = createRequestOption(req.pageable);
+    return this.http.post<Magazine[]>('api/salesMagazines', {params: options, observe: 'response'});
+  }
+
+  searchBooks(req?: any): Observable<Book[]> {
+    const options = createRequestOption(req.pageable);
+    return this.http.post<Book[]>('api/salesBooks', {params: options, observe: 'response'});
+  }
 }

@@ -53,8 +53,18 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     private Long visit = 0L;
 
+    private boolean toShow = false;
+
     @Version
     private Long version;
+
+    public boolean isToShow() {
+        return toShow;
+    }
+
+    public void setToShow(boolean toShow) {
+        this.toShow = toShow;
+    }
 
     public String getId() {
         return id;

@@ -1,21 +1,14 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {HttpResponse} from "@angular/common/http";
 import {NgbModal, NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 
 import {AlertService} from "../../shared/alert/alert.service";
-import {TopicService} from "../../admin/topic/topic.service";
-import {EditorService} from "../../admin/editor/editor.service";
-import {AuthorService} from "../../admin/author/author.service";
 import {SearchService} from "../search.service";
 
 import {Book} from "../../admin/book/model/book";
-import {Topic} from "../../admin/topic/model/topic";
-import {Editor} from "../../admin/editor/model/editor";
-import {Author} from "../../admin/author/model/author";
 import {Search} from "../model/search";
-import {Classification} from "../../admin/classification/model/classification";
-import {ClassificationService} from "../../admin/classification/classification.service";
 import {TranslateService} from "@ngx-translate/core";
+import {Magazine} from "../../admin/magazine/model/magazine";
+import {CartService} from "../cart.service";
 
 
 @Component({
@@ -33,42 +26,58 @@ export class SearchGeneralComponent implements OnInit {
   bookList: Book[];
   predicate: any;
   reverse: any;
-  currentRate = 2;
-  years: string[];
-  classifications: Classification[];
   selectedBook: Book;
+  currentLang: string;
+  searchMore: boolean;
+  load: boolean;
 
-  topics: Topic[];
-  editors: Editor[];
-  authorList: Author[];
-  images: string[];
+  pageMagazine: number;
+  itemsPerPageMagazine: number;
+  totalItemsMagazine: any;
+  selectedMagazine: Magazine;
+  magazineList: Magazine[];
+  predicateMagazine: any;
+  reverseMagazine: any;
 
-  constructor(config: NgbRatingConfig,
-              private searchService: SearchService,
+  constructor(private searchService: SearchService,
               private alertService: AlertService,
               private translateService: TranslateService,
-              private topicService: TopicService,
-              private classificationService: ClassificationService,
-              private modalService: NgbModal,
-              private editorService: EditorService,
-              private authorService: AuthorService) {
-    config.max = 5;
-    this.itemsPerPage = 12;
+              private shoppingService: CartService,
+              private modalService: NgbModal) {
+    this.itemsPerPage = 4;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;
     this.selectedBook = new Book();
-    this.images = ["assets/images/img.jpg", "assets/images/login.png", "assets/images/img.jpg"];
 
-    this.years = [];
-    for (let i = 1800; i < 2100; i++) {
-      this.years.push(String(i));
-    }
+    this.itemsPerPageMagazine = 4;
+    this.predicateMagazine = 'id';
+    this.reverseMagazine = true;
+    this.pageMagazine = 0;
+    this.selectedMagazine = new Magazine();
   }
 
   ngOnInit() {
     this.getBooks(null);
-    this.findClassifications();
+    this.getMagazines(null);
+  }
+
+  getMagazines(param) {
+    if (param === 'btn')
+      this.pageMagazine = 0;
+
+    this.magazineList = [];
+    this.searchService.searchMagazines({
+      pageable: {
+        page: this.pageMagazine - 1,
+        size: this.itemsPerPageMagazine,
+        sort: this.sortMagazine()
+      }
+    })
+      .subscribe(
+        (response: Magazine[]) => this.onSuccessMagazine(response),
+        (response: any) => this.onError(response)
+      );
   }
 
   getBooks(param) {
@@ -76,8 +85,7 @@ export class SearchGeneralComponent implements OnInit {
       this.page = 0;
 
     this.bookList = [];
-    this.searchService.searchBook({
-      searchDTO: this.search,
+    this.searchService.searchBooks({
       pageable: {
         page: this.page - 1,
         size: this.itemsPerPage,
@@ -85,14 +93,19 @@ export class SearchGeneralComponent implements OnInit {
       }
     })
       .subscribe(
-        (response: HttpResponse<Book[]>) => this.onSuccess(response),
-        (response: HttpResponse<any>) => this.onError(response)
+        (response: Book[]) => this.onSuccess(response),
+        (response: any) => this.onError(response)
       );
   }
 
   private onSuccess(res) {
-    this.bookList = res.body.elements;
-    this.totalItems = res.body.total;
+    this.bookList = res.elements;
+    this.totalItems = res.total;
+  }
+
+  private onSuccessMagazine(res) {
+    this.magazineList = res.elements;
+    this.totalItemsMagazine = res.total;
   }
 
   private onError(response) {
@@ -109,26 +122,16 @@ export class SearchGeneralComponent implements OnInit {
     return result;
   }
 
+  sortMagazine() {
+    const result = [this.predicateMagazine + ',' + (this.reverseMagazine ? 'asc' : 'desc')];
+    if (this.predicateMagazine !== 'id') {
+      result.push('id');
+    }
+    return result;
+  }
+
   trackIdentity(index, item: Book) {
     return item.id;
-  }
-
-  findClassifications() {
-    this.classificationService.getAllClassifications()
-      .subscribe(response => this.onClassificationsSuccess(response),
-        response => this.onError(response));
-  }
-
-  private onClassificationsSuccess(response) {
-    this.classifications = [];
-    if (response) {
-      for (let i in response) {
-        this.classifications.push({
-          id: response[i].id,
-          name: this.translateService.instant(response[i].name)
-        });
-      }
-    }
   }
 
   selectBook(book) {
@@ -136,9 +139,25 @@ export class SearchGeneralComponent implements OnInit {
     this.selectedBook = book;
   }
 
+  selectMagazine(magazine) {
+    this.selectedMagazine = new Magazine();
+    this.selectedMagazine = magazine;
+  }
+
   addToCar() {
-    console.log(this.selectedBook.id);
+    this.shoppingService.addToCar(this.selectedBook, true);
+    this.alertService.info('shopping.success', null, null);
     this.cancel();
+  }
+
+  addToCarMagazine() {
+    this.shoppingService.addToCar(this.selectedMagazine, false);
+    this.alertService.info('shopping.success', null, null);
+    this.cancel();
+  }
+
+  magazineDetails(details) {
+    this.modalService.open(details);
   }
 
   bookDetails(details) {
