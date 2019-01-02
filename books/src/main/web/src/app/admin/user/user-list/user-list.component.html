@@ -59,6 +59,7 @@
         <th scope="col" [translate]="'user.lastName'">LastName</th>
         <th scope="col" [translate]="'user.username'">Username</th>
         <th scope="col" [translate]="'user.email'">Email</th>
+        <th scope="col" [translate]="'user.type'">Type</th>
         <th scope="col"></th>
       </tr>
       </thead>
@@ -71,6 +72,8 @@
         <td>{{user.lastName}}</td>
         <td>{{user.userName}}</td>
         <td>{{user.email}}</td>
+        <td *ngIf="user.isAdmin === 'true'" [translate]="'user.employee'"></td>
+        <td *ngIf="user.isAdmin === 'false'" [translate]="'user.customer'"></td>
         <td>
           <button class="btn btn-primary table-button"
                   (click)="editUser(user)"><i class="fa fa-edit"></i>

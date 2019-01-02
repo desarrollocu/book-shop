@@ -75,7 +75,10 @@
     "no": "No",
     "delete": "Delete user",
     "changePass": "Change password",
-    "register": "Register user"
+    "register": "Register user",
+    "customer":"Customer",
+    "employee":"Employee",
+    "type":"Type"
   },
   "book": {
     "add": " Add book",

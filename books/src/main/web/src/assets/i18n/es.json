@@ -75,7 +75,10 @@
     "no": "No",
     "delete": "Eliminar usuario",
     "changePass": "Cambiar contraseña",
-    "register": "Registar usuario"
+    "register": "Registar usuario",
+    "customer":"Cliente",
+    "employee":"Empleado",
+    "type":"Tipo"
   },
   "book": {
     "add": " Adicionar libro",
