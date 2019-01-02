@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import soft.co.books.domain.collection.CustomError;
+import soft.co.books.domain.service.ErrorService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,9 +18,19 @@ import java.util.Set;
 @ControllerAdvice
 public class ExceptionTranslator {
 
+    private final ErrorService errorService;
+
+    public ExceptionTranslator(ErrorService errorService) {
+        this.errorService = errorService;
+    }
+
     @ExceptionHandler
     public ResponseEntity<ErrorDTO> throwable(Throwable ex) {
         ErrorDTO errorDTO = new ErrorDTO();
+
+        CustomError customError = new CustomError();
+        customError.setError(ex.getMessage());
+        errorService.save(customError);
 
         if (ex instanceof MethodArgumentNotValidException) {
             errorDTO.setError("error.badRequest");
