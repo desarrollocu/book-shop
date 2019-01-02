@@ -41,25 +41,27 @@ export class AlertService {
   }
 
   error(msg, params, position) {
-    this.item.title = this.translateService.instant('error.title');
-    if (this.i18nEnabled && msg) {
-      msg = this.translateService.instant(msg);
-      if (params) {
-        if (Array.isArray(params)) {
-          for (let v in params) {
-            let key = params[v];
-            let trans = this.translateService.instant(key);
-            msg += ' (' + trans + ')';
+    if (msg !== 'Unauthorized') {
+      this.item.title = this.translateService.instant('error.title');
+      if (this.i18nEnabled && msg) {
+        msg = this.translateService.instant(msg);
+        if (params) {
+          if (Array.isArray(params)) {
+            for (let v in params) {
+              let key = params[v];
+              let trans = this.translateService.instant(key);
+              msg += ' (' + trans + ')';
+            }
+          }
+          else {
+            msg += ' (' + this.translateService.instant(params + ')');
           }
         }
-        else {
-          msg += ' (' + this.translateService.instant(params + ')');
-        }
       }
-    }
 
-    this.item.body = msg;
-    this.alertService.notifyError(this.item);
+      this.item.body = msg;
+      this.alertService.notifyError(this.item);
+    }
   }
 
   warning = function (msg, params, position) {

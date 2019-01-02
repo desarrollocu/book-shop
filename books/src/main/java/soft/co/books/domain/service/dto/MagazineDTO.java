@@ -5,7 +5,6 @@ import soft.co.books.domain.collection.Magazine;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 
 /**
  * A DTO representing an magazine.
@@ -49,14 +48,6 @@ public class MagazineDTO {
 
     private ShowDTO toShow;
 
-    private String createdBy;
-
-    private Instant createdDate;
-
-    private String lastModifiedBy;
-
-    private Instant lastModifiedDate;
-
     public MagazineDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -79,10 +70,6 @@ public class MagazineDTO {
         this.coin = magazine.getCoin();
         this.image = magazine.getImageUrl();
         this.visit = magazine.getVisit();
-        this.createdBy = magazine.getCreatedBy();
-        this.createdDate = magazine.getCreatedDate();
-        this.lastModifiedBy = magazine.getLastModifiedBy();
-        this.lastModifiedDate = magazine.getLastModifiedDate();
     }
 
     public ShowDTO getToShow() {
@@ -195,38 +182,6 @@ public class MagazineDTO {
 
     public void setVisit(Long visit) {
         this.visit = visit;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

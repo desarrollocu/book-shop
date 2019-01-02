@@ -30,9 +30,10 @@ export class BookManagementComponent implements OnInit {
   years: string[];
   currentLang: string;
   toShowList: any[];
-  imagePath;
+  imagePath: any;
   message: string;
   imageSize: any;
+  file: File;
 
   constructor(private alertService: AlertDialogService,
               private bookService: BookService,
@@ -72,7 +73,7 @@ export class BookManagementComponent implements OnInit {
   }
 
   saveBook() {
-    this.bookService.saveBook(this.book)
+    this.bookService.saveBook(this.book, this.file)
       .subscribe(response => this.onSuccess(response, this.book),
         response => this.onError(response));
   }
@@ -168,6 +169,7 @@ export class BookManagementComponent implements OnInit {
         }
       }
       this.book = result.body;
+      this.imagePath = this.book.image;
     }
     else {
       this.book = new Book();
@@ -208,11 +210,11 @@ export class BookManagementComponent implements OnInit {
     }
     else {
       let reader = new FileReader();
-      this.imagePath = files;
       reader.readAsDataURL(files[0]);
       reader.onload = (_event) => {
-        this.book.image = reader.result;
-      }
+        this.imagePath = reader.result;
+        this.file = files[0];
+      };
     }
   }
 

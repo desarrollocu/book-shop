@@ -87,6 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/salesMagazines").permitAll()
                 .antMatchers("/api/salesBooks").permitAll()
                 .antMatchers("/api/registerUser").permitAll()
+                .antMatchers("/api/files/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .and()

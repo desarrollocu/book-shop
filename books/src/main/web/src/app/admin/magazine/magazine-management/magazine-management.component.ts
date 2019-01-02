@@ -25,9 +25,10 @@ export class MagazineManagementComponent implements OnInit {
   years: string[];
   currentLang: string;
   toShowList: any[];
-  imagePath;
+  imagePath: any;
   message: string;
   imageSize: any;
+  file: File;
 
   constructor(private alertService: AlertDialogService,
               private magazineService: MagazineService,
@@ -63,7 +64,7 @@ export class MagazineManagementComponent implements OnInit {
   }
 
   saveMagazine() {
-    this.magazineService.saveMagazine(this.magazine)
+    this.magazineService.saveMagazine(this.magazine, this.file)
       .subscribe(response => this.onSuccess(response, this.magazine),
         response => this.onError(response));
   }
@@ -119,6 +120,7 @@ export class MagazineManagementComponent implements OnInit {
       if (result.body.toShow)
         result.body.toShow.elem = this.translateService.instant(result.body.toShow.elem);
       this.magazine = result.body;
+      this.imagePath = this.magazine.image;
     }
     else {
       this.magazine = new Magazine();
@@ -162,7 +164,8 @@ export class MagazineManagementComponent implements OnInit {
       this.imagePath = files;
       reader.readAsDataURL(files[0]);
       reader.onload = (_event) => {
-        this.magazine.image = reader.result;
+        this.imagePath = reader.result;
+        this.file = files[0];
       }
     }
   }

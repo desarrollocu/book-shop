@@ -23,7 +23,7 @@
                   width: 250px!important;
                   margin-bottom: 0px!important;
                   text-align: center;
-                  margin-left: 45px;">
+                  margin-left: 18%;">
         <span [translate]="'book.mostSale'">Most sales books</span>
       </div>
       <div class="mag-posts-content-most-sale mt-30 mb-30 p-30 box-shadow">
@@ -39,7 +39,7 @@
                  (click)="selectBook(book)"
                  class="d-block mb-4 h-100 img-text">
                 <figure class="align-figure">
-                  <img *ngIf="book.image" src="{{book.image}}" height="190" width="125" alt=""/>
+                  <img *ngIf="book.image" [src]="book.image" height="190" width="125" alt=""/>
                   <img *ngIf="!book.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
                   <figcaption>
                     <strong>{{book.coin + book.salePrice}}</strong>
@@ -80,7 +80,7 @@
                   width: 250px!important;
                   margin-bottom: 0px!important;
                   text-align: center;
-                  margin-left: 45px;">
+                  margin-left: 18%;">
         <span [translate]="'magazine.mostSale'">Most sales magazines</span>
       </div>
       <div class="mag-posts-content-most-sale mt-30 mb-30 p-30 box-shadow">
@@ -96,7 +96,7 @@
                  (click)="selectMagazine(magazine)"
                  class="d-block mb-4 h-100 img-text">
                 <figure class="align-figure">
-                  <img *ngIf="magazine.image" src="{{magazine.image}}" height="190" width="125" alt=""/>
+                  <img *ngIf="magazine.image" [src]="magazine.image" height="190" width="125" alt=""/>
                   <img *ngIf="!magazine.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
                   <figcaption>
                     <strong>{{magazine.coin + magazine.salePrice}}</strong>

@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 
 import {createRequestOption} from '../../shared/util/request-util';
 import {Magazine} from "./model/magazine";
+import {Book} from "../book/model/book";
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,14 @@ export class MagazineService {
     return this.http.post<Magazine>('api/magazine', magazine, {observe: 'response'});
   }
 
-  saveMagazine(magazine: Magazine): Observable<HttpResponse<Magazine>> {
-    return this.http.post<Magazine>('api/saveMagazine', magazine, {observe: 'response'});
+  saveMagazine(magazine: Magazine, file: File): Observable<HttpResponse<Magazine>> {
+    const formData: FormData = new FormData();
+    if (file === undefined)
+      file = null;
+    formData.append('file', file);
+    formData.append('magazineDTO', new Blob([JSON.stringify(magazine)], {type: 'application/json'}));
+
+    return this.http.post<Book>('api/saveMagazine', formData, {observe: 'response'});
   }
 
   deleteMagazine(magazineId: string): Observable<any> {

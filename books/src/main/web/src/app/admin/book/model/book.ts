@@ -17,6 +17,7 @@ export class Book {
     public coin?: string,
     public stockNumber?: number,
     public toShow?: any,
+    public file?: any,
     public image?: string,
     public descriptorList?: any[],
     public visit?: number,

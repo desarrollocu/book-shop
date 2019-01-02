@@ -1,6 +1,6 @@
 <section class="mag-posts-area d-flex flex-wrap">
   <!--<div class="col-md-12" style="margin-top: 10px">-->
-    <!--<app-alert></app-alert>-->
+  <!--<app-alert></app-alert>-->
   <!--</div>-->
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
     <form #magazineSearchForm="ngForm" (submit)="getMagazines('btn')">
@@ -78,7 +78,7 @@
          (click)="selectMagazine(magazine)"
          class="d-block mb-4 h-100 img-text">
         <figure>
-          <img *ngIf="magazine.image" src="{{magazine.image}}" height="190" width="125" alt=""/>
+          <img *ngIf="magazine.image" [src]="magazine.image" height="190" width="125" alt=""/>
           <img *ngIf="!magazine.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
           <figcaption>
             <strong>{{magazine.coin + magazine.salePrice}}</strong>
@@ -104,7 +104,8 @@
 </div>
 <div class="d-flex justify-content-center"
      style="padding-bottom: 20px; font-size: 34px;"
-     *ngIf="magazineList.length === 0 && load" [translate]="'general.emptyMagazine'">No Magazines Found</div>
+     *ngIf="magazineList.length === 0 && load" [translate]="'general.emptyMagazine'">No Magazines Found
+</div>
 <ngb-pagination class="d-flex justify-content-center"
                 [collectionSize]="totalItems"
                 [(page)]="page"

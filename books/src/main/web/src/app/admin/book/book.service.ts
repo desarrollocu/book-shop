@@ -22,8 +22,14 @@ export class BookService {
     return this.http.post<Book>('api/book', book, {observe: 'response'});
   }
 
-  saveBook(book: Book): Observable<HttpResponse<Book>> {
-    return this.http.post<Book>('api/saveBook', book, {observe: 'response'});
+  saveBook(book: Book, file: File): Observable<HttpResponse<Book>> {
+    const formData: FormData = new FormData();
+    if (file === undefined)
+      file = null;
+    formData.append('file', file);
+    formData.append('bookDTO', new Blob([JSON.stringify(book)], {type: 'application/json'}));
+
+    return this.http.post<Book>('api/saveBook', formData, {observe: 'response'});
   }
 
   deleteBook(bookId: string): Observable<any> {

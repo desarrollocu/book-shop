@@ -20,6 +20,10 @@
   margin-left: 0%;
 }
 
+.one-item {
+  margin-left: 88px;
+}
+
 @media only screen and (min-width: 1200px) and (max-width: 1499px) {
   .mag-posts-content-carousel {
     -webkit-box-flex: 0;
@@ -37,6 +41,10 @@
     max-width: 380px;
     width: 380px;
     margin-left: 20px;
+  }
+
+  .one-item {
+    margin-left: 88px;
   }
 }
 
@@ -57,6 +65,10 @@
     max-width: 380px;
     width: 380px;
     margin-left: 20px;
+  }
+
+  .one-item {
+    margin-left: 88px;
   }
 }
 
@@ -81,6 +93,10 @@
   .align-figure {
     margin-left: 50%;
   }
+
+  .one-item {
+    margin-left: 0px;
+  }
 }
 
 @media only screen and (max-width: 767px) {
@@ -104,9 +120,9 @@
   .align-figure {
     margin-left: calc(100% - 55%);;
   }
-}
 
-.one-item {
-  margin-left: 88px;
+  .one-item {
+    margin-left: 0px;
+  }
 }
 

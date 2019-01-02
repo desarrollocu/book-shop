@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
+import soft.co.books.configuration.storage.StorageService;
 import soft.co.books.domain.collection.Author;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.repository.BookRepository;
@@ -44,12 +45,15 @@ public class BookService extends CustomBaseService<Book, String> {
 
     private final ClassificationService classificationService;
 
+    private final StorageService storageService;
+
     private MongoTemplate mongoTemplate;
 
     public BookService(BookRepository bookRepository,
                        MongoTemplate mongoTemplate,
                        TopicService topicService,
                        AuthorService authorService,
+                       StorageService storageService,
                        EditorService editorService, ClassificationService classificationService) {
         super(bookRepository);
         this.bookRepository = bookRepository;
@@ -58,6 +62,7 @@ public class BookService extends CustomBaseService<Book, String> {
         this.editorService = editorService;
         this.topicService = topicService;
         this.classificationService = classificationService;
+        this.storageService = storageService;
     }
 
     public PageResultDTO findAll(BookDTO bookDTO, Pageable pageable) {
@@ -96,6 +101,7 @@ public class BookService extends CustomBaseService<Book, String> {
 
     public Optional<BookDTO> createBook(BookDTO bookDTO) {
         Book book = new Book();
+        book.setId(bookDTO.getId());
         book.setTitle(bookDTO.getTitle());
         book.setSubTitle(bookDTO.getSubTitle());
         book.setCity(bookDTO.getCity());
@@ -126,7 +132,10 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setSize(bookDTO.getSize());
         book.setIsbn(bookDTO.getIsbn());
         book.setSalePrice(bookDTO.getSalePrice());
-        book.setToShow(bookDTO.getToShow().isVal());
+        if (bookDTO.getToShow() != null)
+            book.setToShow(bookDTO.getToShow().isVal());
+        else
+            book.setToShow(false);
         book.setStockNumber(bookDTO.getStockNumber());
         book.setCoin(bookDTO.getCoin());
         book.setImageUrl(bookDTO.getImage());
@@ -173,10 +182,16 @@ public class BookService extends CustomBaseService<Book, String> {
                     book.setIsbn(bookDTO.getIsbn());
                     book.setSalePrice(bookDTO.getSalePrice());
                     book.setCoin(bookDTO.getCoin());
-                    book.setImageUrl(bookDTO.getImage());
                     book.setStockNumber(bookDTO.getStockNumber());
                     book.setVisit(bookDTO.getVisit());
-                    book.setToShow(bookDTO.getToShow().isVal());
+                    book.setImageUrl(bookDTO.getImage());
+                    if (bookDTO.getImage() == null)
+                        storageService.deleteById(book.getId());
+
+                    if (bookDTO.getToShow() != null)
+                        book.setToShow(bookDTO.getToShow().isVal());
+                    else
+                        book.setToShow(false);
 
                     if (bookDTO.getDescriptors() != null) {
                         if (bookDTO.getDescriptors() != "") {
@@ -184,7 +199,6 @@ public class BookService extends CustomBaseService<Book, String> {
                             book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
                         }
                     }
-
                     bookRepository.save(book);
                     log.debug("Changed Information for Book: {}", book);
                     return book;
@@ -194,6 +208,7 @@ public class BookService extends CustomBaseService<Book, String> {
 
     public void delete(String id) {
         bookRepository.findById(id).ifPresent(book -> {
+            storageService.deleteById(book.getId());
             bookRepository.delete(book);
             log.debug("Deleted Book: {}", book);
         });

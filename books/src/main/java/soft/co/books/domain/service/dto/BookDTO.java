@@ -64,14 +64,6 @@ public class BookDTO {
 
     private ShowDTO toShow;
 
-    private String createdBy;
-
-    private Instant createdDate;
-
-    private String lastModifiedBy;
-
-    private Instant lastModifiedDate;
-
     public BookDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -106,10 +98,6 @@ public class BookDTO {
         }
 
         this.visit = book.getVisit();
-        this.createdBy = book.getCreatedBy();
-        this.createdDate = book.getCreatedDate();
-        this.lastModifiedBy = book.getLastModifiedBy();
-        this.lastModifiedDate = book.getLastModifiedDate();
     }
 
     public ShowDTO getToShow() {
@@ -174,38 +162,6 @@ public class BookDTO {
 
     public void setTopic(TopicDTO topic) {
         this.topic = topic;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getId() {

@@ -187,12 +187,12 @@
             <div class="alert-info msg"><p [translate]="'general.image.text'"></p></div>
           </div>
           <div class="col-md-3">
-            <div *ngIf="magazine.image">
+            <div *ngIf="imagePath">
               <figure>
-                <img [src]="magazine.image" height="190" width="125">
+                <img [src]="imagePath" height="190" width="125">
               </figure>
             </div>
-            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!magazine.image">
+            <div style="background-color: #aaaaaa; height: 190px;width: 125px;" *ngIf="!imagePath">
               <img src="assets/images/image.gif" alt="">
             </div>
             <div>

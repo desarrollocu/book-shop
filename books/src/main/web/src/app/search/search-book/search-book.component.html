@@ -119,7 +119,7 @@
          (click)="selectBook(book)"
          class="d-block mb-4 h-100 img-text">
         <figure>
-          <img *ngIf="book.image" src="{{book.image}}" height="190" width="125" alt=""/>
+          <img *ngIf="book.image" [src]="book.image" height="190" width="125" alt=""/>
           <img *ngIf="!book.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
           <figcaption>
             <strong>{{book.coin + book.salePrice}}</strong>

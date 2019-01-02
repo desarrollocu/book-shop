@@ -25,14 +25,6 @@ public class TopicDTO {
 
     private String name;
 
-    private String createdBy;
-
-    private Instant createdDate;
-
-    private String lastModifiedBy;
-
-    private Instant lastModifiedDate;
-
     public TopicDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -41,10 +33,6 @@ public class TopicDTO {
         this.id = topic.getId();
         this.spanishName = topic.getSpanishName();
         this.englishName = topic.getEnglishName();
-        this.createdBy = topic.getCreatedBy();
-        this.createdDate = topic.getCreatedDate();
-        this.lastModifiedBy = topic.getLastModifiedBy();
-        this.lastModifiedDate = topic.getLastModifiedDate();
     }
 
     public String getId() {
@@ -69,38 +57,6 @@ public class TopicDTO {
 
     public void setSpanishName(String spanishName) {
         this.spanishName = spanishName;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getName() {

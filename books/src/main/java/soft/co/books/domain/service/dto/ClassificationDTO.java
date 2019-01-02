@@ -18,14 +18,6 @@ public class ClassificationDTO {
     @Size(max = 500, message = Constants.ERR_MAX500)
     private String name;
 
-    private String createdBy;
-
-    private Instant createdDate;
-
-    private String lastModifiedBy;
-
-    private Instant lastModifiedDate;
-
     public ClassificationDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -33,10 +25,6 @@ public class ClassificationDTO {
     public ClassificationDTO(Classification classification) {
         this.id = classification.getId();
         this.name = classification.getName();
-        this.createdBy = classification.getCreatedBy();
-        this.createdDate = classification.getCreatedDate();
-        this.lastModifiedBy = classification.getLastModifiedBy();
-        this.lastModifiedDate = classification.getLastModifiedDate();
     }
 
     public String getId() {
@@ -53,38 +41,6 @@ public class ClassificationDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

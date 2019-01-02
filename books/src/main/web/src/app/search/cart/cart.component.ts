@@ -25,15 +25,15 @@ export class CartComponent implements OnInit, AfterViewChecked {
   paypalConfig = {
     env: 'sandbox',
     client: {
-      sandbox: '<your-sandbox-key-here>',
-      production: '<your-production-key here>'
+      sandbox: 'fbmkddpqf79rzxzh$23544910adadd67f0b3bed0d508e3d2a',
+      // production: '<your-production-key here>'
     },
     commit: true,
     payment: (data, actions) => {
       return actions.payment.create({
         payment: {
           transactions: [
-            {amount: {total: this.finalAmount, currency: 'INR'}}
+            {amount: {total: this.finalAmount, currency: 'USD'}}
           ]
         }
       });
@@ -57,23 +57,23 @@ export class CartComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    // if (!this.addScript) {
-    //   this.addPaypalScript().then(() => {
-    //     paypal.Button.render(this.paypalConfig, '#paypal-checkout-btn');
-    //     this.paypalLoad = false;
-    //   })
-    // }
+    if (!this.addScript) {
+      this.addPaypalScript().then(() => {
+        paypal.Button.render(this.paypalConfig, '#paypal-checkout-btn');
+        this.paypalLoad = false;
+      })
+    }
   }
 
-  // addPaypalScript() {
-  //   this.addScript = true;
-  //   return new Promise((resolve, reject) => {
-  //     let scripttagElement = document.createElement('script');
-  //     scripttagElement.src = 'https://www.paypalobjects.com/api/checkout.js';
-  //     scripttagElement.onload = resolve;
-  //     document.body.appendChild(scripttagElement);
-  //   })
-  // }
+  addPaypalScript() {
+    this.addScript = true;
+    return new Promise((resolve, reject) => {
+      let scripttagElement = document.createElement('script');
+      scripttagElement.src = 'https://www.paypalobjects.com/api/checkout.js';
+      scripttagElement.onload = resolve;
+      document.body.appendChild(scripttagElement);
+    })
+  }
 
   getProducts(val?: any) {
     this.cartService.getProducts(val)

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
+import soft.co.books.configuration.storage.StorageService;
 import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.repository.MagazineRepository;
 import soft.co.books.domain.service.dto.MagazineDTO;
@@ -35,16 +36,20 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
 
     private final EditorService editorService;
 
+    private final StorageService storageService;
+
     private MongoTemplate mongoTemplate;
 
     public MagazineService(MagazineRepository magazineRepository,
                            MongoTemplate mongoTemplate,
+                           StorageService storageService,
                            TopicService topicService, EditorService editorService) {
         super(magazineRepository);
         this.magazineRepository = magazineRepository;
         this.mongoTemplate = mongoTemplate;
         this.topicService = topicService;
         this.editorService = editorService;
+        this.storageService = storageService;
     }
 
     public PageResultDTO findAll(MagazineDTO magazineDTO, Pageable pageable) {
@@ -74,6 +79,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
 
     public Optional<MagazineDTO> createMagazine(MagazineDTO magazineDTO) {
         Magazine magazine = new Magazine();
+        magazine.setId(magazineDTO.getId());
         magazine.setTitle(magazineDTO.getTitle());
         magazine.setCity(magazineDTO.getCity());
         if (magazineDTO.getEditor() != null) {
@@ -83,7 +89,10 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
             magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
         }
         magazine.setPublishYear(magazineDTO.getPublishYear());
-        magazine.setToShow(magazineDTO.getToShow().isVal());
+        if (magazineDTO.getToShow() != null)
+            magazine.setToShow(magazineDTO.getToShow().isVal());
+        else
+            magazine.setToShow(false);
         magazine.setStockNumber(magazineDTO.getStockNumber());
         magazine.setFrequency(magazineDTO.getFrequency());
         magazine.setIsbn(magazineDTO.getIsbn());
@@ -111,21 +120,29 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                 .map(magazine -> {
                     magazine.setTitle(magazineDTO.getTitle());
                     magazine.setCity(magazineDTO.getCity());
+                    magazine.setPublishYear(magazineDTO.getPublishYear());
+                    magazine.setStockNumber(magazineDTO.getStockNumber());
+                    magazine.setFrequency(magazineDTO.getFrequency());
+                    magazine.setIsbn(magazineDTO.getIsbn());
+                    magazine.setSalePrice(magazineDTO.getSalePrice());
+                    magazine.setCoin(magazineDTO.getCoin());
+                    magazine.setVisit(magazineDTO.getVisit());
+                    magazine.setImageUrl(magazineDTO.getImage());
+
                     if (magazineDTO.getEditor() != null) {
                         magazine.setEditor(editorService.findOne(magazineDTO.getEditor().getId()).get());
                     }
                     if (magazineDTO.getTopic() != null) {
                         magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
                     }
-                    magazine.setPublishYear(magazineDTO.getPublishYear());
-                    magazine.setToShow(magazineDTO.getToShow().isVal());
-                    magazine.setStockNumber(magazineDTO.getStockNumber());
-                    magazine.setFrequency(magazineDTO.getFrequency());
-                    magazine.setIsbn(magazineDTO.getIsbn());
-                    magazine.setSalePrice(magazineDTO.getSalePrice());
-                    magazine.setCoin(magazineDTO.getCoin());
-                    magazine.setImageUrl(magazineDTO.getImage());
-                    magazine.setVisit(magazineDTO.getVisit());
+
+                    if (magazineDTO.getImage() == null)
+                        storageService.deleteById(magazine.getId());
+
+                    if (magazineDTO.getToShow() != null)
+                        magazine.setToShow(magazineDTO.getToShow().isVal());
+                    else
+                        magazine.setToShow(false);
 
                     magazineRepository.save(magazine);
                     log.debug("Changed Information for Magazine: {}", magazine);
@@ -136,6 +153,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
 
     public void delete(String id) {
         magazineRepository.findById(id).ifPresent(magazine -> {
+            storageService.deleteById(magazine.getId());
             magazineRepository.delete(magazine);
             log.debug("Deleted Magazine: {}", magazine);
         });
