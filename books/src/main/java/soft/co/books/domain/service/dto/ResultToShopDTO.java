@@ -11,6 +11,11 @@ public class ResultToShopDTO {
     private String image;
     private String coin;
     private int cant;
+    private String city;
+    private EditorDTO editor;
+    private String isbn;
+    private TopicDTO topic;
+    private double mount;
 
     public ResultToShopDTO() {
     }
@@ -21,6 +26,10 @@ public class ResultToShopDTO {
         this.salePrice = book.getSalePrice();
         this.title = book.getTitle();
         this.coin = book.getCoin();
+        this.city = book.getCity();
+        this.editor = book.getEditorOrNull().map(EditorDTO::new).orElse(null);
+        this.isbn = book.getIsbn();
+        this.topic = book.getTopicOrNull().map(TopicDTO::new).orElse(null);
     }
 
     public ResultToShopDTO(Magazine magazine) {
@@ -29,6 +38,50 @@ public class ResultToShopDTO {
         this.salePrice = magazine.getSalePrice();
         this.title = magazine.getTitle();
         this.coin = magazine.getCoin();
+        this.city = magazine.getCity();
+        this.editor = magazine.getEditorOrNull().map(EditorDTO::new).orElse(null);
+        this.isbn = magazine.getIsbn();
+        this.topic = magazine.getTopicOrNull().map(TopicDTO::new).orElse(null);
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public EditorDTO getEditor() {
+        return editor;
+    }
+
+    public void setEditor(EditorDTO editor) {
+        this.editor = editor;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public TopicDTO getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicDTO topic) {
+        this.topic = topic;
+    }
+
+    public double getMount() {
+        return mount;
+    }
+
+    public void setMount(double mount) {
+        this.mount = mount;
     }
 
     public String getCoin() {

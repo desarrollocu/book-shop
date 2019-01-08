@@ -6,11 +6,12 @@ import {SearchMagazineComponent} from './search-magazine/search-magazine.compone
 import {SharedModule} from '../shared/shared.module';
 import {SearchRoutingModule} from './search-routing';
 import {CartComponent} from './cart/cart.component';
+import {PaypalComponent} from './paypal/paypal.component';
 
 
 @NgModule({
   declarations: [SearchGeneralComponent, SearchBookComponent,
-    SearchMagazineComponent, CartComponent],
+    SearchMagazineComponent, CartComponent, PaypalComponent],
   imports: [
     SharedModule,
     SearchRoutingModule

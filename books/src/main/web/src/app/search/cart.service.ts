@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 
 import {Doc} from './cart/model/doc';
 import {Product} from './cart/model/product';
+import {Sale} from "./cart/model/sale";
 
 
 @Injectable({
@@ -86,6 +87,11 @@ export class CartService {
     this.getCarSubject().next(cant);
   }
 
+  cleanCart() {
+    this.productList = [];
+    this.getCarSubject().next(0);
+  }
+
   private existProduct(id?: string) {
     for (let i in this.productList) {
       if (this.productList[i].id === id)
@@ -93,5 +99,9 @@ export class CartService {
     }
 
     return -1;
+  }
+
+  saveSale(sale: Sale): Observable<HttpResponse<Sale>> {
+    return this.http.post<Sale>('api/saveSale', sale, {observe: 'response'});
   }
 }

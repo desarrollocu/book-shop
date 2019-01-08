@@ -1,11 +1,11 @@
 package soft.co.books.domain.collection.data;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
-import soft.co.books.domain.collection.Book;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,15 +17,27 @@ public class Detail implements Serializable {
     @Id
     private String id;
 
-    @DBRef
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private Book book;
+    @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
+    private String title;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String city;
+
+    private EditorDetail editor;
+
+    @Field("sell_price")
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private double salePrice;
+
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String isbn;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private TopicDetail topic;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private int cant;
-
-    @NotNull(message = Constants.ERR_NOT_NULL)
-    private double price;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double mount;
@@ -33,12 +45,52 @@ public class Detail implements Serializable {
     public Detail() {
     }
 
-    public Book getBook() {
-        return book;
+    public String getTitle() {
+        return title;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public EditorDetail getEditor() {
+        return editor;
+    }
+
+    public void setEditor(EditorDetail editor) {
+        this.editor = editor;
+    }
+
+    public double getSalePrice() {
+        return salePrice;
+    }
+
+    public void setSalePrice(double salePrice) {
+        this.salePrice = salePrice;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public TopicDetail getTopic() {
+        return topic;
+    }
+
+    public void setTopic(TopicDetail topic) {
+        this.topic = topic;
     }
 
     public int getCant() {
@@ -47,14 +99,6 @@ public class Detail implements Serializable {
 
     public void setCant(int cant) {
         this.cant = cant;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public double getMount() {
@@ -90,9 +134,13 @@ public class Detail implements Serializable {
     @Override
     public String toString() {
         return "Detail{" +
-                "book=" + book +
+                "title=" + title +
                 ", cant=" + cant +
-                ", price=" + price +
+                ", salePrice=" + salePrice +
+                ", city=" + city +
+                ", editor=" + editor +
+                ", topic=" + topic +
+                ", isbn=" + isbn +
                 ", mount=" + mount +
                 '}';
     }

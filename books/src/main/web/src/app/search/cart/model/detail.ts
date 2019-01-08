@@ -1,18 +1,16 @@
 import {Editor} from "../../../admin/editor/model/editor";
 import {Topic} from "../../../admin/topic/model/topic";
 
-export class Doc {
+export class Detail {
   constructor(
-    public id?: string,
+    public id?: any,
     public title?: string,
-    public coin?: string,
-    public image?: string,
-    public salePrice?: number,
-    public cant?: number,
     public city?: string,
     public editor?: Editor,
+    public salePrice?: number,
     public isbn?: string,
     public topic?: Topic,
+    public cant?: number,
     public mount?: number,
   ) {
   }

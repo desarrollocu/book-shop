@@ -12,7 +12,7 @@
     "cancel": "Cancelar",
     "confirm": "Confirmar",
     "sureMessage": "¿Está seguro?",
-    "sureMessage1":" va a ser eliminado(a)",
+    "sureMessage1": " va a ser eliminado(a)",
     "image": {
       "error": "Solo seleccione imágenes.",
       "errorSize": "El tamaño debe ser menor de 500KB.",
@@ -20,7 +20,8 @@
     },
     "addCar": " Adicionar al carrito",
     "close": " Cerrar",
-    "details": "Ver detalles"
+    "details": "Ver detalles",
+    "payPal": "El botón de Paypal se está cargando"
   },
   "login": {
     "username": "Usuario",
@@ -76,9 +77,9 @@
     "delete": "Eliminar usuario",
     "changePass": "Cambiar contraseña",
     "register": "Registar usuario",
-    "customer":"Cliente",
-    "employee":"Empleado",
-    "type":"Tipo"
+    "customer": "Cliente",
+    "employee": "Empleado",
+    "type": "Tipo"
   },
   "book": {
     "add": " Adicionar libro",
@@ -105,9 +106,9 @@
     "descriptor": "Descriptor",
     "descriptorPlaceHolder": "Palabra",
     "detail": "Detalles del libro",
-    "toShow":"Más vendido",
-    "toShowPlaceholder":"Más vendido",
-    "mostSale":"Libros más vendidos"
+    "toShow": "Más vendido",
+    "toShowPlaceholder": "Más vendido",
+    "mostSale": "Libros más vendidos"
   },
   "magazine": {
     "add": " Adicionar revista",
@@ -124,7 +125,7 @@
     "price": "Precio",
     "coin": "Moneda",
     "detail": "Detalles de la revista",
-    "mostSale":"Revistas más vendidas"
+    "mostSale": "Revistas más vendidas"
   },
   "author": {
     "add": " Adicionar autor",
@@ -172,6 +173,7 @@
     "password": {
       "equal": "Las dos contraseñas deben ser iguales."
     },
+    "paypal":"Error de paypal, Revise sus datos y vuelva a intentarlo.",
     "pattern": {
       "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra"
     },
@@ -228,7 +230,8 @@
     "language": "El idioma fue cambiado.",
     "changePassword": "La contraseña fue cambiada.",
     "register": "El usuario fue registrado.",
-    "edited": "El elemento fue editado."
+    "edited": "El elemento fue editado.",
+    "sale": "Compra satisfactoria."
   },
   "footer": {
     "info": "2000–2018 Tienda de libros, Inc. Todos los derechos reservados."

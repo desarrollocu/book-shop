@@ -19,12 +19,10 @@ public class UserDetail implements Serializable {
     @Id
     private String id;
 
-    @NotNull(message = Constants.ERR_NOT_NULL)
     private String userId;
 
     @Field("user_name")
-    @NotNull(message = Constants.ERR_NOT_NULL)
-    @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
+    @Size(max = 50, message = Constants.ERR_MAX50)
     @Pattern(regexp = Constants.USER_NAME_REGEX, message = Constants.ERR_USER_NAME_REGEX)
     private String userName;
 
@@ -37,8 +35,9 @@ public class UserDetail implements Serializable {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String lastName;
 
+    private String recipientName;
+
     @Email
-    @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
     private String email;
 
@@ -101,6 +100,14 @@ public class UserDetail implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
     }
 
     @Override

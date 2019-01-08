@@ -1,15 +1,20 @@
 <section class="mag-posts-area d-flex flex-wrap">
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
-    <input type="number" [(ngModel)]="finalAmount" style="padding-bottom: 10px;">
-    <h2 *ngIf="paypalLoad">Paypal button is loading</h2>
-    <div id="paypal-checkout-btn"></div>
-
-    <button [translate]="'shopping.backBooks'" routerLink="/search-book"
-            class="btn btn-primary button-size">Back to shopping books
-    </button>
-    <button [translate]="'shopping.backMagazines'" routerLink="/search-magazine"
-            class="btn btn-primary button-size table-button-search">Back to shopping magazines
-    </button>
+    <div class="row">
+      <div class="col-sm-3">
+        <button [translate]="'shopping.backBooks'" routerLink="/search-book"
+                class="btn btn-primary button-size">Back to shopping books
+        </button>
+      </div>
+      <div class="col-sm-5">
+        <button [translate]="'shopping.backMagazines'" routerLink="/search-magazine"
+                class="btn btn-primary button-size table-button-search">Back to shopping magazines
+        </button>
+      </div>
+      <div class="col-sm-4" style="margin-top: 6px" *ngIf="elementList.length > 0">
+        <app-paypal [config]="payPalConfig"></app-paypal>
+      </div>
+    </div>
     <p style="padding-top: 20px" [translate]="'general.emptyCart'"
        *ngIf="elementList.length === 0 && load"></p>
     <div style="padding-top: 20px" class="table-responsive" *ngIf="elementList.length > 0">
@@ -63,9 +68,5 @@
         </tbody>
       </table>
     </div>
-    <button *ngIf="elementList.length > 0" style="height: 70px;width: 155px;"
-            [translate]="'shopping.buy'"
-            class="btn btn-dark button-size">Buy
-    </button>
   </div>
 </section>

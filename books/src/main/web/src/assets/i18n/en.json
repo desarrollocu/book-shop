@@ -20,7 +20,8 @@
     },
     "addCar": " Add to cart",
     "close": " Close",
-    "details": "View details"
+    "details": "View details",
+    "payPal":"Paypal button is loading"
   },
   "login": {
     "username": "Username",
@@ -170,6 +171,7 @@
     "password": {
       "equal": "Two password most be equals."
     },
+    "paypal":"Paypal error, Checks your info an try again.",
     "pattern": {
       "descriptors": "Bad format. Ex: word,word,word"
     },
@@ -227,7 +229,8 @@
     "language": "Language was changed.",
     "changePassword": "Password was changed.",
     "register": "The user was registered.",
-    "edited": "The element was updated."
+    "edited": "The element was updated.",
+    "sale": "Purchase completed."
   },
   "footer": {
     "info": "2000–2018 BooksStore, Inc. All rights reserved."

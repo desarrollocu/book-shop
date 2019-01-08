@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgbModal, NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import {TranslateService} from '@ngx-translate/core';
 
-import {AlertService} from "../../shared/alert/alert.service";
-import {SearchService} from "../search.service";
+import {AlertService} from '../../shared/alert/alert.service';
+import {SearchService} from '../search.service';
 
-import {Book} from "../../admin/book/model/book";
-import {Search} from "../model/search";
-import {TranslateService} from "@ngx-translate/core";
-import {Magazine} from "../../admin/magazine/model/magazine";
-import {CartService} from "../cart.service";
+import {Book} from '../../admin/book/model/book';
+import {Search} from '../model/search';
+import {Magazine} from '../../admin/magazine/model/magazine';
+import {CartService} from '../cart.service';
 
 
 @Component({

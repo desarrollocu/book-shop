@@ -1,52 +1,48 @@
-package soft.co.books.domain.collection;
+package soft.co.books.domain.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
-import soft.co.books.configuration.database.AbstractAuditingEntity;
+import soft.co.books.domain.collection.Sale;
 import soft.co.books.domain.collection.data.Detail;
 import soft.co.books.domain.collection.data.UserDetail;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * A sale.
+ * A DTO representing a sale.
  */
-@Document(collection = "bs_sale")
-public class Sale extends AbstractAuditingEntity implements Serializable {
+public class SaleDTO implements Serializable {
 
-    @Id
     private String id;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double total;
 
-    @JsonIgnore
-    @CreatedDate
-    @Field("sale_date")
-    @NotNull(message = Constants.ERR_NOT_NULL)
-    private Instant saleDate = Instant.now();
+    private Date saleDate;
 
-    @Field("detail_list")
     @NotNull(message = Constants.ERR_NOT_NULL)
     private List<Detail> detailList;
 
-    @Field("user_detail")
     @NotNull(message = Constants.ERR_NOT_NULL)
     private UserDetail userDetail;
 
     @Version
     private Long version;
 
-    public Sale() {
+    public SaleDTO() {
+    }
+
+    public SaleDTO(Sale sale) {
+        this.id = sale.getId();
+        this.total = sale.getTotal();
+        this.detailList = sale.getDetailList();
+        this.saleDate = Date.from(sale.getSaleDate());
+        this.userDetail = sale.getUserDetail();
     }
 
     public String getId() {
@@ -81,11 +77,11 @@ public class Sale extends AbstractAuditingEntity implements Serializable {
         this.userDetail = userDetail;
     }
 
-    public Instant getSaleDate() {
+    public Date getSaleDate() {
         return saleDate;
     }
 
-    public void setSaleDate(Instant saleDate) {
+    public void setSaleDate(Date saleDate) {
         this.saleDate = saleDate;
     }
 
@@ -102,7 +98,7 @@ public class Sale extends AbstractAuditingEntity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sale sale = (Sale) o;
+        SaleDTO sale = (SaleDTO) o;
         return !(sale.getId() == null || getId() == null) && Objects.equals(getId(), sale.getId());
     }
 
@@ -113,7 +109,7 @@ public class Sale extends AbstractAuditingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Sale{" +
+        return "SaleDTO{" +
                 "total=" + total +
                 ", detailList=" + detailList +
                 ", userDetail=" + userDetail +
