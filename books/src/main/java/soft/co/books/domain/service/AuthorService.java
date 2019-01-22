@@ -63,10 +63,14 @@ public class AuthorService extends CustomBaseService<Author, String> {
             query.addCriteria(where("lastName").regex(authorDTO.getLastName(), "i"));
         if (authorDTO.getCity() != null && !authorDTO.getCity().isEmpty())
             query.addCriteria(where("city").regex(authorDTO.getCity(), "i"));
+        if (authorDTO.getState() != null && !authorDTO.getState().isEmpty())
+            query.addCriteria(where("state").regex(authorDTO.getState(), "i"));
         if (authorDTO.getBornDate() != null && !authorDTO.getBornDate().isEmpty())
             query.addCriteria(where("bornDate").is(authorDTO.getBornDate()));
         if (authorDTO.getDeathDate() != null && !authorDTO.getDeathDate().isEmpty())
             query.addCriteria(where("deathDate").is(authorDTO.getDeathDate()));
+        if (authorDTO.getCountry() != null)
+            query.addCriteria(where("country.id").is(authorDTO.getCountry().getId()));
 
         Page<Author> authors = new PageImpl<>(mongoTemplate.find(query, Author.class));
         resultDTO.setElements(authors.stream().map(AuthorDTO::new).collect(Collectors.toList()));

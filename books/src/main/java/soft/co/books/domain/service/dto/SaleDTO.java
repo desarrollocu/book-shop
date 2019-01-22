@@ -28,7 +28,6 @@ public class SaleDTO implements Serializable {
     @NotNull(message = Constants.ERR_NOT_NULL)
     private List<Detail> detailList;
 
-    @NotNull(message = Constants.ERR_NOT_NULL)
     private UserDetail userDetail;
 
     @Version

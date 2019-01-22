@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import soft.co.books.domain.service.SearchService;
 import soft.co.books.domain.service.dto.BookDTO;
+import soft.co.books.domain.service.dto.CarouselDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
 import soft.co.books.domain.service.dto.SearchDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -30,5 +33,10 @@ public class SearchResource {
     @PostMapping("/searchMagazine")
     public PageResultDTO<BookDTO> searchMagazine(@RequestBody SearchDTO searchDTO, Pageable pageable) {
         return searchService.magazineSearch(searchDTO, pageable);
+    }
+
+    @PostMapping("/searchCarouselBooks")
+    public List<CarouselDTO> searchCarouselBooks() {
+        return searchService.searchCarouselBooks();
     }
 }

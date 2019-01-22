@@ -35,10 +35,15 @@ public class EditorService extends CustomBaseService<Editor, String> {
 
     private final EditorRepository editorRepository;
 
+    private final CountryService countryService;
+
     private MongoTemplate mongoTemplate;
 
-    public EditorService(EditorRepository editorRepository, MongoTemplate mongoTemplate) {
+    public EditorService(EditorRepository editorRepository,
+                         CountryService countryService,
+                         MongoTemplate mongoTemplate) {
         super(editorRepository);
+        this.countryService = countryService;
         this.editorRepository = editorRepository;
         this.mongoTemplate = mongoTemplate;
     }
@@ -53,6 +58,8 @@ public class EditorService extends CustomBaseService<Editor, String> {
 
         if (editorDTO.getName() != null && !editorDTO.getName().isEmpty())
             query.addCriteria(where("name").regex(editorDTO.getName(), "i"));
+        if (editorDTO.getCountry() != null)
+            query.addCriteria(where("country.id").is(editorDTO.getCountry().getId()));
         if (editorDTO.getCity() != null && !editorDTO.getCity().isEmpty())
             query.addCriteria(where("city").regex(editorDTO.getCity(), "i"));
 
@@ -66,6 +73,7 @@ public class EditorService extends CustomBaseService<Editor, String> {
         Editor editor = new Editor();
         editor.setName(editorDTO.getName());
         editor.setCity(editorDTO.getCity());
+        editor.setCountry(countryService.findOne(editorDTO.getCountry().getId()).get());
         editor.setId(editorDTO.getId());
 
         log.debug("Created Information for Editor: {}", editor);
@@ -87,6 +95,7 @@ public class EditorService extends CustomBaseService<Editor, String> {
                 .map(editor -> {
                     editor.setName(editorDTO.getName());
                     editor.setCity(editorDTO.getCity());
+                    editor.setCountry(countryService.findOne(editorDTO.getCountry().getId()).get());
                     editorRepository.save(editor);
                     log.debug("Changed Information for Editor: {}", editor);
                     return editor;

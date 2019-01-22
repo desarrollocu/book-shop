@@ -54,13 +54,12 @@ public class Magazine extends soft.co.books.domain.collection.Document implement
     public String toString() {
         return "Magazine{" +
                 ", title='" + getTitle() + '\'' +
-                ", city='" + getCity() + '\'' +
-                ", editor=" + getEditor() +
+                ", editorList=" + getEditorList() +
                 ", publishYear='" + publishYear + '\'' +
                 ", frequency='" + frequency + '\'' +
                 ", stockNumber='" + getStockNumber() + '\'' +
                 ", isbn='" + getIsbn() + '\'' +
-                ", topic=" + getTopic() +
+                ", topicList=" + getTopicList() +
                 ", salePrice=" + getSalePrice() +
                 ", coin='" + getCoin() + '\'' +
                 '}';

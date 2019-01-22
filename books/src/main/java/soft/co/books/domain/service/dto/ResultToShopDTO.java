@@ -3,6 +3,10 @@ package soft.co.books.domain.service.dto;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Magazine;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ResultToShopDTO {
 
     private String id;
@@ -11,10 +15,10 @@ public class ResultToShopDTO {
     private String image;
     private String coin;
     private int cant;
-    private String city;
-    private EditorDTO editor;
+    private int realCant;
+    private List<EditorDTO> editorList = new ArrayList<>();
     private String isbn;
-    private TopicDTO topic;
+    private List<TopicDTO> topicList = new ArrayList<>();
     private double mount;
 
     public ResultToShopDTO() {
@@ -26,10 +30,10 @@ public class ResultToShopDTO {
         this.salePrice = book.getSalePrice();
         this.title = book.getTitle();
         this.coin = book.getCoin();
-        this.city = book.getCity();
-        this.editor = book.getEditorOrNull().map(EditorDTO::new).orElse(null);
+        this.editorList = book.getEditorList().stream().map(EditorDTO::new).collect(Collectors.toList());
         this.isbn = book.getIsbn();
-        this.topic = book.getTopicOrNull().map(TopicDTO::new).orElse(null);
+        this.topicList = book.getTopicList().stream().map(TopicDTO::new).collect(Collectors.toList());
+        this.realCant = book.getStockNumber();
     }
 
     public ResultToShopDTO(Magazine magazine) {
@@ -38,26 +42,10 @@ public class ResultToShopDTO {
         this.salePrice = magazine.getSalePrice();
         this.title = magazine.getTitle();
         this.coin = magazine.getCoin();
-        this.city = magazine.getCity();
-        this.editor = magazine.getEditorOrNull().map(EditorDTO::new).orElse(null);
+        this.editorList = magazine.getEditorList().stream().map(EditorDTO::new).collect(Collectors.toList());
         this.isbn = magazine.getIsbn();
-        this.topic = magazine.getTopicOrNull().map(TopicDTO::new).orElse(null);
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public EditorDTO getEditor() {
-        return editor;
-    }
-
-    public void setEditor(EditorDTO editor) {
-        this.editor = editor;
+        this.topicList = magazine.getTopicList().stream().map(TopicDTO::new).collect(Collectors.toList());
+        this.realCant = magazine.getStockNumber();
     }
 
     public String getIsbn() {
@@ -66,14 +54,6 @@ public class ResultToShopDTO {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public TopicDTO getTopic() {
-        return topic;
-    }
-
-    public void setTopic(TopicDTO topic) {
-        this.topic = topic;
     }
 
     public double getMount() {
@@ -130,5 +110,29 @@ public class ResultToShopDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public List<EditorDTO> getEditorList() {
+        return editorList;
+    }
+
+    public void setEditorList(List<EditorDTO> editorList) {
+        this.editorList = editorList;
+    }
+
+    public List<TopicDTO> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<TopicDTO> topicList) {
+        this.topicList = topicList;
+    }
+
+    public int getRealCant() {
+        return realCant;
+    }
+
+    public void setRealCant(int realCant) {
+        this.realCant = realCant;
     }
 }

@@ -1,8 +1,11 @@
 package soft.co.books.domain.service.dto;
 
 import soft.co.books.configuration.Constants;
+import soft.co.books.domain.collection.Country;
 
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A DTO representing a search param.
@@ -21,11 +24,17 @@ public class SearchDTO {
 
     private String city;
 
+    private String editionCity;
+
+    private Country editionCountry;
+
     private String editionYear;
 
     private String descriptors;
 
-    private TopicDTO topic;
+    private String isbn;
+
+    private List<TopicDTO> topicList = new ArrayList<>();
 
     private ClassificationDTO classification;
 
@@ -89,12 +98,12 @@ public class SearchDTO {
         this.descriptors = descriptors;
     }
 
-    public TopicDTO getTopic() {
-        return topic;
+    public List<TopicDTO> getTopicList() {
+        return topicList;
     }
 
-    public void setTopic(TopicDTO topic) {
-        this.topic = topic;
+    public void setTopicList(List<TopicDTO> topicList) {
+        this.topicList = topicList;
     }
 
     public ClassificationDTO getClassification() {
@@ -103,5 +112,29 @@ public class SearchDTO {
 
     public void setClassification(ClassificationDTO classification) {
         this.classification = classification;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getEditionCity() {
+        return editionCity;
+    }
+
+    public void setEditionCity(String editionCity) {
+        this.editionCity = editionCity;
+    }
+
+    public Country getEditionCountry() {
+        return editionCountry;
+    }
+
+    public void setEditionCountry(Country editionCountry) {
+        this.editionCountry = editionCountry;
     }
 }

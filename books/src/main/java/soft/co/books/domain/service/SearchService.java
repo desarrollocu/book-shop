@@ -12,11 +12,12 @@ import soft.co.books.domain.collection.Author;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Editor;
 import soft.co.books.domain.collection.Magazine;
-import soft.co.books.domain.service.dto.BookDTO;
-import soft.co.books.domain.service.dto.MagazineDTO;
-import soft.co.books.domain.service.dto.PageResultDTO;
-import soft.co.books.domain.service.dto.SearchDTO;
+import soft.co.books.domain.service.dto.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -48,13 +49,58 @@ public class SearchService {
             authorQuery.fields().include("_id");
             query.addCriteria(where("authorList").in(mongoTemplate.find(authorQuery, Author.class)));
         }
+
+        boolean editorFlag = false;
+        Set<Editor> editorList = new HashSet<>();
+        Set<Editor> editorNameList = null;
+        Set<Editor> editorCityList = null;
+        Set<Editor> editorCountryList = null;
         if (searchDTO.getEditor() != null && !searchDTO.getEditor().isEmpty()) {
             Query editorQuery = new Query(Criteria.where("name").regex(searchDTO.getEditor().toLowerCase(), "i"));
             editorQuery.fields().include("_id");
-            query.addCriteria(where("editor").in(mongoTemplate.find(editorQuery, Editor.class)));
+            editorNameList = new HashSet<>();
+            editorNameList.addAll(mongoTemplate.find(editorQuery, Editor.class));
+            editorList.addAll(editorNameList);
+            editorFlag = true;
         }
+        if (searchDTO.getEditionCity() != null && !searchDTO.getEditionCity().isEmpty()) {
+            Query editionCityQuery = new Query(Criteria.where("city").regex(searchDTO.getEditionCity().toLowerCase(), "i"));
+            editionCityQuery.fields().include("_id");
+            editorCityList = new HashSet<>();
+            editorCityList.addAll(mongoTemplate.find(editionCityQuery, Editor.class));
+            editorList.addAll(editorCityList);
+            editorFlag = true;
+        }
+        if (searchDTO.getEditionCountry() != null) {
+            Query editionCountryQuery = new Query(Criteria.where("country.id").is(searchDTO.getEditionCountry().getId()));
+            editionCountryQuery.fields().include("_id");
+            editorCountryList = new HashSet<>();
+            editorCountryList.addAll(mongoTemplate.find(editionCountryQuery, Editor.class));
+            editorList.addAll(editorCountryList);
+            editorFlag = true;
+        }
+
+        if (editorNameList != null) {
+            Set<Editor> finalEditorNameList = editorNameList;
+            editorList.removeIf(editor -> !finalEditorNameList.contains(editor));
+        }
+        if (editorCityList != null) {
+            Set<Editor> finalEditorCityList = editorCityList;
+            editorList.removeIf(editor -> !finalEditorCityList.contains(editor));
+        }
+        if (editorCountryList != null) {
+            Set<Editor> finalEditorCountryList = editorCountryList;
+            editorList.removeIf(editor -> !finalEditorCountryList.contains(editor));
+        }
+
+        if (editorFlag)
+            query.addCriteria(where("editorList").in(editorList));
+
         if (searchDTO.getTitle() != null && !searchDTO.getTitle().isEmpty()) {
             query.addCriteria(where("title").regex(searchDTO.getTitle().toLowerCase(), "i"));
+        }
+        if (searchDTO.getIsbn() != null && !searchDTO.getIsbn().isEmpty()) {
+            query.addCriteria(where("isbn").regex(searchDTO.getIsbn().toLowerCase(), "i"));
         }
         if (searchDTO.getCity() != null && !searchDTO.getCity().isEmpty()) {
             query.addCriteria(where("city").regex(searchDTO.getCity().toLowerCase(), "i"));
@@ -68,9 +114,15 @@ public class SearchService {
         if (searchDTO.getClassification() != null) {
             query.addCriteria(where("classification.id").is(searchDTO.getClassification().getId()));
         }
-        if (searchDTO.getTopic() != null) {
-            query.addCriteria(where("topic.id").is(searchDTO.getTopic().getId()));
+        if (searchDTO.getTopicList() != null) {
+            if (!searchDTO.getTopicList().isEmpty()) {
+                query.addCriteria(where("topicList").in(searchDTO.getTopicList().stream()
+                        .map(TopicDTO::getId)
+                        .collect(Collectors.toList())));
+            }
         }
+
+        query.addCriteria(where("stockNumber").gt(0));
 
         Page<Book> books = new PageImpl<>(mongoTemplate.find(query, Book.class));
         resultDTO.setElements(books.stream().map(BookDTO::new).collect(Collectors.toList()));
@@ -97,13 +149,63 @@ public class SearchService {
         if (searchDTO.getCity() != null && !searchDTO.getCity().isEmpty()) {
             query.addCriteria(where("city").regex(searchDTO.getCity().toLowerCase(), "i"));
         }
-        if (searchDTO.getTopic() != null) {
-            query.addCriteria(where("topic.id").is(searchDTO.getTopic().getId()));
+        if (searchDTO.getTopicList() != null) {
+            if (!searchDTO.getTopicList().isEmpty()) {
+                query.addCriteria(where("topicList").in(searchDTO.getTopicList().stream()
+                        .map(TopicDTO::getId)
+                        .collect(Collectors.toList())));
+            }
         }
+
+        query.addCriteria(where("stockNumber").gt(0));
 
         Page<Magazine> magazines = new PageImpl<>(mongoTemplate.find(query, Magazine.class));
         resultDTO.setElements(magazines.stream().map(MagazineDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, Book.class));
         return resultDTO;
+    }
+
+    public List<CarouselDTO> searchCarouselBooks() {
+        Query query = new Query();
+        query.fields().include("image_url");
+        query.addCriteria(where("stockNumber").gt(0));
+        query.addCriteria(where("toShow").is(true));
+        List<Book> books = mongoTemplate.find(query, Book.class);
+
+        List<String> urls = new ArrayList<>();
+        for (int i = 0; i < books.size(); i++) {
+            urls.add(books.get(i).getImageUrl());
+        }
+
+        List<CarouselDTO> carouselDTOS = new ArrayList<>();
+        while (urls.size() > 0) {
+            List<ElementDTO> toPush = new ArrayList<>();
+            List<String> temp = new ArrayList<>(urls.subList(0, urls.size() < 4 ? urls.size() : 4));
+            urls.removeAll(temp);
+
+            for (int i = 0; i < temp.size(); i++) {
+                ElementDTO elementDTO = new ElementDTO();
+                elementDTO.setUrl(temp.get(i));
+                elementDTO.setPosition(i > 0 ? "absolute" : null);
+                elementDTO.setLeft(i > 0 ? 167 * i + "px" : null);
+                toPush.add(elementDTO);
+            }
+
+            int val = 4 - toPush.size();
+            int pos = toPush.size();
+            for (int i = 0; i < val; i++) {
+                ElementDTO elementDTO = new ElementDTO();
+                elementDTO.setUrl("assets/images/image.gif");
+                elementDTO.setPosition("absolute");
+                elementDTO.setLeft(167 * pos + "px");
+                toPush.add(elementDTO);
+                pos++;
+            }
+            CarouselDTO carouselDTO = new CarouselDTO();
+            carouselDTO.setElementList(toPush);
+            carouselDTOS.add(carouselDTO);
+
+        }
+        return carouselDTOS;
     }
 }

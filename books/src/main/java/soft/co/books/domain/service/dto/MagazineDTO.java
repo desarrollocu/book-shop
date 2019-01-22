@@ -5,6 +5,9 @@ import soft.co.books.domain.collection.Magazine;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A DTO representing an magazine.
@@ -17,10 +20,7 @@ public class MagazineDTO {
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String title;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
-    private String city;
-
-    private EditorDTO editor;
+    private List<EditorDTO> editorList = new ArrayList<>();
 
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String isbn;
@@ -28,7 +28,7 @@ public class MagazineDTO {
     private String frequency;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private TopicDTO topic;
+    private List<TopicDTO> topicList = new ArrayList<>();
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double salePrice;
@@ -48,6 +48,14 @@ public class MagazineDTO {
 
     private ShowDTO toShow;
 
+    private String topicsEnglish;
+
+    private String topicsSpanish;
+
+    private String editors;
+
+    private String cities;
+
     public MagazineDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -55,12 +63,40 @@ public class MagazineDTO {
     public MagazineDTO(Magazine magazine) {
         this.id = magazine.getId();
         this.title = magazine.getTitle();
-        this.city = magazine.getCity();
-        this.editor = magazine.getEditorOrNull().map(EditorDTO::new).orElse(null);
+
+        this.editorList = magazine.getEditorList().stream().map(EditorDTO::new).collect(Collectors.toList());
+        this.editors = "";
+        this.cities = "";
+        for (int i = 0; i < this.editorList.size(); i++) {
+            if (this.editors.equals(""))
+                this.editors = this.editorList.get(i).getName();
+            else
+                this.editors += ", " + this.editorList.get(i).getName();
+
+            if (this.cities.equals(""))
+                this.cities = this.editorList.get(i).getCity();
+            else
+                this.cities += ", " + this.editorList.get(i).getCity();
+        }
+
+        this.topicList = magazine.getTopicList().stream().map(TopicDTO::new).collect(Collectors.toList());
+        this.topicsEnglish = "";
+        this.topicsSpanish = "";
+        for (int i = 0; i < this.topicList.size(); i++) {
+            if (this.topicsEnglish.equals(""))
+                this.topicsEnglish = this.topicList.get(i).getEnglishName();
+            else
+                this.topicsEnglish += ", " + this.topicList.get(i).getEnglishName();
+
+            if (this.topicsSpanish.equals(""))
+                this.topicsSpanish = this.topicList.get(i).getSpanishName();
+            else
+                this.topicsSpanish += ", " + this.topicList.get(i).getSpanishName();
+        }
+
         this.publishYear = magazine.getPublishYear();
         this.frequency = magazine.getFrequency();
         this.isbn = magazine.getIsbn();
-        this.topic = magazine.getTopicOrNull().map(TopicDTO::new).orElse(null);
         this.salePrice = magazine.getSalePrice();
         this.stockNumber = magazine.getStockNumber();
         ShowDTO showDTO = new ShowDTO();
@@ -96,22 +132,6 @@ public class MagazineDTO {
         this.title = title;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public EditorDTO getEditor() {
-        return editor;
-    }
-
-    public void setEditor(EditorDTO editor) {
-        this.editor = editor;
-    }
-
     public String getIsbn() {
         return isbn;
     }
@@ -126,14 +146,6 @@ public class MagazineDTO {
 
     public void setFrequency(String frequency) {
         this.frequency = frequency;
-    }
-
-    public TopicDTO getTopic() {
-        return topic;
-    }
-
-    public void setTopic(TopicDTO topic) {
-        this.topic = topic;
     }
 
     public double getSalePrice() {
@@ -182,6 +194,54 @@ public class MagazineDTO {
 
     public void setVisit(Long visit) {
         this.visit = visit;
+    }
+
+    public List<EditorDTO> getEditorList() {
+        return editorList;
+    }
+
+    public void setEditorList(List<EditorDTO> editorList) {
+        this.editorList = editorList;
+    }
+
+    public List<TopicDTO> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<TopicDTO> topicList) {
+        this.topicList = topicList;
+    }
+
+    public String getTopicsEnglish() {
+        return topicsEnglish;
+    }
+
+    public void setTopicsEnglish(String topicsEnglish) {
+        this.topicsEnglish = topicsEnglish;
+    }
+
+    public String getTopicsSpanish() {
+        return topicsSpanish;
+    }
+
+    public void setTopicsSpanish(String topicsSpanish) {
+        this.topicsSpanish = topicsSpanish;
+    }
+
+    public String getEditors() {
+        return editors;
+    }
+
+    public void setEditors(String editors) {
+        this.editors = editors;
+    }
+
+    public String getCities() {
+        return cities;
+    }
+
+    public void setCities(String cities) {
+        this.cities = cities;
     }
 
     @Override

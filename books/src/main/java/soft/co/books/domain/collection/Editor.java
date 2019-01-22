@@ -2,6 +2,7 @@ package soft.co.books.domain.collection;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.AbstractAuditingEntity;
@@ -23,6 +24,9 @@ public class Editor extends AbstractAuditingEntity implements Serializable {
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String name;
+
+    @DBRef
+    private Country country;
 
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String city;
@@ -57,6 +61,14 @@ public class Editor extends AbstractAuditingEntity implements Serializable {
         this.city = city;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,6 +88,7 @@ public class Editor extends AbstractAuditingEntity implements Serializable {
         return "Editor{" +
                 "name='" + name + '\'' +
                 ", city=" + city +
+                ", country=" + country +
                 ", version=" + version +
                 '}';
     }

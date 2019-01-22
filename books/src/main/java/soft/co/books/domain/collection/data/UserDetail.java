@@ -37,6 +37,8 @@ public class UserDetail implements Serializable {
 
     private String recipientName;
 
+    private String phone;
+
     @Email
     @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
     private String email;
@@ -110,6 +112,14 @@ public class UserDetail implements Serializable {
         this.recipientName = recipientName;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -132,6 +142,7 @@ public class UserDetail implements Serializable {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }

@@ -13,10 +13,10 @@ import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.storage.StorageService;
 import soft.co.books.domain.collection.Author;
 import soft.co.books.domain.collection.Book;
+import soft.co.books.domain.collection.Editor;
+import soft.co.books.domain.collection.Topic;
 import soft.co.books.domain.repository.BookRepository;
-import soft.co.books.domain.service.dto.AuthorDTO;
-import soft.co.books.domain.service.dto.BookDTO;
-import soft.co.books.domain.service.dto.PageResultDTO;
+import soft.co.books.domain.service.dto.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +47,8 @@ public class BookService extends CustomBaseService<Book, String> {
 
     private final StorageService storageService;
 
+    private final BookTraceService bookTraceService;
+
     private MongoTemplate mongoTemplate;
 
     public BookService(BookRepository bookRepository,
@@ -54,6 +56,7 @@ public class BookService extends CustomBaseService<Book, String> {
                        TopicService topicService,
                        AuthorService authorService,
                        StorageService storageService,
+                       BookTraceService bookTraceService,
                        EditorService editorService, ClassificationService classificationService) {
         super(bookRepository);
         this.bookRepository = bookRepository;
@@ -63,6 +66,7 @@ public class BookService extends CustomBaseService<Book, String> {
         this.topicService = topicService;
         this.classificationService = classificationService;
         this.storageService = storageService;
+        this.bookTraceService = bookTraceService;
     }
 
     public PageResultDTO findAll(BookDTO bookDTO, Pageable pageable) {
@@ -81,10 +85,20 @@ public class BookService extends CustomBaseService<Book, String> {
             query.addCriteria(where("title").regex(bookDTO.getTitle(), "i"));
         if (bookDTO.getSubTitle() != null && !bookDTO.getSubTitle().isEmpty())
             query.addCriteria(where("subTitle").regex(bookDTO.getSubTitle(), "i"));
-        if (bookDTO.getEditor() != null)
-            query.addCriteria(where("editor.id").is(bookDTO.getEditor().getId()));
-        if (bookDTO.getTopic() != null)
-            query.addCriteria(where("topic.id").is(bookDTO.getTopic().getId()));
+        if (bookDTO.getEditorList() != null) {
+            if (!bookDTO.getEditorList().isEmpty()) {
+                query.addCriteria(where("editorList").in(bookDTO.getEditorList().stream()
+                        .map(EditorDTO::getId)
+                        .collect(Collectors.toList())));
+            }
+        }
+        if (bookDTO.getTopicList() != null) {
+            if (!bookDTO.getTopicList().isEmpty()) {
+                query.addCriteria(where("topicList").in(bookDTO.getTopicList().stream()
+                        .map(TopicDTO::getId)
+                        .collect(Collectors.toList())));
+            }
+        }
         if (bookDTO.getAuthorList() != null) {
             if (!bookDTO.getAuthorList().isEmpty()) {
                 query.addCriteria(where("authorList").in(bookDTO.getAuthorList().stream()
@@ -104,7 +118,6 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setId(bookDTO.getId());
         book.setTitle(bookDTO.getTitle());
         book.setSubTitle(bookDTO.getSubTitle());
-        book.setCity(bookDTO.getCity());
 
         if (bookDTO.getDescriptors() != null) {
             if (bookDTO.getDescriptors() != "") {
@@ -118,15 +131,20 @@ public class BookService extends CustomBaseService<Book, String> {
                 .collect(Collectors.toList());
         book.setAuthorList(authorList);
 
-        if (bookDTO.getEditor() != null) {
-            book.setEditor(editorService.findOne(bookDTO.getEditor().getId()).get());
-        }
+        List<Editor> editorList = bookDTO.getEditorList().stream()
+                .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
+                .collect(Collectors.toList());
+        book.setEditorList(editorList);
+
+        List<Topic> topicList = bookDTO.getTopicList().stream()
+                .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
+                .collect(Collectors.toList());
+        book.setTopicList(topicList);
+
         if (bookDTO.getClassification() != null) {
             book.setClassification(classificationService.findOne(bookDTO.getClassification().getId()).get());
         }
-        if (bookDTO.getTopic() != null) {
-            book.setTopic(topicService.findOne(bookDTO.getTopic().getId()).get());
-        }
+
         book.setEditionYear(bookDTO.getEditionYear());
         book.setPages(bookDTO.getPages());
         book.setSize(bookDTO.getSize());
@@ -142,7 +160,10 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setVisit(bookDTO.getVisit());
 
         log.debug("Created Information for Book: {}", book);
-        return Optional.of(bookRepository.save(book))
+        Book result = bookRepository.save(book);
+
+        bookTraceService.createBookTrace(result, "Create", null);
+        return Optional.of(result)
                 .map(BookDTO::new);
     }
 
@@ -160,22 +181,26 @@ public class BookService extends CustomBaseService<Book, String> {
                 .map(book -> {
                     book.setTitle(bookDTO.getTitle());
                     book.setSubTitle(bookDTO.getSubTitle());
-                    book.setCity(bookDTO.getCity());
 
                     List<Author> authorList = bookDTO.getAuthorList().stream()
                             .map(authorDTO -> authorService.findOne(authorDTO.getId()).get())
                             .collect(Collectors.toList());
                     book.setAuthorList(authorList);
 
-                    if (bookDTO.getEditor() != null) {
-                        book.setEditor(editorService.findOne(bookDTO.getEditor().getId()).get());
-                    }
+                    List<Topic> topicList = bookDTO.getTopicList().stream()
+                            .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
+                            .collect(Collectors.toList());
+                    book.setTopicList(topicList);
+
+                    List<Editor> editorList = bookDTO.getEditorList().stream()
+                            .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
+                            .collect(Collectors.toList());
+                    book.setEditorList(editorList);
+
                     if (bookDTO.getClassification() != null) {
                         book.setClassification(classificationService.findOne(bookDTO.getClassification().getId()).get());
                     }
-                    if (bookDTO.getTopic() != null) {
-                        book.setTopic(topicService.findOne(bookDTO.getTopic().getId()).get());
-                    }
+
                     book.setEditionYear(bookDTO.getEditionYear());
                     book.setPages(bookDTO.getPages());
                     book.setSize(bookDTO.getSize());
@@ -199,8 +224,10 @@ public class BookService extends CustomBaseService<Book, String> {
                             book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
                         }
                     }
-                    bookRepository.save(book);
+                    Book result = bookRepository.save(book);
                     log.debug("Changed Information for Book: {}", book);
+
+                    bookTraceService.createBookTrace(result, "Update", null);
                     return book;
                 })
                 .map(BookDTO::new);
@@ -211,6 +238,8 @@ public class BookService extends CustomBaseService<Book, String> {
             storageService.deleteById(book.getId());
             bookRepository.delete(book);
             log.debug("Deleted Book: {}", book);
+
+            bookTraceService.createBookTrace(book, "Delete", null);
         });
     }
 }

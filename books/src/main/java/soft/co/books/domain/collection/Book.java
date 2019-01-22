@@ -130,15 +130,14 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
                 "authorList=" + authorList +
                 ", title='" + getTitle() + '\'' +
                 ", subTitle='" + subTitle + '\'' +
-                ", city='" + getCity() + '\'' +
-                ", editor=" + getEditor() +
+                ", editorList=" + getEditorList() +
                 ", editionYear='" + editionYear + '\'' +
                 ", pages=" + pages +
                 ", classification=" + classification +
                 ", stockNumber=" + getStockNumber() +
                 ", size='" + size + '\'' +
                 ", isbn='" + getIsbn() + '\'' +
-                ", topic=" + getTopic() +
+                ", topicList=" + getTopicList() +
                 ", salePrice=" + getSalePrice() +
                 ", coin='" + getCoin() + '\'' +
                 '}';

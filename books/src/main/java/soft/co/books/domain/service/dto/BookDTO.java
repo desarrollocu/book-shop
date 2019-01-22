@@ -6,7 +6,6 @@ import soft.co.books.domain.collection.Book;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,9 +28,7 @@ public class BookDTO {
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String subTitle;
 
-    private String city;
-
-    private EditorDTO editor;
+    private List<EditorDTO> editorList = new ArrayList<>();
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private ClassificationDTO classification;
@@ -45,7 +42,8 @@ public class BookDTO {
     private String isbn;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private TopicDTO topic;
+    @NotEmpty(message = Constants.ERR_NOT_NULL)
+    private List<TopicDTO> topicList = new ArrayList<>();
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double salePrice;
@@ -64,6 +62,20 @@ public class BookDTO {
 
     private ShowDTO toShow;
 
+    private String topicsEnglish;
+
+    private String topicsSpanish;
+
+    private String editors;
+
+    private String authors;
+
+    private String cities;
+
+    private String countriesEnglish;
+
+    private String countriesSpanish;
+
     public BookDTO() {
         // Empty constructor needed for Jackson.
     }
@@ -71,16 +83,63 @@ public class BookDTO {
     public BookDTO(Book book) {
         this.id = book.getId();
         this.authorList = book.getAuthorList().stream().map(AuthorDTO::new).collect(Collectors.toList());
+        this.authors = "";
+        for (int i = 0; i < this.authorList.size(); i++) {
+            if (this.authors.equals(""))
+                this.authors = this.authorList.get(i).getFullName();
+            else
+                this.authors += ", " + this.authorList.get(i).getFullName();
+        }
+
         this.title = book.getTitle();
         this.subTitle = book.getSubTitle();
-        this.city = book.getCity();
-        this.editor = book.getEditorOrNull().map(EditorDTO::new).orElse(null);
+        this.editorList = book.getEditorList().stream().map(EditorDTO::new).collect(Collectors.toList());
+        this.editors = "";
+        this.cities = "";
+        this.countriesEnglish = "";
+        this.countriesSpanish = "";
+        for (int i = 0; i < this.editorList.size(); i++) {
+            if (this.editors.equals(""))
+                this.editors = this.editorList.get(i).getName();
+            else
+                this.editors += ", " + this.editorList.get(i).getName();
+
+            if (this.cities.equals(""))
+                this.cities = this.editorList.get(i).getCity();
+            else
+                this.cities += ", " + this.editorList.get(i).getCity();
+
+            if (this.countriesSpanish.equals(""))
+                this.countriesSpanish = this.editorList.get(i).getCountry().getSpanishName();
+            else
+                this.countriesSpanish += ", " + this.editorList.get(i).getCountry().getSpanishName();
+
+            if (this.countriesEnglish.equals(""))
+                this.countriesEnglish = this.editorList.get(i).getCountry().getEnglishName();
+            else
+                this.countriesEnglish += ", " + this.editorList.get(i).getCountry().getEnglishName();
+        }
+
         this.classification = book.getClassificationOrNull().map(ClassificationDTO::new).orElse(null);
         this.editionYear = book.getEditionYear();
         this.pages = book.getPages();
         this.size = book.getSize();
         this.isbn = book.getIsbn();
-        this.topic = book.getTopicOrNull().map(TopicDTO::new).orElse(null);
+        this.topicList = book.getTopicList().stream().map(TopicDTO::new).collect(Collectors.toList());
+        this.topicsEnglish = "";
+        this.topicsSpanish = "";
+        for (int i = 0; i < this.topicList.size(); i++) {
+            if (this.topicsEnglish.equals(""))
+                this.topicsEnglish = this.topicList.get(i).getEnglishName();
+            else
+                this.topicsEnglish += ", " + this.topicList.get(i).getEnglishName();
+
+            if (this.topicsSpanish.equals(""))
+                this.topicsSpanish = this.topicList.get(i).getSpanishName();
+            else
+                this.topicsSpanish += ", " + this.topicList.get(i).getSpanishName();
+        }
+
         this.salePrice = book.getSalePrice();
         this.coin = book.getCoin();
         this.stockNumber = book.getStockNumber();
@@ -124,22 +183,6 @@ public class BookDTO {
         this.subTitle = subTitle;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public EditorDTO getEditor() {
-        return editor;
-    }
-
-    public void setEditor(EditorDTO editor) {
-        this.editor = editor;
-    }
-
     public String getSize() {
         return size;
     }
@@ -156,12 +199,20 @@ public class BookDTO {
         this.isbn = isbn;
     }
 
-    public TopicDTO getTopic() {
-        return topic;
+    public List<EditorDTO> getEditorList() {
+        return editorList;
     }
 
-    public void setTopic(TopicDTO topic) {
-        this.topic = topic;
+    public void setEditorList(List<EditorDTO> editorList) {
+        this.editorList = editorList;
+    }
+
+    public List<TopicDTO> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<TopicDTO> topicList) {
+        this.topicList = topicList;
     }
 
     public String getId() {
@@ -250,6 +301,62 @@ public class BookDTO {
 
     public void setDescriptors(String descriptors) {
         this.descriptors = descriptors;
+    }
+
+    public String getTopicsEnglish() {
+        return topicsEnglish;
+    }
+
+    public void setTopicsEnglish(String topicsEnglish) {
+        this.topicsEnglish = topicsEnglish;
+    }
+
+    public String getTopicsSpanish() {
+        return topicsSpanish;
+    }
+
+    public void setTopicsSpanish(String topicsSpanish) {
+        this.topicsSpanish = topicsSpanish;
+    }
+
+    public String getEditors() {
+        return editors;
+    }
+
+    public void setEditors(String editors) {
+        this.editors = editors;
+    }
+
+    public String getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
+    public String getCities() {
+        return cities;
+    }
+
+    public void setCities(String cities) {
+        this.cities = cities;
+    }
+
+    public String getCountriesEnglish() {
+        return countriesEnglish;
+    }
+
+    public void setCountriesEnglish(String countriesEnglish) {
+        this.countriesEnglish = countriesEnglish;
+    }
+
+    public String getCountriesSpanish() {
+        return countriesSpanish;
+    }
+
+    public void setCountriesSpanish(String countriesSpanish) {
+        this.countriesSpanish = countriesSpanish;
     }
 
     @Override

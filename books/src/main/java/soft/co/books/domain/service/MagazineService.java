@@ -11,11 +11,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.storage.StorageService;
+import soft.co.books.domain.collection.Editor;
 import soft.co.books.domain.collection.Magazine;
+import soft.co.books.domain.collection.Topic;
 import soft.co.books.domain.repository.MagazineRepository;
+import soft.co.books.domain.service.dto.EditorDTO;
 import soft.co.books.domain.service.dto.MagazineDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
+import soft.co.books.domain.service.dto.TopicDTO;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -66,10 +71,20 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         }
         if (magazineDTO.getTitle() != null && !magazineDTO.getTitle().isEmpty())
             query.addCriteria(where("title").regex(magazineDTO.getTitle(), "i"));
-        if (magazineDTO.getEditor() != null)
-            query.addCriteria(where("editor.id").is(magazineDTO.getEditor().getId()));
-        if (magazineDTO.getTopic() != null)
-            query.addCriteria(where("topic.id").is(magazineDTO.getTopic().getId()));
+        if (magazineDTO.getEditorList() != null) {
+            if (!magazineDTO.getEditorList().isEmpty()) {
+                query.addCriteria(where("editorList").in(magazineDTO.getEditorList().stream()
+                        .map(EditorDTO::getId)
+                        .collect(Collectors.toList())));
+            }
+        }
+        if (magazineDTO.getTopicList() != null) {
+            if (!magazineDTO.getTopicList().isEmpty()) {
+                query.addCriteria(where("topicList").in(magazineDTO.getTopicList().stream()
+                        .map(TopicDTO::getId)
+                        .collect(Collectors.toList())));
+            }
+        }
 
         Page<Magazine> magazines = new PageImpl<>(mongoTemplate.find(query, Magazine.class));
         resultDTO.setElements(magazines.stream().map(MagazineDTO::new).collect(Collectors.toList()));
@@ -81,13 +96,15 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         Magazine magazine = new Magazine();
         magazine.setId(magazineDTO.getId());
         magazine.setTitle(magazineDTO.getTitle());
-        magazine.setCity(magazineDTO.getCity());
-        if (magazineDTO.getEditor() != null) {
-            magazine.setEditor(editorService.findOne(magazineDTO.getEditor().getId()).get());
-        }
-        if (magazineDTO.getTopic() != null) {
-            magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
-        }
+        List<Editor> editorList = magazineDTO.getEditorList().stream()
+                .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
+                .collect(Collectors.toList());
+        magazine.setEditorList(editorList);
+
+        List<Topic> topicList = magazineDTO.getTopicList().stream()
+                .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
+                .collect(Collectors.toList());
+        magazine.setTopicList(topicList);
         magazine.setPublishYear(magazineDTO.getPublishYear());
         if (magazineDTO.getToShow() != null)
             magazine.setToShow(magazineDTO.getToShow().isVal());
@@ -119,7 +136,6 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                 .map(Optional::get)
                 .map(magazine -> {
                     magazine.setTitle(magazineDTO.getTitle());
-                    magazine.setCity(magazineDTO.getCity());
                     magazine.setPublishYear(magazineDTO.getPublishYear());
                     magazine.setStockNumber(magazineDTO.getStockNumber());
                     magazine.setFrequency(magazineDTO.getFrequency());
@@ -129,12 +145,15 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                     magazine.setVisit(magazineDTO.getVisit());
                     magazine.setImageUrl(magazineDTO.getImage());
 
-                    if (magazineDTO.getEditor() != null) {
-                        magazine.setEditor(editorService.findOne(magazineDTO.getEditor().getId()).get());
-                    }
-                    if (magazineDTO.getTopic() != null) {
-                        magazine.setTopic(topicService.findOne(magazineDTO.getTopic().getId()).get());
-                    }
+                    List<Editor> editorList = magazineDTO.getEditorList().stream()
+                            .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
+                            .collect(Collectors.toList());
+                    magazine.setEditorList(editorList);
+
+                    List<Topic> topicList = magazineDTO.getTopicList().stream()
+                            .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
+                            .collect(Collectors.toList());
+                    magazine.setTopicList(topicList);
 
                     if (magazineDTO.getImage() == null)
                         storageService.deleteById(magazine.getId());

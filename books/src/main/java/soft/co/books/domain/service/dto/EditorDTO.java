@@ -1,11 +1,11 @@
 package soft.co.books.domain.service.dto;
 
 import soft.co.books.configuration.Constants;
+import soft.co.books.domain.collection.Country;
 import soft.co.books.domain.collection.Editor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.Instant;
 
 /**
  * A DTO representing an editor.
@@ -18,6 +18,8 @@ public class EditorDTO {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String name;
 
+    private Country country;
+
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String city;
 
@@ -28,6 +30,7 @@ public class EditorDTO {
     public EditorDTO(Editor editor) {
         this.id = editor.getId();
         this.name = editor.getName();
+        this.country = editor.getCountry();
         this.city = editor.getCity();
     }
 
@@ -47,6 +50,14 @@ public class EditorDTO {
         this.name = name;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     public String getCity() {
         return city;
     }
@@ -59,6 +70,7 @@ public class EditorDTO {
     public String toString() {
         return "EditorDTO{" +
                 "name='" + name + '\'' +
+                "country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 '}';
     }

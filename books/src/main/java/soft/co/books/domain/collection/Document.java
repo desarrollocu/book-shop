@@ -8,10 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.AbstractAuditingEntity;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Document extends AbstractAuditingEntity implements Serializable {
 
@@ -23,11 +25,8 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String title;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
-    private String city;
-
     @DBRef
-    private Editor editor;
+    private List<Editor> editorList = new ArrayList<>();
 
     @Field("sell_price")
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -38,7 +37,8 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     @DBRef
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private Topic topic;
+    @NotEmpty(message = Constants.ERR_NOT_NULL)
+    private List<Topic> topicList = new ArrayList<>();
 
     @Field("image_url")
     private String imageUrl;
@@ -82,36 +82,12 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
         this.title = title;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Editor getEditor() {
-        return editor;
-    }
-
-    public void setEditor(Editor editor) {
-        this.editor = editor;
-    }
-
     public String getIsbn() {
         return isbn;
     }
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
     }
 
     public String getImageUrl() {
@@ -130,12 +106,20 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
         this.visit = visit;
     }
 
-    public Optional<Editor> getEditorOrNull() {
-        return Optional.ofNullable(editor);
+    public List<Editor> getEditorList() {
+        return editorList;
     }
 
-    public Optional<Topic> getTopicOrNull() {
-        return Optional.ofNullable(topic);
+    public void setEditorList(List<Editor> editorList) {
+        this.editorList = editorList;
+    }
+
+    public List<Topic> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<Topic> topicList) {
+        this.topicList = topicList;
     }
 
     public double getSalePrice() {
