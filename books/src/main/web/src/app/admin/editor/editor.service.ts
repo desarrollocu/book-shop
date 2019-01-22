@@ -3,6 +3,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {createRequestOption} from '../../shared/util/request-util';
 import {Editor} from "./model/editor";
+import {Country} from "../user/model/country";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class EditorService {
 
   getEditor(editor: Editor): Observable<HttpResponse<Editor>> {
     return this.http.post<Editor>('api/editor', editor, {observe: 'response'});
+  }
+
+  getCountries(): Observable<Country[]> {
+    return this.http.post<Country[]>('api/allCountries', {observe: 'response'});
   }
 
   saveEditor(editor: Editor): Observable<HttpResponse<Editor>> {

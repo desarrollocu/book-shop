@@ -3,7 +3,6 @@ package soft.co.books.configuration.security.other;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import soft.co.books.configuration.security.other.AuthoritiesConstants;
 
 import java.util.Optional;
 
@@ -32,6 +31,16 @@ public final class SecurityUtils {
                     }
                     return null;
                 });
+    }
+
+    /**
+     * Get the info of the current user.
+     *
+     * @return the info of the current user
+     */
+    public static UserDetails getCurrentUserInfo() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return (UserDetails) securityContext.getAuthentication().getPrincipal();
     }
 
     /**

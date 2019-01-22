@@ -16,6 +16,8 @@ import {map, takeUntil} from 'rxjs/operators';
 import {IPaypalClient, IPayPalPaymentCompleteData, PayPalConfig} from "./model/paypal-models";
 import {PayPalIntegrationType} from "./model/paypal-integration";
 import {PayPalFunding} from "./model/paypal-funding";
+import {CartService} from "../cart.service";
+import {HttpClient} from "@angular/common/http";
 
 /**
  * Global variable where PayPal is loaded to
@@ -92,7 +94,8 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
 
   private readonly ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private cartService: CartService,
+              private http: HttpClient) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -228,16 +231,17 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
       payment: (data, actions) => {
         if (this.config.integrationType === PayPalIntegrationType.ServerSideREST) {
           // client needs to create payment on server side
-          if (!this.config.payment) {
-            throw Error(`You need set up a create payment method and return
-                            PayPal's payment id when using server side integration`);
-          }
+          // if (!this.config.payment) {
+          //   throw Error(`You need set up a create payment method and return
+          //                   PayPal's payment id when using server side integration`);
+          // }
 
           // Paypal expects promise with payment id (string) to be returned
-          return this.config.payment().toPromise()
-            .then(paymentId => {
-              return paymentId;
-            });
+          return this.cartService.getPaymentId();
+          // return this.config.payment().toPromise()
+          //   .then(paymentId => {
+          //     return paymentId;
+          //   });
         }
 
         if (this.config.integrationType === PayPalIntegrationType.ClientSideREST) {
@@ -268,12 +272,12 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
       onAuthorize: (data: IPayPalPaymentCompleteData, actions: any) => {
         if (this.config.integrationType === PayPalIntegrationType.ServerSideREST) {
           // client needs to server to execute the payment
-          if (!this.config.onAuthorize) {
-            throw Error(`You need set up an execute method when using server side integration`);
-          }
+          // if (!this.config.onAuthorize) {
+          //   throw Error(`You need set up an execute method when using server side integration`);
+          // }
 
           // Paypal expects promise
-          return this.config.onAuthorize(data, actions).toPromise();
+          return this.config.onAuthorize(data, actions);
         }
 
         if (this.config.integrationType === PayPalIntegrationType.ClientSideREST) {
@@ -299,6 +303,7 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
         }
       },
       onClick: () => {
+        console.log('onClick');
         if (this.config.onClick) {
           this.config.onClick();
         }
@@ -309,6 +314,10 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
         }
       }
     }, `#${this.payPalButtonContainerId}`);
+  }
+
+  onSuccess(resp) {
+    return resp;
   }
 
   private getClient(): IPaypalClient | undefined {

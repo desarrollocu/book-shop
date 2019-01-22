@@ -13,6 +13,7 @@ import {Search} from '../model/search';
 import {Classification} from '../../admin/classification/model/classification';
 import {Book} from '../../admin/book/model/book';
 import {Topic} from '../../admin/topic/model/topic';
+import {Country} from "../../admin/user/model/country";
 
 @Component({
   selector: 'app-search-book',
@@ -30,12 +31,14 @@ export class SearchBookComponent implements OnInit {
   currentRate = 2;
   years: string[];
   classifications: Classification[];
+  classificationsTemp: Classification[];
   selectedBook: Book;
   images: string[];
   topics: Topic[];
   currentLang: string;
   searchMore: boolean;
   load: boolean;
+  countryList: Country[];
 
   constructor(private searchService: SearchService,
               private alertService: AlertService,
@@ -63,9 +66,11 @@ export class SearchBookComponent implements OnInit {
     this.getBooks(null);
     this.findClassifications();
     this.findTopics();
+    this.getCountries();
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
       this.currentLang = this.translateService.currentLang;
       this.topicLanguage();
+      this.classificationsLanguage();
     });
   }
 
@@ -76,6 +81,9 @@ export class SearchBookComponent implements OnInit {
   getBooks(param) {
     if (param === 'btn')
       this.page = 0;
+    else
+      this.predicate = param;
+
 
     this.bookList = [];
     this.searchService.searchBook({
@@ -105,15 +113,29 @@ export class SearchBookComponent implements OnInit {
   }
 
   sort() {
+    this.predicate = this.predicate !== null ? this.predicate : 'id';
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
+    this.reverse = !this.reverse;
+    // if (this.predicate !== 'id') {
+    //   result.push('id');
+    // }
     return result;
   }
 
   trackIdentity(index, item: Book) {
     return item.id;
+  }
+
+  getCountries() {
+    this.searchService.getCountries()
+      .subscribe(response => this.onCountrySuccess(response),
+        response => this.onError(response));
+  }
+
+  private onCountrySuccess(result) {
+    this.countryList = [];
+    if (result !== null)
+      this.countryList = result;
   }
 
   findClassifications() {
@@ -146,9 +168,24 @@ export class SearchBookComponent implements OnInit {
     }
   }
 
+  private classificationsLanguage() {
+    let temp = this.classificationsTemp;
+    this.classifications = [];
+    if (temp) {
+      for (let i in temp) {
+        this.classifications = [...this.classifications, {
+          id: temp[i].id,
+          name: this.translateService.instant(temp[i].name)
+        }];
+      }
+    }
+  }
+
   private onClassificationsSuccess(response) {
     this.classifications = [];
+    this.classificationsTemp = [];
     if (response) {
+      this.classificationsTemp = response;
       for (let i in response) {
         this.classifications.push({
           id: response[i].id,
@@ -163,13 +200,13 @@ export class SearchBookComponent implements OnInit {
     this.selectedBook = book;
   }
 
-  addToCar() {
-    this.shoppingService.addToCar(this.selectedBook, true);
-    this.alertService.info('shopping.success', null, null);
+  addToCar(book) {
+    this.shoppingService.addToCar(book, true);
     this.cancel();
   }
 
-  bookDetails(details) {
+  bookDetails(details, book) {
+    this.selectBook(book);
     this.modalService.open(details);
   }
 

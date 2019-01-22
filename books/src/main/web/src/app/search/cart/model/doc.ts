@@ -9,6 +9,7 @@ export class Doc {
     public image?: string,
     public salePrice?: number,
     public cant?: number,
+    public realCant?: number,
     public city?: string,
     public editor?: Editor,
     public isbn?: string,

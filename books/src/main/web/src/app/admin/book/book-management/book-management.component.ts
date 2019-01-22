@@ -43,7 +43,7 @@ export class BookManagementComponent implements OnInit {
               private classificationService: ClassificationService,
               private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
-    this.coinList = ['$', 'U$S'];
+    this.coinList = ['USD'];
     this.toShowList = [{elem: this.translateService.instant('user.yes'), val: true},
       {elem: this.translateService.instant('user.no'), val: false}];
     this.currentLang = this.translateService.currentLang;
@@ -174,7 +174,7 @@ export class BookManagementComponent implements OnInit {
     else {
       this.book = new Book();
       this.book.editionYear = '2018';
-      this.book.coin = '$'
+      this.book.coin = 'USD'
     }
   }
 

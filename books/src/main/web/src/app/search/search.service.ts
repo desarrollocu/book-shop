@@ -6,6 +6,7 @@ import {createRequestOption} from '../shared/util/request-util';
 
 import {Book} from '../admin/book/model/book';
 import {Magazine} from '../admin/magazine/model/magazine';
+import {Country} from "../admin/user/model/country";
 
 
 @Injectable({
@@ -34,5 +35,13 @@ export class SearchService {
   searchBooks(req?: any): Observable<Book[]> {
     const options = createRequestOption(req.pageable);
     return this.http.post<Book[]>('api/salesBooks', {params: options, observe: 'response'});
+  }
+
+  getCountries(): Observable<Country[]> {
+    return this.http.post<Country[]>('api/allCountries', {observe: 'response'});
+  }
+
+  searchCarouselBooks(): Observable<Book[]> {
+    return this.http.post<Book[]>('api/searchCarouselBooks', {observe: 'response'});
   }
 }

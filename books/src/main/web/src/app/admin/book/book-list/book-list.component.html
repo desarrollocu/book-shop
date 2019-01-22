@@ -41,8 +41,9 @@
                      name="editor"
                      bindLabel="name"
                      [virtualScroll]="true"
+                     [multiple]="true"
                      placeholder="{{'book.editor' | translate}}"
-                     [(ngModel)]="book.editor">
+                     [(ngModel)]="book.editorList">
           </ng-select>
         </div>
         <div class="form-group col-md-4">
@@ -51,9 +52,10 @@
                      id="topic"
                      name="topic"
                      bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                     [multiple]="true"
                      [virtualScroll]="true"
                      placeholder="{{'book.topic' | translate}}"
-                     [(ngModel)]="book.topic">
+                     [(ngModel)]="book.topicList">
           </ng-select>
         </div>
       </div>
@@ -86,8 +88,8 @@
       <tr *ngFor="let book of bookList; trackBy: trackIdentity">
         <td scope="row">{{book.title}}</td>
         <td>{{book.subTitle}}</td>
-        <td>{{book.editor !== null ? book.editor.name : ''}}</td>
-        <td>{{book.topic !== null ? currentLang === 'en' ? book.topic.englishName: book.topic.spanishName : ''}}</td>
+        <td>{{book.editors}}</td>
+        <td>{{currentLang === 'en' ? book.topicsEnglish: book.topicsSpanish}}</td>
         <td>{{book.coin}}</td>
         <td>{{book.salePrice}}</td>
         <td>

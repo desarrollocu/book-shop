@@ -21,7 +21,9 @@
     "addCar": " Adicionar al carrito",
     "close": " Cerrar",
     "details": "Ver detalles",
-    "payPal": "El botón de Paypal se está cargando"
+    "payPal": "El botón de Paypal se está cargando",
+    "payPalReLoad":"Recargar PayPal",
+    "payPalLoad":" PayPal se está cargando."
   },
   "login": {
     "username": "Usuario",
@@ -42,20 +44,21 @@
     "home": "Inicio",
     "books": "Libros",
     "magazines": "Revistas",
-    "user": "Usuario",
-    "book": "Libro",
-    "author": "Autor",
-    "editor": "Editor",
-    "topic": "Temática",
+    "user": "Gestión de Usuarios",
+    "book": "Gestión de Libros",
+    "author": "Gestión de Autores",
+    "editor": "Gestión de Editoriales",
+    "topic": "Gestión de Temáticas",
     "country": "País",
-    "publisher": "Editorial",
-    "magazine": "Revista",
+    "publisher": "Gestión de Editoriales",
+    "magazine": "Gestión de Revistas",
     "car": "Carrito de compras"
   },
   "search": {
     "title": "Título",
     "author": "Autor",
-    "button": " Buscar"
+    "button": " Buscar",
+    "editionCountry": "País de edición"
   },
   "user": {
     "name": "Nombre",
@@ -86,12 +89,13 @@
     "delete": "Eliminar libro",
     "title": "Título",
     "subTitle": "Subtítulo",
-    "editor": "Editor",
+    "editor": "Editorial",
     "topic": "Temática",
-    "authorList": "Autores",
+    "authorList": "Autor",
     "city": "Ciudad",
     "editionDate": "Fecha de edición",
     "editionYear": "Año de edición",
+    "editionCountry": "País de edición",
     "pages": "Páginas",
     "size": "Medidas",
     "isbn": "ISBN",
@@ -100,26 +104,26 @@
     "price": "Precio",
     "coin": "Moneda",
     "edition": "Edición",
-    "classification": "Clasificación",
+    "classification": "Libros Nuevos/Usados",
     "descriptors": "Descriptores (Ejemplo: historia,todo,día)",
     "descriptorsPlaceHolder": "palabra,palabra,palabra",
     "descriptor": "Descriptor",
     "descriptorPlaceHolder": "Palabra",
     "detail": "Detalles del libro",
-    "toShow": "Más vendido",
-    "toShowPlaceholder": "Más vendido",
+    "toShow": "Mostar en portada",
+    "toShowPlaceholder": "Sí/No",
     "mostSale": "Libros más vendidos"
   },
   "magazine": {
     "add": " Adicionar revista",
-    "delete": "Delete revista",
+    "delete": "Eliminar revista",
     "title": "Título",
-    "editor": "Editor",
+    "editor": "Editorial",
     "topic": "Temática",
     "city": "Ciudad",
     "publishYear": "Año de publicación",
     "frequency": "Frecuencia",
-    "stockNumber": "Números disponibles",
+    "stockNumber": "Ejemplares disponibles",
     "isbn": "ISBN",
     "salePrice": "Precio de venta",
     "price": "Precio",
@@ -138,18 +142,20 @@
   },
   "editor": {
     "name": "Nombre",
-    "add": " Adicionar editor",
+    "add": " Adicionar editorial",
     "city": "Ciudad",
     "country": "País",
+    "editionCity": "Ciudad de edición",
+    "country": "País",
     "state": "Estado",
-    "delete": "Eliminar editor"
+    "delete": "Eliminar editorial"
   },
   "topic": {
     "name": "Nombre",
     "englishName": "Nombre en ingles",
     "spanishName": "Nombre en español",
-    "add": " Add temática",
-    "delete": "Delete temática"
+    "add": " Adicionar temática",
+    "delete": "Eliminar temática"
   },
   "classification": {
     "used": "Antiguos y usados",
@@ -173,7 +179,8 @@
     "password": {
       "equal": "Las dos contraseñas deben ser iguales."
     },
-    "paypal":"Error de paypal, Revise sus datos y vuelva a intentarlo.",
+    "payPal":"Error de PayPal, Revise sus datos y vuelva a intentarlo.",
+    "payPalConnection": "Error conectando con PayPal.",
     "pattern": {
       "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra"
     },
@@ -187,7 +194,7 @@
       "oldPassword": "La contraseña actual es requerida.",
       "admin": "El campo administrator is requerido.",
       "city": "La ciudad es requerida.",
-      "name": "EL nombre es requerido.",
+      "name": "El nombre es requerido.",
       "title": "El título es requerido.",
       "authors": "El autor es requerido.",
       "classification": "La clasificación es requerida.",
@@ -218,10 +225,13 @@
     "E58": "Mínimo 1 y máximo 150 caracteres.",
     "E59": "Contraseña incorrecta.",
     "E61": "El elemento esta asociado a un documento.",
-    "E62": "No puede eliminar su propio usuario."
+    "E62": "No puede eliminar su propio usuario.",
+    "E63": "Ha ocurrido un error durante la creación del pago."
   },
   "info": {
-    "title": "Información"
+    "title": "Información",
+    "maxProduct": "Máxima cantidad alcanzada.",
+    "inCart":"El producto ya está en el carrito."
   },
   "success": {
     "title": "Satisfactorio",

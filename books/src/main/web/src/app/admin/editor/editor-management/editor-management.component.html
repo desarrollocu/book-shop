@@ -25,6 +25,27 @@
             </div>
           </div>
           <div class="form-group col-md-6">
+            <label for="country" [translate]="'author.country'">Country</label>
+            <ng-select [items]="countryList"
+                       id="country"
+                       name="country"
+                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                       [virtualScroll]="true"
+                       placeholder="{{'author.country' | translate}}"
+                       [(ngModel)]="editor.country"
+                       #country="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="country.invalid && (country.dirty || country.touched)"
+                 class="error-msg">
+              <div *ngIf="country.errors.required" [translate]="'error.required.country'">
+                Country is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
             <label for="city" [translate]="'editor.city'">City</label>
             <input type="text"
                    [(ngModel)]="editor.city"

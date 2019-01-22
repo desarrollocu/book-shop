@@ -1,11 +1,11 @@
 .mag-posts-content-carousel {
   -webkit-box-flex: 0;
-  -ms-flex: 0 0 calc(100% - 630px);
-  flex: 0 0 calc(100% - 630px);
+  -ms-flex: 0 0 calc(100% - 730px);
+  flex: 0 0 calc(100% - 730px);
   max-width: calc(100% - 0px);
   width: calc(100% - 0px);
-  height: 310px;
-  margin-left: 90px;
+  height: 340px;
+  margin-left: 70px;
 }
 
 .mag-posts-content-most-sale {
@@ -27,11 +27,11 @@
 @media only screen and (min-width: 1200px) and (max-width: 1499px) {
   .mag-posts-content-carousel {
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 calc(100% - 650px);
+    -ms-flex: 0 0 calc(100% - 730px);
     flex: 0 0 calc(100% - 30px);
-    max-width: 650px;
-    width: 650px;
-    margin-left: 90px;
+    max-width: 730px;
+    width: 730px;
+    margin-left: 70px;
   }
 
   .mag-posts-content-most-sale {
@@ -55,7 +55,7 @@
     flex: 0 0 calc(100% - 130px);
     max-width: calc(100% - 130px);
     width: calc(100% - 30px);
-    margin-left: 90px;
+    margin-left: 70px;
   }
 
   .mag-posts-content-most-sale {

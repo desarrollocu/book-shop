@@ -45,8 +45,16 @@
                        bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                        [virtualScroll]="true"
                        placeholder="{{'author.country' | translate}}"
-                       [(ngModel)]="author.country">
+                       #country="ngModel"
+                       [(ngModel)]="author.country"
+                       required>
             </ng-select>
+            <div *ngIf="country.invalid && (country.dirty || country.touched)"
+                 class="error-msg">
+              <div *ngIf="country.errors.required" [translate]="'error.required.country'">
+                Country is required.
+              </div>
+            </div>
           </div>
           <div class="form-group col-md-4">
             <label for="state" [translate]="'author.state'">State</label>

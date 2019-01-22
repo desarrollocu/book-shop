@@ -2,11 +2,10 @@ export class Magazine {
   constructor(
     public id?: any,
     public title?: string,
-    public city?: string,
-    public editor?: any,
+    public editorList?: any[],
+    public topicList?: any[],
     public isbn?: string,
     public frequency?: string,
-    public topic?: any,
     public salePrice?: number,
     public coin?: string,
     public publishYear?: string,
@@ -18,6 +17,13 @@ export class Magazine {
     public createdDate?: string,
     public lastModifiedBy?: string,
     public lastModifiedDate?: string,
+    public topicsEnglish?: string,
+    public topicsSpanish?: string,
+    public editors?: string,
+    public authors?: string,
+    public cities?: string,
+    public countriesEnglish?: string,
+    public countriesSpanish?: string
   ) {
   }
 }

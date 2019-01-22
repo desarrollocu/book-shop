@@ -86,7 +86,7 @@ export class PayPalConfig {
       validate?: (actions: any) => void;
       onCancel?: (data: IPayPalCancelPayment, actions: any) => void,
       payment?: () => Observable<string>,
-      onAuthorize?: (data: IPayPalPaymentCompleteData, actions: any) => Observable<void>,
+      onAuthorize?: (data: IPayPalPaymentCompleteData, actions: any) => Promise<void>,
       client?: IPaypalClient,
       onPaymentComplete?: (data: IPayPalPaymentCompleteData, actions: any, payment:any) => void,
       transactions?: IPayPalTransaction[],

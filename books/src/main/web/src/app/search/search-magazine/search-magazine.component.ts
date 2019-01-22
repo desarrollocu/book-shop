@@ -138,7 +138,6 @@ export class SearchMagazineComponent implements OnInit {
 
   addToCar() {
     this.shoppingService.addToCar(this.selectedMagazine, false);
-    this.alertService.info('shopping.success', null, null);
     this.cancel();
   }
 

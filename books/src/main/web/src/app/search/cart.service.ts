@@ -5,6 +5,8 @@ import {Observable, Subject} from 'rxjs';
 import {Doc} from './cart/model/doc';
 import {Product} from './cart/model/product';
 import {Sale} from "./cart/model/sale";
+import {AlertService} from "../shared/alert/alert.service";
+import {Payment} from "./cart/model/payment";
 
 
 @Injectable({
@@ -13,8 +15,9 @@ import {Sale} from "./cart/model/sale";
 export class CartService {
   productList: Product[];
   cartSubject: Subject<number>;
+  paymentId: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private alertService: AlertService) {
     this.productList = [];
     this.cartSubject = new Subject<number>();
     this.cartSubject.asObservable();
@@ -27,7 +30,7 @@ export class CartService {
   addToCar(product?: any, book?: boolean) {
     let val = this.existProduct(product.id);
     if (val !== -1) {
-      this.productList[val].cant += 1;
+      this.alertService.info('info.inCart', null, null);
     }
     else {
       let prod = new Product();
@@ -35,13 +38,14 @@ export class CartService {
       prod.cant = 1;
       prod.book = book;
       this.productList.push(prod);
-    }
+      let cant = 0;
+      for (let i in this.productList) {
+        cant += this.productList[i].cant;
+      }
+      this.getCarSubject().next(cant);
 
-    let cant = 0;
-    for (let i in this.productList) {
-      cant += this.productList[i].cant;
+      this.alertService.info('shopping.success', null, null);
     }
-    this.getCarSubject().next(cant);
   }
 
   getCarSubject() {
@@ -72,19 +76,43 @@ export class CartService {
     return this.productList;
   }
 
-  updateCant(element) {
-    for (let i = 0; i < this.productList.length; i++) {
-      if (element.id === this.productList[i].id) {
-        this.productList[i].cant = element.cant;
-        break;
+  updateCant(element, action) {
+    if (action === '+') {
+      if (element.cant < element.realCant) {
+        element.cant++;
+        for (let i = 0; i < this.productList.length; i++) {
+          if (element.id === this.productList[i].id) {
+            this.productList[i].cant = element.cant;
+            break;
+          }
+        }
+
+        let cant = 0;
+        for (let i in this.productList) {
+          cant += this.productList[i].cant;
+        }
+        this.getCarSubject().next(cant);
+      }
+      else
+        this.alertService.info('info.maxProduct', null, null);
+    }
+    else {
+      if (element.cant > 1) {
+        element.cant--;
+        for (let i = 0; i < this.productList.length; i++) {
+          if (element.id === this.productList[i].id) {
+            this.productList[i].cant = element.cant;
+            break;
+          }
+        }
+
+        let cant = 0;
+        for (let i in this.productList) {
+          cant += this.productList[i].cant;
+        }
+        this.getCarSubject().next(cant);
       }
     }
-
-    let cant = 0;
-    for (let i in this.productList) {
-      cant += this.productList[i].cant;
-    }
-    this.getCarSubject().next(cant);
   }
 
   cleanCart() {
@@ -103,5 +131,22 @@ export class CartService {
 
   saveSale(sale: Sale): Observable<HttpResponse<Sale>> {
     return this.http.post<Sale>('api/saveSale', sale, {observe: 'response'});
+  }
+
+  createPayment(trans: any): Observable<HttpResponse<Payment>> {
+    return this.http.post<Payment>('api/createPayment', trans, {observe: 'response'});
+  }
+
+  executePayment(payment: any): Promise<HttpResponse<Object>> {
+    return this.http.post('api/executePayment', payment, {observe: 'response'})
+      .toPromise();
+  }
+
+  getPaymentId() {
+    return this.paymentId;
+  }
+
+  setPaymentId(temp) {
+    this.paymentId = temp;
   }
 }

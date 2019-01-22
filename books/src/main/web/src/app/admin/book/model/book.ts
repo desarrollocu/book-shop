@@ -2,9 +2,10 @@ export class Book {
   constructor(
     public id?: any,
     public authorList?: any[],
+    public editorList?: any[],
+    public topicList?: any[],
     public title?: string,
     public subTitle?: string,
-    public city?: string,
     public editor?: any,
     public classification?: any,
     public editionYear?: string,
@@ -19,12 +20,20 @@ export class Book {
     public toShow?: any,
     public file?: any,
     public image?: string,
+    public authorText?: string,
     public descriptorList?: any[],
     public visit?: number,
     public createdBy?: string,
     public createdDate?: string,
     public lastModifiedBy?: string,
-    public lastModifiedDate?: string
+    public lastModifiedDate?: string,
+    public topicsEnglish?: string,
+    public topicsSpanish?: string,
+    public editors?: string,
+    public authors?: string,
+    public cities?: string,
+    public countriesEnglish?: string,
+    public countriesSpanish?: string
   ) {
     this.stockNumber = 0;
   }

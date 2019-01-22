@@ -36,7 +36,7 @@ export class MagazineManagementComponent implements OnInit {
               private editorService: EditorService,
               private translateService: TranslateService,
               public activeModal: NgbActiveModal) {
-    this.coinList = ['$', 'U$S'];
+    this.coinList = ['USD'];
     this.toShowList = [{elem: this.translateService.instant('user.yes'), val: true},
       {elem: this.translateService.instant('user.no'), val: false}];
     this.currentLang = this.translateService.currentLang;
@@ -125,7 +125,7 @@ export class MagazineManagementComponent implements OnInit {
     else {
       this.magazine = new Magazine();
       this.magazine.publishYear = '2018';
-      this.magazine.coin = '$'
+      this.magazine.coin = 'USD'
     }
   }
 

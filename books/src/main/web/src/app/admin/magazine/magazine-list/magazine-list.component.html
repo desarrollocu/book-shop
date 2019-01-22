@@ -18,8 +18,9 @@
                      name="editor"
                      bindLabel="name"
                      [virtualScroll]="true"
+                     [multiple]="true"
                      placeholder="{{'magazine.editor' | translate}}"
-                     [(ngModel)]="magazine.editor">
+                     [(ngModel)]="magazine.editorList">
           </ng-select>
         </div>
         <div class="form-group col-md-4">
@@ -29,8 +30,9 @@
                      name="topic"
                      bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                      [virtualScroll]="true"
+                     [multiple]="true"
                      placeholder="{{'magazine.topic' | translate}}"
-                     [(ngModel)]="magazine.topic">
+                     [(ngModel)]="magazine.topicList">
           </ng-select>
         </div>
       </div>
@@ -62,8 +64,8 @@
       </tr>
       <tr *ngFor="let magazine of magazineList; trackBy: trackIdentity">
         <td scope="row">{{magazine.title}}</td>
-        <td>{{magazine.editor !== null ? magazine.editor.name : ''}}</td>
-        <td>{{currentLang === 'en' ? magazine.topic.englishName: magazine.topic.spanishName}}</td>
+        <td>{{magazine.editors}}</td>
+        <td>{{currentLang === 'en' ? magazine.topicsEnglish: magazine.topicsSpanish}}</td>
         <td>{{magazine.coin}}</td>
         <td>{{magazine.salePrice}}</td>
         <td>

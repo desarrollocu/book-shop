@@ -7,6 +7,8 @@ import {AlertService} from '../../../shared/alert/alert.service';
 import {EditorService} from '../editor.service';
 
 import {Editor} from '../model/editor';
+import {Country} from "../../user/model/country";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-editor-list',
@@ -21,18 +23,37 @@ export class EditorListComponent implements OnInit {
   predicate: any;
   reverse: any;
   remEditor: Editor;
+  countryList: Country[];
+  currentLang: string;
 
   constructor(private editorService: EditorService,
               private alertService: AlertService,
+              private translateService: TranslateService,
               private modalService: NgbModal) {
     this.itemsPerPage = 5;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
     this.getEditors(null);
+    this.getCountries();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.countryLanguage();
+    });
+  }
+
+  private countryLanguage() {
+    let temp = this.countryList;
+    this.countryList = [];
+    if (temp) {
+      for (let i in temp) {
+        this.countryList = [...this.countryList, temp[i]];
+      }
+    }
   }
 
   getEditors(param) {
@@ -116,6 +137,18 @@ export class EditorListComponent implements OnInit {
 
   trackIdentity(index, item: Editor) {
     return item.id;
+  }
+
+  getCountries() {
+    this.editorService.getCountries()
+      .subscribe(response => this.onCountrySuccess(response),
+        response => this.onError(response));
+  }
+
+  private onCountrySuccess(result) {
+    this.countryList = [];
+    if (result !== null)
+      this.countryList = result;
   }
 
   cancel() {

@@ -1,9 +1,10 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {NgxWebstorageModule} from 'ngx-webstorage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {NgxAlertsModule} from '@ngx-plus/ngx-alerts';
 
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from './core/core.module';
@@ -18,7 +19,6 @@ import {NavbarComponent} from './layouts/navbar/navbar.component';
 import {ErrorComponent} from './layouts/error/error.component';
 import {SidebarComponent} from './layouts/sidebar/sidebar.component';
 import {FooterComponent} from './layouts/footer/footer.component';
-import {NgxAlertsModule} from "@ngx-plus/ngx-alerts";
 
 @NgModule({
   imports: [

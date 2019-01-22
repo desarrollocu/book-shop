@@ -4,51 +4,40 @@
   <!--</div>-->
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
     <form #magazineSearchForm="ngForm" (submit)="getMagazines('btn')">
-      <div *ngIf="searchMore">
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label for="title" [translate]="'search.title'">Title</label>
-            <input type="text"
-                   [(ngModel)]="search.title"
-                   class="form-control" id="title" name="title" placeholder="{{'search.title' | translate}}">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="city" [translate]="'book.city'">City</label>
-            <input class="form-control"
-                   id="city" type="text" name="city"
-                   [(ngModel)]="search.city"
-                   placeholder="{{'book.city' | translate}}">
-          </div>
-          <div class="form-group col-md-4">
-            <label for="publisher" [translate]="'book.editor'">Publisher</label>
-            <input class="form-control"
-                   [(ngModel)]="search.editor"
-                   id="publisher" name="publisher" type="text"
-                   placeholder="{{'book.editor' | translate}}">
-          </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="title" [translate]="'search.title'">Title</label>
+          <input type="text"
+                 [(ngModel)]="search.title"
+                 class="form-control" id="title" name="title" placeholder="{{'search.title' | translate}}">
         </div>
-        <div class="form-row">
-          <div class="form-group col-md-4">
-            <label for="topic" [translate]="'book.topic'">Topic</label>
-            <ng-select [items]="topics"
-                       id="topic"
-                       name="topic"
-                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
-                       [virtualScroll]="true"
-                       placeholder="{{'book.topic' | translate}}"
-                       [(ngModel)]="search.topic">
-            </ng-select>
-          </div>
+        <div class="form-group col-md-4">
+          <label for="city" [translate]="'book.city'">City</label>
+          <input class="form-control"
+                 id="city" type="text" name="city"
+                 [(ngModel)]="search.city"
+                 placeholder="{{'book.city' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="publisher" [translate]="'book.editor'">Publisher</label>
+          <input class="form-control"
+                 [(ngModel)]="search.editor"
+                 id="publisher" name="publisher" type="text"
+                 placeholder="{{'book.editor' | translate}}">
         </div>
       </div>
-      <div *ngIf="!searchMore">
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <label for="titleMore" [translate]="'search.title'">Title</label>
-            <input type="text"
-                   [(ngModel)]="search.title"
-                   class="form-control" id="titleMore" name="titleMore" placeholder="{{'search.title' | translate}}">
-          </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="topic" [translate]="'book.topic'">Topic</label>
+          <ng-select [items]="topics"
+                     id="topic"
+                     name="topic"
+                     bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                     [virtualScroll]="true"
+                     [multiple]="true"
+                     placeholder="{{'book.topic' | translate}}"
+                     [(ngModel)]="search.topicList">
+          </ng-select>
         </div>
       </div>
       <div class="row">
@@ -56,12 +45,6 @@
           <button type="submit" class="btn btn-primary button-size" [translate]="'search.button'">
             <i class="fa fa-search"></i> Search
           </button>
-        </div>
-        <div class="form-group col-md-4 col-sm-4">
-          <a style="margin-left: 94%; font-size: 15px" *ngIf="!searchMore" href="javascript:void(0);"
-             (click)="searchMoreChange()"><i class="fa fa-plus-square"></i></a>
-          <a style="margin-left: 94%; font-size: 15px" *ngIf="searchMore" href="javascript:void(0);"
-             (click)="searchMoreChange()"><i class="fa fa-minus-square"></i></a>
         </div>
       </div>
     </form>
@@ -94,8 +77,8 @@
            title="Add to car">
           <i class="fa fa-cart-plus"></i>
         </a>
-        <a href="javascript:void(0);" (click)="magazineDetails(details)" data-toggle="tooltip" data-placement="left"
-           title="View details">
+        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left"
+           title="{{'general.details' | translate}}" (click)="magazineDetails(detailsBook)">
           <i class="fa fa-book"></i>
         </a>
       </ng-template>

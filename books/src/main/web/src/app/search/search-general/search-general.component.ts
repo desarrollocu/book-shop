@@ -9,6 +9,7 @@ import {Book} from '../../admin/book/model/book';
 import {Search} from '../model/search';
 import {Magazine} from '../../admin/magazine/model/magazine';
 import {CartService} from '../cart.service';
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 @Component({
@@ -39,6 +40,10 @@ export class SearchGeneralComponent implements OnInit {
   predicateMagazine: any;
   reverseMagazine: any;
 
+  imageUrlList: any[];
+  imageList: string[];
+
+
   constructor(private searchService: SearchService,
               private alertService: AlertService,
               private translateService: TranslateService,
@@ -58,8 +63,44 @@ export class SearchGeneralComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBooks(null);
-    this.getMagazines(null);
+    this.getBookCarousel();
+  }
+
+  // createArray(array) {
+  //   this.imageUrlList = [];
+  //   while (array.length > 0) {
+  //     let toPush = [];
+  //     let temp = array.splice(0, 4);
+  //
+  //     for (let i = 0; i < temp.length; i++) {
+  //       toPush.push({
+  //         url: temp[i],
+  //         style: i > 0 ? 'position: absolute;left:' + 167 * i + 'px' : null
+  //       })
+  //     }
+  //
+  //     let val = 4 - toPush.length;
+  //     for (let i = 0; i < val; i++) {
+  //       toPush.push({
+  //         url: 'assets/images/image.gif',
+  //         style: i > 0 ? 'position: absolute;left:' + 167 * i + 'px' : null
+  //       })
+  //     }
+  //     this.imageUrlList.push(toPush);
+  //   }
+  // }
+
+  getBookCarousel() {
+    this.imageUrlList = [];
+    this.searchService.searchCarouselBooks()
+      .subscribe(
+        (response: Book[]) => this.onCarouselSuccess(response),
+        (response: any) => this.onError(response)
+      );
+  }
+
+  private onCarouselSuccess(res) {
+    this.imageUrlList = res;
   }
 
   getMagazines(param) {

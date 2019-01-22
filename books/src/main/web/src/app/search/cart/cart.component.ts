@@ -8,8 +8,7 @@ import {Doc} from './model/doc';
 import {PayPalConfig} from '../paypal/model/paypal-models';
 import {PayPalIntegrationType} from '../paypal/model/paypal-integration';
 import {PayPalEnvironment} from '../paypal/model/paypal-environment';
-import {Sale} from './model/sale';
-import {UserDetail} from "./model/user-detail";
+import {Sale} from "./model/sale";
 import {Detail} from "./model/detail";
 
 
@@ -24,6 +23,8 @@ export class CartComponent implements OnInit {
   elementList: Doc[];
   payPalItemList: any[];
   payPalConfig?: PayPalConfig;
+  paymentId: string;
+  reLoadPayPal: boolean = false;
 
   constructor(private cartService: CartService,
               private router: Router,
@@ -38,58 +39,6 @@ export class CartComponent implements OnInit {
     this.initConfig();
   }
 
-  private initConfig(): void {
-    this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ClientSideREST, PayPalEnvironment.Sandbox, {
-      commit: true,
-      client: {
-        sandbox: 'Ae3kB7nSbmR3Ty9NKg6bIrHHU64mt0hZutwVG5Wz80tpQsn2HTblJeoKA2nJQPOUXjGYUA1nxidsCUGu',
-      },
-      button: {
-        label: 'paypal',
-      },
-      onPaymentComplete: (data, actions, payment) => {
-        let sale = new Sale();
-        let details = [];
-        for (let j in this.elementList) {
-          let detail = new Detail();
-          detail.title = this.elementList[j].title;
-          detail.salePrice = this.elementList[j].salePrice;
-          detail.cant = this.elementList[j].cant;
-          detail.city = this.elementList[j].city;
-          detail.editor = this.elementList[j].editor;
-          detail.topic = this.elementList[j].topic;
-          detail.isbn = this.elementList[j].isbn;
-          detail.mount = detail.cant * detail.salePrice;
-          details.push(detail);
-        }
-        sale.detailList = details;
-
-        let userDetail = new UserDetail();
-        userDetail.firstName = payment.payer.payer_info.first_name;
-        userDetail.lastName = payment.payer.payer_info.last_name;
-        userDetail.email = payment.payer.payer_info.email;
-        userDetail.recipientName = payment.payer.payer_info.shipping_address.recipient_name;
-        userDetail.address = payment.payer.payer_info.shipping_address.city +
-          payment.payer.payer_info.shipping_address.country_code +
-          payment.payer.payer_info.shipping_address.line1 +
-          payment.payer.payer_info.shipping_address.line2;
-
-        sale.userDetail = userDetail;
-        sale.total = this.total;
-
-        this.saveSale(sale);
-        this.alertService.success('success.sale', null, null);
-      },
-      onCancel: (data, actions) => {
-        console.log('OnCancel');
-      },
-      onError: (err) => {
-        this.alertService.error('error.paypal', null, null);
-      },
-      transactions: []
-    });
-  }
-
   getProducts(val?: any) {
     this.cartService.getProducts(val)
       .subscribe(response => this.onSuccess(response),
@@ -101,7 +50,6 @@ export class CartComponent implements OnInit {
     this.elementList = res.body;
     this.sumTotal(null);
     this.load = true;
-    this.updatePaypalAmount();
   }
 
   private onError(response) {
@@ -110,15 +58,134 @@ export class CartComponent implements OnInit {
     this.alertService.error(error.error, fields, null);
   }
 
+  private createPaymentId() {
+    this.paymentId = null;
+    this.reLoadPayPal = false;
+
+    if (this.elementList.length > 0) {
+      this.payPalItemList = [];
+      for (let i = 0; i < this.elementList.length; i++) {
+        this.payPalItemList.push({
+          name: this.elementList[i].title,
+          quantity: this.elementList[i].cant,
+          price: this.elementList[i].salePrice,
+          // tax: '0.00',
+          // sku: '1',
+          currency: 'USD'
+        });
+      }
+
+      let transaction = {
+        amount: {
+          total: this.total,
+          currency: 'USD',
+          details: {
+            subtotal: this.total,
+            tax: 0.00,
+            shipping: 0.00,
+            handling_fee: 0.00,
+            shipping_discount: 0.00,
+            insurance: 0.00
+          }
+        },
+        item_list: {
+          items: this.payPalItemList,
+          // shipping_address: {
+          //   recipient_name: 'Cart Cart',
+          //   line1: '6554th Floor',
+          //   line2: 'Unit #34',
+          //   city: 'San Jose',
+          //   country_code: 'US',
+          //   postal_code: '95131',
+          //   phone: '011862212345678',
+          //   state: 'CA'
+          // }
+        }
+      };
+
+      this.cartService.createPayment(transaction)
+        .subscribe(response => {
+            this.paymentId = response.body.paymentID;
+            this.cartService.setPaymentId(this.paymentId);
+          },
+          response => {
+            this.reLoadPayPal = true;
+            this.alertService.error('error.payPalConnection', null, null);
+          });
+    }
+  }
+
+  reloadPayPalFunction() {
+    this.createPaymentId();
+  }
+
+  private initConfig(): void {
+    this.payPalConfig = new PayPalConfig(PayPalIntegrationType.ServerSideREST, PayPalEnvironment.Sandbox, {
+      commit: true,
+      button: {
+        label: 'paypal',
+      },
+      onAuthorize: (data, actions) => {
+        let sale = new Sale();
+        let details = [];
+        for (let j in this.elementList) {
+          let detail = new Detail();
+          detail.title = this.elementList[j].title;
+          detail.id = this.elementList[j].id;
+          detail.salePrice = this.elementList[j].salePrice;
+          detail.cant = this.elementList[j].cant;
+          detail.city = this.elementList[j].city;
+          detail.editor = this.elementList[j].editor;
+          detail.topic = this.elementList[j].topic;
+          detail.isbn = this.elementList[j].isbn;
+          detail.mount = detail.cant * detail.salePrice;
+          details.push(detail);
+        }
+        sale.detailList = details;
+        sale.total = this.total;
+
+        return this.cartService.executePayment({
+          paymentID: data.paymentID,
+          playerID: data.payerID,
+          saleDTO: sale
+        }).then((info) => {
+          console.log('onAuthorize');
+          this.alertService.success('success.sale', null, null);
+          this.cartService.cleanCart();
+          this.router.navigateByUrl('search-general');
+        })
+      },
+      onError: (err) => {
+        this.alertService.error('error.payPal', null, null);
+      }
+    });
+  }
+
   sumTotal(element) {
     this.total = 0;
+    if (element === null) {
+      for (let i in this.elementList) {
+        this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
+      }
+    }
+    else {
+      this.cartService.updateCant(element, '+');
+      for (let i in this.elementList) {
+        this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
+      }
+    }
+
+    this.createPaymentId();
+  }
+
+  deleteOne(element) {
+    this.total = 0;
+    this.cartService.updateCant(element, '-');
     for (let i in this.elementList) {
       this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
     }
-    if (element !== null)
-      this.cartService.updateCant(element);
 
-    this.updatePaypalAmount();
+    this.createPaymentId();
   }
 
   removeProduct(prod) {
@@ -134,51 +201,8 @@ export class CartComponent implements OnInit {
       this.cartService.removeFromCar(prod);
       this.sumTotal(null);
     }
-
-    this.updatePaypalAmount();
-  }
-
-  updatePaypalAmount() {
-    this.payPalItemList = [];
-    for (let i = 0; i < this.elementList.length; i++) {
-      this.payPalItemList.push({
-        name: this.elementList[i].title,
-        quantity: this.elementList[i].cant,
-        price: this.elementList[i].salePrice,
-        // tax: '0.00',
-        // sku: '1',
-        currency: 'USD'
-      });
-    }
-
-    this.payPalConfig.transactions = [];
-    this.payPalConfig.transactions.push({
-      amount: {
-        total: this.total,
-        currency: 'USD',
-        details: {
-          subtotal: this.total,
-          tax: 0.00,
-          shipping: 0.00,
-          handling_fee: 0.00,
-          shipping_discount: 0.00,
-          insurance: 0.00
-        }
-      },
-      item_list: {
-        items: this.payPalItemList,
-        // shipping_address: {
-        //   recipient_name: 'Cart Cart',
-        //   line1: '6554th Floor',
-        //   line2: 'Unit #34',
-        //   city: 'San Jose',
-        //   country_code: 'US',
-        //   postal_code: '95131',
-        //   phone: '011862212345678',
-        //   state: 'CA'
-        // }
-      }
-    });
+    else
+      this.createPaymentId();
   }
 
   saveSale(sale) {
@@ -188,8 +212,6 @@ export class CartComponent implements OnInit {
   }
 
   private onSuccessSale(res) {
-    this.cartService.cleanCart();
-    this.router.navigateByUrl('search-general');
   }
 
   private onErrorSale(response) {

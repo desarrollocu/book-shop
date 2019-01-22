@@ -31,8 +31,9 @@
                        name="editor"
                        bindLabel="name"
                        [virtualScroll]="true"
+                       [multiple]="true"
                        placeholder="{{'magazine.editor' | translate}}"
-                       [(ngModel)]="magazine.editor"
+                       [(ngModel)]="magazine.editorList"
                        #editor="ngModel">
             </ng-select>
             <!--<div *ngIf="editor.invalid && (editor.dirty || editor.touched)"-->
@@ -51,8 +52,9 @@
                        name="topic"
                        bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                        [virtualScroll]="true"
+                       [multiple]="true"
                        placeholder="{{'magazine.topic' | translate}}"
-                       [(ngModel)]="magazine.topic"
+                       [(ngModel)]="magazine.topicList"
                        #topic="ngModel"
                        required>
             </ng-select>
@@ -77,14 +79,14 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="city" [translate]="'magazine.city'">City</label>
+            <label for="frequency" [translate]="'magazine.frequency'">Sale price</label>
             <input type="text"
-                   [(ngModel)]="magazine.city"
+                   [(ngModel)]="magazine.frequency"
                    class="form-control"
-                   id="city"
-                   name="city"
-                   placeholder="{{'magazine.city' | translate}}"
-                   #city="ngModel"
+                   id="frequency"
+                   name="frequency"
+                   placeholder="{{'magazine.frequency' | translate}}"
+                   #frequency="ngModel"
                    maxlength="50">
           </div>
           <div class="form-group col-md-6">
@@ -100,18 +102,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="frequency" [translate]="'magazine.frequency'">Sale price</label>
-            <input type="text"
-                   [(ngModel)]="magazine.frequency"
-                   class="form-control"
-                   id="frequency"
-                   name="frequency"
-                   placeholder="{{'magazine.frequency' | translate}}"
-                   #frequency="ngModel"
-                   maxlength="50">
-          </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="stockNumber" [translate]="'magazine.stockNumber'">Stock</label>
             <input type="number"
                    [(ngModel)]="magazine.stockNumber"
@@ -130,8 +121,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="form-row">
           <div class="form-group col-md-4">
             <label for="coin" [translate]="'magazine.coin'">Coin</label>
             <ng-select [items]="coinList"
@@ -168,6 +157,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="form-row">
           <div class="form-group col-md-4">
             <label for="toShow" [translate]="'book.toShow'">ToShow</label>
             <ng-select [items]="toShowList"

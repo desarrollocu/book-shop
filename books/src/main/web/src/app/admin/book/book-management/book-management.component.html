@@ -63,9 +63,10 @@
                        id="editor"
                        name="editor"
                        bindLabel="name"
+                       [multiple]="true"
                        [virtualScroll]="true"
                        placeholder="{{'book.editor' | translate}}"
-                       [(ngModel)]="book.editor"
+                       [(ngModel)]="book.editorList"
                        #editor="ngModel">
             </ng-select>
             <!--<div *ngIf="editor.invalid && (editor.dirty || editor.touched)"-->
@@ -84,8 +85,9 @@
                        name="topic"
                        bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
                        [virtualScroll]="true"
+                       [multiple]="true"
                        placeholder="{{'book.topic' | translate}}"
-                       [(ngModel)]="book.topic"
+                       [(ngModel)]="book.topicList"
                        #topic="ngModel"
                        required>
             </ng-select>
@@ -128,18 +130,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-5">
-            <label for="city" [translate]="'book.city'">City</label>
-            <input type="text"
-                   [(ngModel)]="book.city"
-                   class="form-control"
-                   id="city"
-                   name="city"
-                   placeholder="{{'book.city' | translate}}"
-                   #city="ngModel"
-                   maxlength="50">
-          </div>
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label for="pages" [translate]="'book.pages'">Pages</label>
             <input type="number"
                    [(ngModel)]="book.pages"
@@ -151,7 +142,7 @@
                    #pages="ngModel"
                    maxlength="50">
           </div>
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-6">
             <label for="size" [translate]="'book.size'">Size</label>
             <input type="text"
                    [(ngModel)]="book.size"

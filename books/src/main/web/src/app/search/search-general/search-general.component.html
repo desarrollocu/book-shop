@@ -1,235 +1,124 @@
 <section class="mag-posts-area d-flex flex-wrap">
   <div class="mag-posts-content-carousel mt-30 mb-30 p-30 box-shadow">
-    <ngb-carousel style="height: 250px;" [showNavigationIndicators]="false">
+    <ngb-carousel *ngIf="imageUrlList.length === 0" style="height: 280px;" [showNavigationIndicators]="false">
       <ng-template ngbSlide>
-        <img src="assets/images/books/21.gif" height="250px" alt="Random first slide">
+        <img src="assets/images/image.gif" height="280px" width="167px" alt="Random slide">
+        <img src="assets/images/image.gif" style="position: absolute; left: 167px" height="280px" width="167px"
+             alt="Random slide">
+        <img src="assets/images/image.gif" style="position: absolute; left: 334px" height="280px" width="167px"
+             alt="Random slide">
+        <img src="assets/images/image.gif" style="position: absolute; left: 501px" height="280px" width="167px"
+             alt="Random slide">
       </ng-template>
-      <ng-template ngbSlide>
-        <img src="assets/images/books/19.gif" height="250px" alt="Random first slide">
-      </ng-template>
-      <ng-template ngbSlide>
-        <img src="assets/images/books/20.gif" height="250px" alt="Random second slide">
+    </ngb-carousel>
+
+    <ngb-carousel *ngIf="imageUrlList.length > 0" style="height: 280px;" [showNavigationIndicators]="false">
+      <ng-template ngbSlide *ngFor="let elem of imageUrlList">
+        <img *ngFor="let t of elem.elementList"
+             [src]="t.url" [ngStyle]="{'position':t.position, 'left':t.left}" height="280px" width="167px"
+             alt="Random slide">
       </ng-template>
     </ngb-carousel>
   </div>
 </section>
-<!--<h1>This is the first heading <mdb-badge color="red">New</mdb-badge>-->
-<!--</h1>-->
 <section class="mag-posts-area d-flex flex-wrap">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="mt-15 mb-15 p-15 box-shadow" style="background-color: #5b5b5b; font-size: 20px;
-                  color: white;
-                  width: 250px!important;
-                  margin-bottom: 0px!important;
-                  text-align: center;
-                  margin-left: 18%;">
-        <span [translate]="'book.mostSale'">Most sales books</span>
-      </div>
-      <div class="mag-posts-content-most-sale mt-30 mb-30 p-30 box-shadow">
-        <div class="row">
-          <div
-            [ngClass]="bookList.length > 1 ? 'col-lg-6 col-md-12 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12 one-item'"
-            *ngFor="let book of bookList; trackBy: trackIdentity">
-            <div class="item">
-              <a href="javascript:void(0);"
-                 [ngbPopover]="popContent"
-                 popoverClass="my-custom-class"
-                 placement="right"
-                 (click)="selectBook(book)"
-                 class="d-block mb-4 h-100 img-text">
-                <figure class="align-figure">
-                  <img *ngIf="book.image" [src]="book.image" height="190" width="125" alt=""/>
-                  <img *ngIf="!book.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
-                  <figcaption>
-                    <strong>{{book.coin + book.salePrice}}</strong>
-                  </figcaption>
-                  <figcaption>
-                    <strong>{{book.title}}</strong>
-                  </figcaption>
-                  <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-                </figure>
-              </a>
-              <ng-template #popContent>
-                <a href="javascript:void(0);" (click)="addToCar()" data-toggle="tooltip"
-                   data-placement="left"
-                   title="{{'general.addCar' | translate}}">
-                  <i class="fa fa-cart-plus"></i>
-                </a>
-                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left"
-                   title="{{'general.details' | translate}}" (click)="bookDetails(detailsBook)">
-                  <i class="fa fa-book"></i>
-                </a>
-              </ng-template>
-            </div>
-          </div>
-        </div>
-        <ngb-pagination class="d-flex justify-content-center"
-                        [collectionSize]="totalItems"
-                        [(page)]="page"
-                        [pageSize]="itemsPerPage"
-                        [maxSize]="5"
-                        [rotate]="true"
-                        [boundaryLinks]="true"
-                        (pageChange)="getBooks(null)"></ngb-pagination>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="mt-15 mb-15 p-15 box-shadow" style="background-color: #5b5b5b; font-size: 20px;
-                  color: white;
-                  width: 250px!important;
-                  margin-bottom: 0px!important;
-                  text-align: center;
-                  margin-left: 18%;">
-        <span [translate]="'magazine.mostSale'">Most sales magazines</span>
-      </div>
-      <div class="mag-posts-content-most-sale mt-30 mb-30 p-30 box-shadow">
-        <div class="row">
-          <div
-            [ngClass]="magazineList.length > 1 ? 'col-lg-6 col-md-12 col-sm-12' : 'col-lg-12 col-md-12 col-sm-12 one-item'"
-            *ngFor="let magazine of magazineList; trackBy: trackIdentity">
-            <div class="item">
-              <a href="javascript:void(0);"
-                 [ngbPopover]="popContent"
-                 popoverClass="my-custom-class"
-                 placement="right"
-                 (click)="selectMagazine(magazine)"
-                 class="d-block mb-4 h-100 img-text">
-                <figure class="align-figure">
-                  <img *ngIf="magazine.image" [src]="magazine.image" height="190" width="125" alt=""/>
-                  <img *ngIf="!magazine.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
-                  <figcaption>
-                    <strong>{{magazine.coin + magazine.salePrice}}</strong>
-                  </figcaption>
-                  <figcaption>
-                    <strong>{{magazine.title}}</strong>
-                  </figcaption>
-                  <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-                </figure>
-              </a>
-              <ng-template #popContent>
-                <a href="javascript:void(0);" (click)="addToCarMagazine()" data-toggle="tooltip"
-                   data-placement="left"
-                   title="{{'general.addCar' | translate}}">
-                  <i class="fa fa-cart-plus"></i>
-                </a>
-                <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left"
-                   title="{{'general.details' | translate}}" (click)="magazineDetails(details)">
-                  <i class="fa fa-book"></i>
-                </a>
-              </ng-template>
-            </div>
-          </div>
-        </div>
-        <ngb-pagination class="d-flex justify-content-center"
-                        [collectionSize]="totalItemsMagazine"
-                        [(page)]="pageMagazine"
-                        [pageSize]="itemsPerPageMagazine"
-                        [maxSize]="5"
-                        [rotate]="true"
-                        [boundaryLinks]="true"
-                        (pageChange)="getMagazines(null)"></ngb-pagination>
-
-      </div>
-    </div>
-  </div>
 </section>
 
-<ng-template #details let-modal>
-  <div class="modal-header modal-title">
-    <h5 class="modal-sm" [translate]="'magazine.detail'">Book details</h5>
-  </div>
-  <div class="modal-body">
-    <div class="container">
-      <div class="row">
-        <div class="col-8" style="border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.title'">Title</h4>
-          <p style="margin-bottom: 10px;">{{selectedMagazine.title}}</p>
-        </div>
-        <div class="col-4">
-          <img *ngIf="!selectedMagazine.image" height="190" width="125" alt="" src="assets/images/image.gif"
-               style="position: absolute">
-          <img *ngIf="selectedMagazine.image" height="190" width="125" alt="" src="{{selectedMagazine.image}}"
-               style="position: absolute">
-        </div>
-        <div class="col-8" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.editor.name}}</p>
-        </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.city'">City</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.city}}</p>
-        </div>
-        <div class="col-6" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'magazine.publishYear'">Publish year</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.publishYear}}</p>
-        </div>
-        <div class="col-6" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'magazine.frequency'">Price</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.frequency}}</p>
-        </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.coin + selectedMagazine.salePrice}}</p>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 20px">
-      <button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i
-        class="fa fa-cart-plus"></i> Add to car
-      </button>
-      <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">
-        <i class="fa fa-window-close"></i> Close
-      </button>
-    </div>
-  </div>
-</ng-template>
-<ng-template #detailsBook let-modal>
-  <div class="modal-header modal-title">
-    <h5 class="modal-sm" [translate]="'book.detail'">Book details</h5>
-  </div>
-  <div class="modal-body">
-    <div class="container">
-      <div class="row">
-        <div class="col-8" style="border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.title'">Title</h4>
-          <p style="margin-bottom: 10px;">{{selectedBook.title}}</p>
-        </div>
-        <div class="col-4">
-          <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"
-               style="position: absolute">
-          <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
-               style="position: absolute">
-        </div>
-        <div class="col-8" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.author'">Author</h4>
-          <p style="margin-bottom: 10px">
-            <span *ngFor="let author of selectedBook.authorList">
-                {{author.fullName}}
-            </span>
-          </p>
-        </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.editor.name}}</p>
-        </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.city'">City</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.city}}</p>
-        </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.coin + selectedBook.salePrice}}</p>
-        </div>
-      </div>
-    </div>
-    <div style="margin-top: 20px">
-      <button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i
-        class="fa fa-cart-plus"></i> Add to car
-      </button>
-      <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">
-        <i class="fa fa-window-close"></i> Close
-      </button>
-    </div>
-  </div>
-</ng-template>
+<!--<ng-template #details let-modal>-->
+<!--<div class="modal-header modal-title">-->
+<!--<h5 class="modal-sm" [translate]="'magazine.detail'">Book details</h5>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-8" style="border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.title'">Title</h4>-->
+<!--<p style="margin-bottom: 10px;">{{selectedMagazine.title}}</p>-->
+<!--</div>-->
+<!--<div class="col-4">-->
+<!--<img *ngIf="!selectedMagazine.image" height="190" width="125" alt="" src="assets/images/image.gif"-->
+<!--style="position: absolute">-->
+<!--<img *ngIf="selectedMagazine.image" height="190" width="125" alt="" src="{{selectedMagazine.image}}"-->
+<!--style="position: absolute">-->
+<!--</div>-->
+<!--<div class="col-8" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.editor'">Publisher</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedMagazine.editor.name}}</p>-->
+<!--</div>-->
+<!--<div class="col-12" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.city'">City</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedMagazine.city}}</p>-->
+<!--</div>-->
+<!--<div class="col-6" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'magazine.publishYear'">Publish year</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedMagazine.publishYear}}</p>-->
+<!--</div>-->
+<!--<div class="col-6" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'magazine.frequency'">Price</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedMagazine.frequency}}</p>-->
+<!--</div>-->
+<!--<div class="col-12" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.salePrice'">Price</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedMagazine.coin + selectedMagazine.salePrice}}</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div style="margin-top: 20px">-->
+<!--<button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
+<!--class="fa fa-cart-plus"></i> Add to car-->
+<!--</button>-->
+<!--<button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">-->
+<!--<i class="fa fa-window-close"></i> Close-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</ng-template>-->
+<!--<ng-template #detailsBook let-modal>-->
+<!--<div class="modal-header modal-title">-->
+<!--<h5 class="modal-sm" [translate]="'book.detail'">Book details</h5>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<div class="container">-->
+<!--<div class="row">-->
+<!--<div class="col-8" style="border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.title'">Title</h4>-->
+<!--<p style="margin-bottom: 10px;">{{selectedBook.title}}</p>-->
+<!--</div>-->
+<!--<div class="col-4">-->
+<!--<img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"-->
+<!--style="position: absolute">-->
+<!--<img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"-->
+<!--style="position: absolute">-->
+<!--</div>-->
+<!--<div class="col-8" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.author'">Author</h4>-->
+<!--<p style="margin-bottom: 10px">-->
+<!--<span *ngFor="let author of selectedBook.authorList">-->
+<!--{{author.fullName}}-->
+<!--</span>-->
+<!--</p>-->
+<!--</div>-->
+<!--<div class="col-12" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.editor'">Publisher</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedBook.editor.name}}</p>-->
+<!--</div>-->
+<!--<div class="col-12" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.city'">City</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedBook.city}}</p>-->
+<!--</div>-->
+<!--<div class="col-12" style="margin-top:20px;border-bottom: thin groove;">-->
+<!--<h4 class="d-block" [translate]="'book.salePrice'">Price</h4>-->
+<!--<p style="margin-bottom: 10px">{{selectedBook.coin + selectedBook.salePrice}}</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div style="margin-top: 20px">-->
+<!--<button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
+<!--class="fa fa-cart-plus"></i> Add to car-->
+<!--</button>-->
+<!--<button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">-->
+<!--<i class="fa fa-window-close"></i> Close-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</ng-template>-->

@@ -21,7 +21,9 @@
     "addCar": " Add to cart",
     "close": " Close",
     "details": "View details",
-    "payPal":"Paypal button is loading"
+    "payPal": "Paypal button is loading",
+    "payPalReLoad":"Reload PayPal",
+    "payPalLoad":" Loading PayPal."
   },
   "login": {
     "username": "Username",
@@ -42,20 +44,21 @@
     "home": "Home",
     "books": "Books",
     "magazines": "Magazines",
-    "user": "User",
-    "book": "Book",
-    "author": "Author",
-    "editor": "Publisher",
-    "topic": "Topic",
+    "user": "User Management",
+    "book": "Book Management",
+    "author": "Author Management",
+    "editor": "Publisher Management",
+    "topic": "Topic Management",
     "country": "Country",
-    "publisher": "Publisher",
-    "magazine": "Magazine",
+    "publisher": "Publisher Management",
+    "magazine": "Magazine Management",
     "car": "Cart"
   },
   "search": {
     "title": "Title",
     "author": "Author",
-    "button": " Search"
+    "button": " Search",
+    "editionCountry": "Edition country"
   },
   "user": {
     "name": "First name",
@@ -77,9 +80,9 @@
     "delete": "Delete user",
     "changePass": "Change password",
     "register": "Register user",
-    "customer":"Customer",
-    "employee":"Employee",
-    "type":"Type"
+    "customer": "Customer",
+    "employee": "Employee",
+    "type": "Type"
   },
   "book": {
     "add": " Add book",
@@ -88,10 +91,11 @@
     "subTitle": "Subtitle",
     "editor": "Publisher",
     "topic": "Topic",
-    "authorList": "Authors",
+    "authorList": "Author",
     "city": "City",
     "editionDate": "Edition date",
     "editionYear": "Edition year",
+    "editionCountry": "Edition country",
     "pages": "Pages",
     "size": "Sizes",
     "isbn": "ISBN",
@@ -100,15 +104,15 @@
     "price": "Price",
     "coin": "Coin",
     "edition": "Edition",
-    "classification": "Classification",
+    "classification": "New/Used",
     "descriptors": "Descriptors (Example: history,all,day)",
     "descriptorsPlaceHolder": "word,word,word",
     "descriptor": "Descriptor",
     "descriptorPlaceHolder": "Word",
     "detail": "Book details",
-    "toShow": "Most sale",
-    "toShowPlaceholder": "Most sale",
-    "mostSale":"Most sales books"
+    "toShow": "Show in home",
+    "toShowPlaceholder": "Yes/No",
+    "mostSale": "Most sales books"
   },
   "magazine": {
     "add": " Add magazine",
@@ -125,7 +129,7 @@
     "price": "Price",
     "coin": "Coin",
     "detail": "Magazine details",
-    "mostSale":"Most sales magazines"
+    "mostSale": "Most sales magazines"
   },
   "author": {
     "add": " Add author",
@@ -140,6 +144,8 @@
     "name": "Name",
     "add": " Add publisher",
     "city": "City",
+    "country": "Country",
+    "editionCity": "Edition city",
     "delete": "Delete publisher"
   },
   "topic": {
@@ -171,7 +177,8 @@
     "password": {
       "equal": "Two password most be equals."
     },
-    "paypal":"Paypal error, Checks your info an try again.",
+    "payPal": "PayPal error, Checks your info an try again.",
+    "payPalConnection": "PayPal error, Checks your connection.",
     "pattern": {
       "descriptors": "Bad format. Ex: word,word,word"
     },
@@ -216,10 +223,13 @@
     "E58": "Min 1 and max 150 characters.",
     "E59": "Incorrect password.",
     "E61": "Element its related with a document.",
-    "E62": "You cant remove yourself."
+    "E62": "You cant remove yourself.",
+    "E63": "Error happened during payment creation!"
   },
   "info": {
-    "title": "Info"
+    "title": "Info",
+    "maxProduct": "Maximum amount reached.",
+    "inCart":"Product its in cart."
   },
   "success": {
     "title": "Success",
