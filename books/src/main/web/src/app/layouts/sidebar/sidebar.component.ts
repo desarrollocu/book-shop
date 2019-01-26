@@ -3,7 +3,6 @@ import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {Principal} from '../../core/auth/principal.service';
 import {CartService} from '../../search/cart.service';
-import {SearchService} from '../../search/search.service';
 
 import {UiData} from '../../search/model/uiData';
 
@@ -22,13 +21,13 @@ export class SidebarComponent implements OnInit {
               private translateService: TranslateService,
               private cartService: CartService) {
     this.images = ["assets/images/image.gif", "assets/images/login.gif", "assets/images/image.gif"];
-    this.cartCant = this.cartService.getProductList().length;
     this.currentLang = this.translateService.currentLang;
     this.uiData = new UiData();
   }
 
   ngOnInit() {
     this.getUIData();
+    this.getCant();
     this.cartService.getCarSubject().subscribe((value => {
       this.cartCant = value;
     }));
@@ -41,6 +40,20 @@ export class SidebarComponent implements OnInit {
     this.principal.getUIData({})
       .subscribe(response => this.onUIDataSuccess(response),
         response => this.onUIDataError(response));
+  }
+
+  getCant() {
+    this.cartService.elementsInCart()
+      .subscribe(response => this.onCarSuccess(response),
+      response => this.onError(response));
+  }
+
+  onCarSuccess(resp) {
+    this.cartCant = resp.cant;
+  }
+
+  onError(resp) {
+    this.cartCant = 0
   }
 
   private onUIDataError(response) {

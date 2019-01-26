@@ -60,10 +60,6 @@ export class SearchMagazineComponent implements OnInit {
     });
   }
 
-  searchMoreChange() {
-    this.searchMore = !this.searchMore;
-  }
-
   getMagazines(param) {
     if (param === 'btn')
       this.page = 0;
@@ -137,7 +133,6 @@ export class SearchMagazineComponent implements OnInit {
   }
 
   addToCar() {
-    this.shoppingService.toCar(this.selectedMagazine, false);
     this.cancel();
   }
 

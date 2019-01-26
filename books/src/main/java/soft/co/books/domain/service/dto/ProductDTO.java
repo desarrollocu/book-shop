@@ -20,7 +20,7 @@ public class ProductDTO {
         this.id = id;
     }
 
-    public boolean isBook() {
+    public boolean getBook() {
         return book;
     }
 

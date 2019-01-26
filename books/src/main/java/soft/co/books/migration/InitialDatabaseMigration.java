@@ -323,9 +323,12 @@ public class InitialDatabaseMigration {
                 country.setGroup("3");
                 country.setPriceList(dhlPrices("3"));
             }
+            if (country.getGroup() == null) {
+                country.setGroup("9");
+                country.setPriceList(dhlPrices("9"));
+            }
 
-            if (country.getGroup() != null)
-                mongoTemplate.save(country);
+            mongoTemplate.save(country);
         }
     }
 
@@ -363,6 +366,9 @@ public class InitialDatabaseMigration {
                 break;
             case "7":
                 createDhlList("7", result);
+                break;
+            case "9":
+                createDhlList("9", result);
                 break;
         }
         return result;
@@ -726,6 +732,8 @@ public class InitialDatabaseMigration {
                 dhlPrice.setPrice(Double.valueOf(group6Array[i]));
             else if (group.equals("7"))
                 dhlPrice.setPrice(Double.valueOf(group7Array[i]));
+            else if (group.equals("9"))
+                dhlPrice.setPrice(0);
 
             result.add(dhlPrice);
         }

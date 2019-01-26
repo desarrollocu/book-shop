@@ -44,6 +44,7 @@ export class SearchBookComponent implements OnInit {
               private alertService: AlertService,
               private translateService: TranslateService,
               private topicService: TopicService,
+              private cartService: CartService,
               private classificationService: ClassificationService,
               private shoppingService: CartService,
               private modalService: NgbModal) {
@@ -200,10 +201,23 @@ export class SearchBookComponent implements OnInit {
   }
 
   addToCar(book) {
-    if (book !== undefined)
-      this.shoppingService.toCar(book, true, true);
+    if (book !== undefined) {
+      this.cartService.addToCart({
+        id: book !== undefined ? book.id : this.selectedBook.id,
+        cant: 1,
+        book: true
+      }).subscribe(response => this.onAddCarSuccess(response.body),
+        response => this.onError(response));
+    }
+  }
+
+  onAddCarSuccess(resp) {
+    if (resp.exist)
+      this.alertService.info('info.inCart', null, null);
     else
-      this.shoppingService.toCar(this.selectedBook, true, true);
+      this.alertService.info('shopping.success', null, null);
+
+    this.cartService.getCarSubject().next(resp.cant);
     this.cancel();
   }
 

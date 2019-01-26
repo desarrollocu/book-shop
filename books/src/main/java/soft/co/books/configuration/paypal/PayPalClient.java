@@ -7,11 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.error.CustomizeException;
-import soft.co.books.domain.collection.Book;
+import soft.co.books.domain.collection.Document;
+import soft.co.books.domain.collection.data.Detail;
 import soft.co.books.domain.collection.data.UserDetail;
 import soft.co.books.domain.service.BookService;
+import soft.co.books.domain.service.CartServices;
+import soft.co.books.domain.service.MagazineService;
 import soft.co.books.domain.service.SaleService;
 import soft.co.books.domain.service.dto.*;
+import soft.co.books.domain.service.session.CartSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +26,17 @@ public class PayPalClient {
 
     private final SaleService saleService;
     private final BookService bookService;
+    private final CartServices cartServices;
+    private final MagazineService magazineService;
 
-    public PayPalClient(SaleService saleService, BookService bookService) {
+    public PayPalClient(SaleService saleService,
+                        CartServices cartServices,
+                        MagazineService magazineService,
+                        BookService bookService) {
         this.saleService = saleService;
         this.bookService = bookService;
+        this.cartServices = cartServices;
+        this.magazineService = magazineService;
     }
 
     String clientId = "Ae3kB7nSbmR3Ty9NKg6bIrHHU64mt0hZutwVG5Wz80tpQsn2HTblJeoKA2nJQPOUXjGYUA1nxidsCUGu";
@@ -118,14 +129,36 @@ public class PayPalClient {
 
     public void completePayment(PaymentDTO paymentDTO) {
         synchronized (this) {
-            paymentDTO.getSaleDTO().getDetailList().forEach(detail -> {
-                Book book = bookService.findOne(detail.getId()).get();
-                if (book != null) {
-                    if (book.getStockNumber() < detail.getCant()) {
+            SaleDTO saleDTO = new SaleDTO();
+            List<Detail> detailList = new ArrayList<>();
+            double total = 0;
+            for (CartSession info : cartServices.cartSessionList()) {
+                Document document;
+                if (info.getBook())
+                    document = bookService.findOne(info.getId()).get();
+                else
+                    document = magazineService.findOne(info.getId()).get();
+
+                if (document != null) {
+                    if (document.getStockNumber() < info.getCant()) {
                         throw new CustomizeException("error.E68");
+                    } else {
+                        Detail detail = new Detail();
+                        detail.setId(document.getId());
+                        detail.setCant(info.getCant());
+                        detail.setIsbn(document.getIsbn());
+                        detail.setSalePrice(document.getSalePrice());
+                        detail.setTitle(document.getTitle());
+                        detail.setMount(info.getCant() * info.getPrice());
+                        total += detail.getMount();
+
+                        detailList.add(detail);
                     }
                 }
-            });
+            }
+            saleDTO.setTotal(total);
+            saleDTO.setDetailList(detailList);
+
             Payment payment = new Payment();
             payment.setId(paymentDTO.getPaymentID());
 
@@ -136,7 +169,6 @@ public class PayPalClient {
                 Payment createdPayment = payment.execute(context, paymentExecution);
 
                 if (createdPayment != null) {
-                    SaleDTO saleDTO = paymentDTO.getSaleDTO();
                     UserDetail userDetail = new UserDetail();
                     userDetail.setFirstName(createdPayment.getPayer().getPayerInfo().getFirstName());
                     userDetail.setLastName(createdPayment.getPayer().getPayerInfo().getLastName());
@@ -158,7 +190,7 @@ public class PayPalClient {
 
                         userDetail.setEmail(payerInfo.getEmail() != null ? payerInfo.getEmail() : "");
                     }
-
+                    cartServices.clearSession();
                     saleDTO.setUser(userDetail);
                     saleService.createSale(saleDTO);
                 }

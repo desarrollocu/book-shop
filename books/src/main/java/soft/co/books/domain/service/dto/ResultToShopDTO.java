@@ -14,7 +14,7 @@ public class ResultToShopDTO {
     private double totalWeight;
     private int realCant;
     private double mount;
-    private boolean isBook;
+    private boolean book;
 
     public ResultToShopDTO() {
     }
@@ -26,7 +26,7 @@ public class ResultToShopDTO {
         this.title = book.getTitle();
         this.realCant = book.getStockNumber();
         this.weight = book.getWeight();
-        this.isBook = true;
+        this.book = true;
     }
 
     public ResultToShopDTO(Magazine magazine) {
@@ -36,15 +36,15 @@ public class ResultToShopDTO {
         this.title = magazine.getTitle();
         this.realCant = magazine.getStockNumber();
         this.weight = magazine.getWeight();
-        this.isBook = false;
+        this.book = false;
     }
 
-    public boolean isBook() {
-        return isBook;
+    public boolean getBook() {
+        return book;
     }
 
     public void setBook(boolean book) {
-        isBook = book;
+        this.book = book;
     }
 
     public double getTotalWeight() {

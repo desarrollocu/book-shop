@@ -237,11 +237,11 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
           // }
 
           // Paypal expects promise with payment id (string) to be returned
-          return this.cartService.getPaymentId();
-          // return this.config.payment().toPromise()
-          //   .then(paymentId => {
-          //     return paymentId;
-          //   });
+          // return this.cartService.getPaymentId();
+          return this.config.payment()
+            .then(payment => {
+              return payment.paymentID;
+            })
         }
 
         if (this.config.integrationType === PayPalIntegrationType.ClientSideREST) {
@@ -303,7 +303,6 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
         }
       },
       onClick: () => {
-        console.log('onClick');
         if (this.config.onClick) {
           this.config.onClick();
         }

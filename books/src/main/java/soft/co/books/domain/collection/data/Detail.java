@@ -21,7 +21,6 @@ public class Detail implements Serializable {
     @Size(min = 1, max = 150, message = Constants.ERR_MIN1_MAX150)
     private String title;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
     private String city;
 
     private EditorDetail editor;
@@ -33,7 +32,6 @@ public class Detail implements Serializable {
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String isbn;
 
-    @NotNull(message = Constants.ERR_NOT_NULL)
     private TopicDetail topic;
 
     @NotNull(message = Constants.ERR_NOT_NULL)

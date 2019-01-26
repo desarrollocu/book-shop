@@ -11,6 +11,7 @@
     "save": " Save",
     "cancel": "Cancel",
     "close": "Close",
+    "clear": "Clear",
     "confirm": "Confirm",
     "sureMessage": "Are you sure?",
     "sureMessage1": " are going to be removed",
@@ -258,7 +259,8 @@
   "info": {
     "title": "Info",
     "maxProduct": "Maximum amount reached.",
-    "inCart": "Product its in cart."
+    "inCart": "Product its in cart.",
+    "missingShippingInfo": "You must introduce your shipping info."
   },
   "success": {
     "title": "Success",

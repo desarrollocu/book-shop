@@ -10,8 +10,17 @@ public class CartDTO {
     private double totalKgs;
     private double shippingCost;
     private List<ResultToShopDTO> shopDTOList = new ArrayList<>();
+    private boolean exist;
 
     public CartDTO() {
+    }
+
+    public boolean isExist() {
+        return exist;
+    }
+
+    public void setExist(boolean exist) {
+        this.exist = exist;
     }
 
     public double getShippingCost() {

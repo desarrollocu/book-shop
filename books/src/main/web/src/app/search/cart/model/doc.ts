@@ -9,7 +9,7 @@ export class Doc {
     public totalWeight?: number,
     public realCant?: number,
     public mount?: number,
-    public isBook?: boolean
+    public book?: boolean
   ) {
   }
 }

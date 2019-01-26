@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {PayPalFunding} from './paypal-funding';
 import {PayPalEnvironment} from './paypal-environment';
 import {PayPalIntegrationType} from './paypal-integration';
+import {Payment} from "../../cart/model/payment";
 
 export class PayPalConfig {
 
@@ -14,7 +15,7 @@ export class PayPalConfig {
   /**
    * Called to create new payment for server side integration
    */
-  public payment?: () => Observable<string>;
+  public payment?: () => Promise<Payment>;
 
   /**
    * Called to execute payment for server side integration
@@ -39,7 +40,7 @@ export class PayPalConfig {
   /**
    * Called for client side integration when payment is executed
    */
-  public onPaymentComplete?: (data: IPayPalPaymentCompleteData, actions: any, payment:any) => void;
+  public onPaymentComplete?: (data: IPayPalPaymentCompleteData, actions: any, payment: any) => void;
 
   /**
    * Button configuration
@@ -85,10 +86,10 @@ export class PayPalConfig {
       onClick?: () => void,
       validate?: (actions: any) => void;
       onCancel?: (data: IPayPalCancelPayment, actions: any) => void,
-      payment?: () => Observable<string>,
+      payment?: () => Promise<Payment>,
       onAuthorize?: (data: IPayPalPaymentCompleteData, actions: any) => Promise<void>,
       client?: IPaypalClient,
-      onPaymentComplete?: (data: IPayPalPaymentCompleteData, actions: any, payment:any) => void,
+      onPaymentComplete?: (data: IPayPalPaymentCompleteData, actions: any, payment: any) => void,
       transactions?: IPayPalTransaction[],
       note_to_payer?: string;
       experience?: IPayPalExperience,

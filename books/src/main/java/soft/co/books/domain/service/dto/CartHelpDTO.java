@@ -1,7 +1,6 @@
-package soft.co.books.domain.service;
+package soft.co.books.domain.service.dto;
 
 import soft.co.books.domain.collection.Country;
-import soft.co.books.domain.service.dto.ProductDTO;
 
 import java.util.ArrayList;
 import java.util.List;

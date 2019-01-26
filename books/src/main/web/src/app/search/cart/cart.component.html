@@ -11,25 +11,13 @@
                 class="btn btn-primary button-size table-button-search">Back to shopping magazines
         </button>
       </div>
-      <div class="col-sm-3" *ngIf="reLoadPayPal && elementList.length > 0">
-        <button class="btn btn-info" (click)="reloadPayPalFunction()"
-                [translate]="'general.payPalReLoad'">Reload PayPal
-        </button>
-      </div>
       <div class="col-sm-3" *ngIf="elementList.length > 0">
-        <button [disabled]="loadPayment" class="btn btn-dark"
+        <button class="btn btn-dark"
                 (click)="shippingDialog(checkoutModal)"
                 [translate]="'general.checkout'">Shipping Information
         </button>
       </div>
-      <div class="col-sm-4" style="margin-top: 6px" *ngIf="elementList.length > 0 && loadPayment">
-        <h5>
-          <i class="fa fa-spinner fa-spin"></i> <span
-          [translate]="'general.payPalLoad'">Loading PayPal.</span>
-        </h5>
-      </div>
-      <div class="col-sm-4" style="margin-top: 6px"
-           *ngIf="paymentId !== undefined && paymentId !== null && elementList.length > 0 && !reLoadPayPal">
+      <div class="col-sm-4" style="margin-top: 6px" *ngIf="elementList.length > 0">
         <app-paypal [config]="payPalConfig"></app-paypal>
       </div>
     </div>
@@ -54,11 +42,11 @@
           </td>
           <td style="padding-top: 13%"><strong>{{element.title}}</strong></td>
           <td style="padding-top: 13%"><strong>{{element.cant}}</strong>
-            <a *ngIf="!loadPayment" style="margin-left: 5px" href="javascript:void(0);"
+            <a style="margin-left: 5px" href="javascript:void(0);"
                (click)="addElement(element)">
               <i class="fa fa-plus-square"></i>
             </a>
-            <a *ngIf="!loadPayment" style="margin-left: 5px" href="javascript:void(0);"
+            <a style="margin-left: 5px" href="javascript:void(0);"
                (click)="deleteOne(element)">
               <i class="fa fa-minus-square"></i>
             </a>
@@ -70,7 +58,7 @@
             </strong>
           </td>
           <td style="padding-top: 12%">
-            <button [disabled]="loadPayment" class="btn btn-danger table-button-delete"
+            <button class="btn btn-danger table-button-delete"
                     (click)="removeProduct(element)">
               <i class="fa fa-trash"></i>
             </button>
@@ -121,7 +109,6 @@
                      placeholder="{{'cart.fullName' | translate}}"
                      #fullName="ngModel"
                      required
-                     [disabled]="loadPayment"
                      maxlength="350">
               <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)"
                    class="error-msg">
@@ -140,7 +127,6 @@
                      placeholder="{{'cart.email' | translate}}"
                      #email="ngModel"
                      required
-                     [disabled]="loadPayment"
                      maxlength="150">
               <div *ngIf="email.invalid && (email.dirty || email.touched)"
                    class="error-msg">
@@ -161,7 +147,6 @@
                      placeholder="{{'cart.phone' | translate}}"
                      #phone="ngModel"
                      required
-                     [disabled]="loadPayment"
                      maxlength="100">
               <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
                    class="error-msg">
@@ -180,7 +165,7 @@
                          placeholder="{{'cart.country' | translate}}"
                          #country="ngModel"
                          [(ngModel)]="shippingInfo.country"
-                         [disabled]="loadPayment"
+                         (change)="stateEnable(shippingInfo.country)"
                          required>
               </ng-select>
               <div *ngIf="country.invalid && (country.dirty || country.touched)"
@@ -200,7 +185,7 @@
                      id="state"
                      name="state"
                      placeholder="{{'cart.state' | translate}}"
-                     [disabled]="loadPayment"
+                     [disabled]="enableState"
                      maxlength="100">
             </div>
             <div class="form-group col-md-6">
@@ -213,7 +198,6 @@
                      placeholder="{{'cart.city' | translate}}"
                      #city="ngModel"
                      required
-                     [disabled]="loadPayment"
                      maxlength="100">
               <div *ngIf="city.invalid && (city.dirty || city.touched)"
                    class="error-msg">
@@ -234,7 +218,6 @@
                      placeholder="{{'cart.postalCode' | translate}}"
                      #postalCode="ngModel"
                      required
-                     [disabled]="loadPayment"
                      maxlength="100">
               <div *ngIf="postalCode.invalid && (postalCode.dirty || postalCode.touched)"
                    class="error-msg">
@@ -252,7 +235,6 @@
                      name="address"
                      placeholder="{{'cart.address' | translate}}"
                      #address="ngModel"
-                     [disabled]="loadPayment"
                      required>
               <div *ngIf="address.invalid && (address.dirty || address.touched)"
                    class="error-msg">
@@ -265,21 +247,13 @@
           <div class="row">
             <div class="col-sm-5">
               <button type="submit" class="btn btn-primary"
-                      [disabled]="!shippingForm.valid || loadPayment"
+                      [disabled]="!shippingForm.valid"
                       [translate]="'general.save'"> Save
               </button>
-              <button type="button" (click)="cancelMy()"
-                      [disabled]="loadPayment"
+              <button type="button" (click)="cancelShippingInfo()"
                       class="btn btn-danger table-button-search"
-                      [translate]="'general.close'"> Close
+                      [translate]="'general.cancel'"> Cancel
               </button>
-            </div>
-            <div class="col-sm-7" style="margin-top: 6px"
-                 *ngIf="loadPayment">
-              <h5>
-                <i class="fa fa-spinner fa-spin"></i> <span
-                [translate]="'general.payPalLoad'">Loading PayPal.</span>
-              </h5>
             </div>
           </div>
         </form>

@@ -11,6 +11,7 @@
     "save": " Salvar",
     "cancel": "Cancelar",
     "close": "Cerrar",
+    "clear": "Restablecer",
     "confirm": "Confirmar",
     "sureMessage": "¿Está seguro?",
     "sureMessage1": " va a ser eliminado(a)",
@@ -260,7 +261,8 @@
   "info": {
     "title": "Información",
     "maxProduct": "Máxima cantidad alcanzada.",
-    "inCart": "El producto ya está en el carrito."
+    "inCart": "El producto ya está en el carrito.",
+    "missingShippingInfo": "Se deben introducir los datos de envío."
   },
   "success": {
     "title": "Satisfactorio",

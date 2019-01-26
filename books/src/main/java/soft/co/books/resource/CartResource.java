@@ -10,12 +10,14 @@ import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.domain.collection.Country;
 import soft.co.books.domain.collection.DhlPrice;
 import soft.co.books.domain.service.BookService;
-import soft.co.books.domain.service.CartHelpDTO;
+import soft.co.books.domain.service.CartServices;
 import soft.co.books.domain.service.CountryService;
 import soft.co.books.domain.service.MagazineService;
 import soft.co.books.domain.service.dto.CartDTO;
+import soft.co.books.domain.service.dto.CartHelpDTO;
 import soft.co.books.domain.service.dto.ProductDTO;
 import soft.co.books.domain.service.dto.ResultToShopDTO;
+import soft.co.books.domain.service.session.CartSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,42 +33,75 @@ public class CartResource {
 
     private final CountryService countryService;
 
+    private final CartServices cartServices;
+
     public CartResource(BookService bookService,
                         CountryService countryService,
+                        CartServices cartServices,
                         MagazineService magazineService) {
         this.bookService = bookService;
         this.countryService = countryService;
+        this.cartServices = cartServices;
         this.magazineService = magazineService;
+    }
+
+    @PostMapping("/addToCart")
+    public CartDTO addToCart(@RequestBody ProductDTO productDTO) {
+        CartSession cartSession = new CartSession();
+        cartSession.setId(productDTO.getId());
+        cartSession.setBook(productDTO.getBook());
+        cartSession.setCant(productDTO.getCant());
+        return cartServices.addToCart(cartSession);
+    }
+
+    @PostMapping("/removeFormCart")
+    public CartDTO removeFormCart(@RequestBody ProductDTO productDTO) {
+        CartSession cartSession = new CartSession();
+        cartSession.setId(productDTO.getId());
+        cartSession.setBook(productDTO.getBook());
+        cartSession.setCant(productDTO.getCant());
+        return cartServices.removeFormCart(cartSession);
+    }
+
+    @PostMapping("/elementsInCart")
+    public CartDTO elementsInCart() {
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setCant(cartServices.elemensInCart());
+        return cartDTO;
     }
 
     @PostMapping("/searchToShop")
     public CartDTO searchToShop(@RequestBody CartHelpDTO cartHelpDTO) {
+        int cant = 0;
+        double amount = 0;
+        double totalKgs = 0;
+        double shippingCost = 0;
         CartDTO cartDTO = new CartDTO();
         List<ResultToShopDTO> result = new ArrayList<>();
-        double totalKgs = 0;
-        double amount = 0;
-        int cant = 0;
-        double shippingCost = 0;
+        List<CartSession> sessionList = cartServices.cartSessionList();
 
-        for (ProductDTO productDTO : cartHelpDTO.getProductDTOList()) {
-            ResultToShopDTO resultToShopDTO;
-            if (productDTO.isBook()) {
-                resultToShopDTO = bookService.findOne(productDTO.getId()).map(ResultToShopDTO::new).get();
-            } else {
-                resultToShopDTO = magazineService.findOne(productDTO.getId()).map(ResultToShopDTO::new).get();
+        if (sessionList != null) {
+            for (CartSession cartSession : sessionList) {
+                ResultToShopDTO resultToShopDTO;
+                if (cartSession.getBook()) {
+                    resultToShopDTO = bookService.findOne(cartSession.getId()).map(ResultToShopDTO::new).get();
+                    resultToShopDTO.setBook(true);
+                } else {
+                    resultToShopDTO = magazineService.findOne(cartSession.getId()).map(ResultToShopDTO::new).get();
+                    resultToShopDTO.setBook(false);
+                }
+
+                if (resultToShopDTO.getRealCant() < cartSession.getCant())
+                    throw new CustomizeException("error.E68");
+
+                cant += cartSession.getCant();
+                resultToShopDTO.setCant(cartSession.getCant());
+                resultToShopDTO.setMount(cartSession.getCant() * resultToShopDTO.getSalePrice());
+                resultToShopDTO.setTotalWeight(cartSession.getCant() * resultToShopDTO.getWeight());
+                amount += resultToShopDTO.getMount();
+                totalKgs += resultToShopDTO.getTotalWeight();
+                result.add(resultToShopDTO);
             }
-
-            if (resultToShopDTO.getRealCant() < productDTO.getCant())
-                throw new CustomizeException("error.E68");
-
-            cant += productDTO.getCant();
-            resultToShopDTO.setCant(productDTO.getCant());
-            resultToShopDTO.setMount(productDTO.getCant() * resultToShopDTO.getSalePrice());
-            resultToShopDTO.setTotalWeight(productDTO.getCant() * resultToShopDTO.getWeight());
-            amount += resultToShopDTO.getMount();
-            totalKgs += resultToShopDTO.getTotalWeight();
-
-            result.add(resultToShopDTO);
         }
 
         if (cartHelpDTO.getCountryDTO() != null) {
