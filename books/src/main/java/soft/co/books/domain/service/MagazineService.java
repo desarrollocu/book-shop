@@ -96,6 +96,9 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         Magazine magazine = new Magazine();
         magazine.setId(magazineDTO.getId());
         magazine.setTitle(magazineDTO.getTitle());
+        magazine.setComments(magazineDTO.getComments());
+        magazine.setWeight(magazineDTO.getWeight());
+
         List<Editor> editorList = magazineDTO.getEditorList().stream()
                 .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
                 .collect(Collectors.toList());
@@ -117,6 +120,7 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         magazine.setCoin(magazineDTO.getCoin());
         magazine.setImageUrl(magazineDTO.getImage());
         magazine.setVisit(magazineDTO.getVisit());
+        magazine.setWeight(magazineDTO.getVisit());
 
         log.debug("Created Information for Magazine: {}", magazine);
         return Optional.of(magazineRepository.save(magazine))
@@ -136,6 +140,8 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                 .map(Optional::get)
                 .map(magazine -> {
                     magazine.setTitle(magazineDTO.getTitle());
+                    magazine.setComments(magazineDTO.getComments());
+                    magazine.setWeight(magazineDTO.getWeight());
                     magazine.setPublishYear(magazineDTO.getPublishYear());
                     magazine.setStockNumber(magazineDTO.getStockNumber());
                     magazine.setFrequency(magazineDTO.getFrequency());

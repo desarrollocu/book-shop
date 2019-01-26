@@ -83,6 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/searchCarouselBooks").permitAll()
                 .antMatchers("/api/createPayment").permitAll()
                 .antMatchers("/api/executePayment").permitAll()
+                .antMatchers("/api/uiData").permitAll()
                 .antMatchers("/api/allClassification").permitAll()
                 .antMatchers("/api/searchToShop").permitAll()
                 .antMatchers("/api/allCountries").permitAll()

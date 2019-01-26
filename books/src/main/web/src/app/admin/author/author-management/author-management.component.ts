@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {AlertDialogService} from '../../../shared/alert/alert.dialog.service';
 import {AuthorService} from '../author.service';
@@ -28,6 +28,10 @@ export class AuthorManagementComponent implements OnInit {
   ngOnInit() {
     this.findAuthor();
     this.getCountries();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.countryLanguage();
+    });
   }
 
   findAuthor() {
@@ -48,6 +52,16 @@ export class AuthorManagementComponent implements OnInit {
         response => this.onError(response));
   }
 
+  private countryLanguage() {
+    let temp = this.countryList;
+    this.countryList = [];
+    if (temp) {
+      for (let i in temp) {
+        this.countryList = [...this.countryList, temp[i]];
+      }
+    }
+  }
+
   private onSuccess(response, author) {
     let msg = 'success.add';
     if (author.id) {
@@ -55,7 +69,7 @@ export class AuthorManagementComponent implements OnInit {
     }
     this.author = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onSearchSuccess(result) {
@@ -79,6 +93,6 @@ export class AuthorManagementComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 }

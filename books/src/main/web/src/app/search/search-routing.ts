@@ -12,7 +12,7 @@ const routes: Routes = [
     path: "search-general", component: SearchGeneralComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore',
+      pageTitle: 'LiderLaf',
     },
     canActivate: [RouteAccessService]
   },
@@ -20,7 +20,7 @@ const routes: Routes = [
     path: "search-book", component: SearchBookComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore'
+      pageTitle: 'LiderLaf'
     },
     canActivate: [RouteAccessService]
   },
@@ -28,7 +28,7 @@ const routes: Routes = [
     path: "search-magazine", component: SearchMagazineComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore'
+      pageTitle: 'LiderLaf'
     },
     canActivate: [RouteAccessService]
   }
@@ -37,7 +37,7 @@ const routes: Routes = [
     path: "cart", component: CartComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore'
+      pageTitle: 'LiderLaf'
     },
     canActivate: [RouteAccessService]
   }

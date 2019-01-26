@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {NgbModal, NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {AlertService} from '../../shared/alert/alert.service';
 import {SearchService} from '../search.service';
@@ -9,7 +9,8 @@ import {Book} from '../../admin/book/model/book';
 import {Search} from '../model/search';
 import {Magazine} from '../../admin/magazine/model/magazine';
 import {CartService} from '../cart.service';
-import {DomSanitizer} from "@angular/platform-browser";
+import {UiData} from "../model/uiData";
+import {Principal} from "../../core/auth/principal.service";
 
 
 @Component({
@@ -43,11 +44,13 @@ export class SearchGeneralComponent implements OnInit {
   imageUrlList: any[];
   imageList: string[];
 
+  uiData: UiData;
 
   constructor(private searchService: SearchService,
               private alertService: AlertService,
               private translateService: TranslateService,
               private shoppingService: CartService,
+              private principal: Principal,
               private modalService: NgbModal) {
     this.itemsPerPage = 4;
     this.predicate = 'id';
@@ -60,10 +63,29 @@ export class SearchGeneralComponent implements OnInit {
     this.reverseMagazine = true;
     this.pageMagazine = 0;
     this.selectedMagazine = new Magazine();
+    this.currentLang = this.translateService.currentLang;
   }
 
   ngOnInit() {
     this.getBookCarousel();
+    this.getUIData();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+    });
+  }
+
+  getUIData() {
+    this.principal.getUIData({})
+      .subscribe(response => this.onUIDataSuccess(response),
+        response => this.onUIDataError(response));
+  }
+
+  private onUIDataError(response) {
+    let error = response.error;
+  }
+
+  private onUIDataSuccess(res) {
+    this.uiData = res.body;
   }
 
   // createArray(array) {
@@ -186,13 +208,13 @@ export class SearchGeneralComponent implements OnInit {
   }
 
   addToCar() {
-    this.shoppingService.addToCar(this.selectedBook, true);
+    this.shoppingService.toCar(this.selectedBook, true);
     this.alertService.info('shopping.success', null, null);
     this.cancel();
   }
 
   addToCarMagazine() {
-    this.shoppingService.addToCar(this.selectedMagazine, false);
+    this.shoppingService.toCar(this.selectedMagazine, false);
     this.alertService.info('shopping.success', null, null);
     this.cancel();
   }

@@ -10,6 +10,7 @@
     "select": "Select",
     "save": " Save",
     "cancel": "Cancel",
+    "close": "Close",
     "confirm": "Confirm",
     "sureMessage": "Are you sure?",
     "sureMessage1": " are going to be removed",
@@ -22,8 +23,13 @@
     "close": " Close",
     "details": "View details",
     "payPal": "Paypal button is loading",
-    "payPalReLoad":"Reload PayPal",
-    "payPalLoad":" Loading PayPal."
+    "payPalReLoad": "Reload PayPal",
+    "payPalLoad": " Loading PayPal.",
+    "mainText": "Books news, used, rare and old. Magazines. With shipment to all the world.",
+    "checkout": "Shipping information",
+    "shipping": "Shipping information",
+    "updateShipping": "Shipping information",
+    "accept": "Accept"
   },
   "login": {
     "username": "Username",
@@ -39,7 +45,7 @@
     "contact": "Contact"
   },
   "sideBar": {
-    "menu": "BooksStore",
+    "menu": "LIDERLAF BOOKS",
     "menuResp": "BS",
     "home": "Home",
     "books": "Books",
@@ -52,6 +58,7 @@
     "country": "Country",
     "publisher": "Publisher Management",
     "magazine": "Magazine Management",
+    "contact": "Information Management",
     "car": "Cart"
   },
   "search": {
@@ -87,12 +94,15 @@
   "book": {
     "add": " Add book",
     "delete": "Delete book",
+    "comments": "Comments",
     "title": "Title",
     "subTitle": "Subtitle",
     "editor": "Publisher",
     "topic": "Topic",
     "authorList": "Author",
     "city": "City",
+    "weight": "Weight",
+    "weight1": "Weight(Kg)",
     "editionDate": "Edition date",
     "editionYear": "Edition year",
     "editionCountry": "Edition country",
@@ -105,6 +115,7 @@
     "coin": "Coin",
     "edition": "Edition",
     "classification": "New/Used",
+    "classification1": "New/Used",
     "descriptors": "Descriptors (Example: history,all,day)",
     "descriptorsPlaceHolder": "word,word,word",
     "descriptor": "Descriptor",
@@ -165,9 +176,10 @@
     "buy": "Checkout",
     "price": "Price",
     "success": "Element added to the cart.",
-    "backBooks": "Back to shopping books",
-    "backMagazines": "Back to shopping magazines",
-    "totalAmount": "Total amount"
+    "backBooks": "Shopping books",
+    "backMagazines": "Shopping magazines",
+    "totalAmount": "Total amount",
+    "shipping": "Shipping cost"
   },
   "error": {
     "title": "Error",
@@ -202,7 +214,20 @@
       "stockNumber": "Stock is required.",
       "spanishName": "Spanish name is required.",
       "englishName": "English name is required.",
-      "country": "Country is required."
+      "country": "Country is required.",
+      "nameEnglish": "English name is required.",
+      "nameSpanish": "Spanish name is required.",
+      "phone": "Phone is required.",
+      "twitter": "Twitter address is required.",
+      "facebook": "Facebook address is required.",
+      "instagram": "Instagram address is required.",
+      "google": "Google+ address is required.",
+      "mainTextEnglish": "Main text in english is required.",
+      "mainTextSpanish": "Main text in spanish is required.",
+      "fullName": "Full name is required.",
+      "address": "Address is required.",
+      "weight": "Weight is required.",
+      "postalCode": "Postal code is required."
     },
     "minLength": {
       "email": "Min 5 characters.",
@@ -224,12 +249,16 @@
     "E59": "Incorrect password.",
     "E61": "Element its related with a document.",
     "E62": "You cant remove yourself.",
-    "E63": "Error happened during payment creation!"
+    "E63": "Error happened during payment creation!",
+    "E64": "PayPal error, Checks your connection.",
+    "E67": "PayPal error, Checks your info and try again.",
+    "E68": "The amount you are trying to buy is greater than the amount in stock.",
+    "E69": "Internal server error."
   },
   "info": {
     "title": "Info",
     "maxProduct": "Maximum amount reached.",
-    "inCart":"Product its in cart."
+    "inCart": "Product its in cart."
   },
   "success": {
     "title": "Success",
@@ -243,6 +272,33 @@
     "sale": "Purchase completed."
   },
   "footer": {
-    "info": "2000–2018 BooksStore, Inc. All rights reserved."
-  }
+    "info": "2000–2018. All rights reserved."
+  },
+  "contact": {
+    "nameEnglish": "Name in english",
+    "nameSpanish": "Name in spanish",
+    "email": "Email",
+    "phone": "Phone",
+    "twitter": "Twitter address",
+    "facebook": "Facebook address",
+    "instagram": "Instagram address",
+    "google": "Google+ address",
+    "mainTextEnglish": "Main text in english",
+    "mainTextSpanish": "Main text in spanish",
+    "success": ""
+  },
+  "cart": {
+    "fullName": "Full name",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "address": "Address",
+    "postalCode": "Postal code",
+    "state": "State",
+    "city": "City"
+  },
+  "city": "city",
+  "state": "state",
+  "zip": "postal code",
+  "line1": "Address"
 }

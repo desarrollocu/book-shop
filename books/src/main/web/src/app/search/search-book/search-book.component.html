@@ -18,34 +18,20 @@
                  class="form-control" id="title" name="title" placeholder="{{'search.title' | translate}}">
         </div>
         <div class="form-group col-md-4">
-          <label for="classification" [translate]="'book.classification'">New/Used</label>
-          <ng-select [items]="classifications"
-                     id="classification"
-                     name="classification"
-                     bindLabel="{{'name'}}"
-                     [virtualScroll]="true"
-                     placeholder="{{'book.classification' | translate}}"
-                     [(ngModel)]="search.classification">
-          </ng-select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
           <label for="publisher" [translate]="'book.editor'">Publisher</label>
           <input class="form-control"
                  [(ngModel)]="search.editor"
                  id="publisher" name="publisher" type="text"
                  placeholder="{{'book.editor' | translate}}">
         </div>
+      </div>
+      <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="editionYear" [translate]="'book.editionYear'">Edition year</label>
-          <ng-select [items]="years"
-                     id="editionYear"
-                     name="editionYear"
-                     [virtualScroll]="true"
-                     placeholder="{{'book.editionYear' | translate}}"
-                     [(ngModel)]="search.editionYear">
-          </ng-select>
+          <label for="editionCity" [translate]="'editor.editionCity'">Edition City</label>
+          <input class="form-control"
+                 [(ngModel)]="search.editionCity"
+                 id="editionCity" name="editionCity" type="text"
+                 placeholder="{{'editor.editionCity' | translate}}">
         </div>
         <div class="form-group col-md-4">
           <label for="country" [translate]="'search.editionCountry'">Edition Country</label>
@@ -58,14 +44,28 @@
                      [(ngModel)]="search.editionCountry">
           </ng-select>
         </div>
+        <div class="form-group col-md-4">
+          <label for="editionYear" [translate]="'book.editionYear'">Edition year</label>
+          <ng-select [items]="years"
+                     id="editionYear"
+                     name="editionYear"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.editionYear' | translate}}"
+                     [(ngModel)]="search.editionYear">
+          </ng-select>
+        </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label for="editionCity" [translate]="'editor.editionCity'">Edition City</label>
-          <input class="form-control"
-                 [(ngModel)]="search.editionCity"
-                 id="editionCity" name="editionCity" type="text"
-                 placeholder="{{'editor.editionCity' | translate}}">
+          <label for="classification" [translate]="'book.classification'">New/Used</label>
+          <ng-select [items]="classifications"
+                     id="classification"
+                     name="classification"
+                     bindLabel="{{'name'}}"
+                     [virtualScroll]="true"
+                     placeholder="{{'book.classification' | translate}}"
+                     [(ngModel)]="search.classification">
+          </ng-select>
         </div>
         <div class="form-group col-md-4">
           <label for="descriptors" [translate]="'book.descriptor'">Descriptor</label>
@@ -74,15 +74,6 @@
                  id="descriptors" name="descriptors" type="text"
                  placeholder="{{'book.descriptorPlaceHolder' | translate}}">
         </div>
-        <div class="form-group col-md-4">
-          <label for="isbn" [translate]="'book.isbn'">ISBN</label>
-          <input class="form-control"
-                 [(ngModel)]="search.isbn"
-                 id="isbn" name="isbn" type="text"
-                 placeholder="{{'book.isbn' | translate}}">
-        </div>
-      </div>
-      <div class="form-row">
         <div class="form-group col-md-4">
           <label for="topic" [translate]="'book.topic'">Topic</label>
           <ng-select [items]="topics"
@@ -94,6 +85,15 @@
                      placeholder="{{'book.topic' | translate}}"
                      [(ngModel)]="search.topicList">
           </ng-select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="isbn" [translate]="'book.isbn'">ISBN</label>
+          <input class="form-control"
+                 [(ngModel)]="search.isbn"
+                 id="isbn" name="isbn" type="text"
+                 placeholder="{{'book.isbn' | translate}}">
         </div>
       </div>
       <div class="row">
@@ -189,7 +189,7 @@
 <!--</figure>-->
 <!--</a>-->
 <!--<ng-template #popContent>-->
-<!--<a href="javascript:void(0);" (click)="addToCar();" data-toggle="tooltip"-->
+<!--<a href="javascript:void(0);" (click)="toCar();" data-toggle="tooltip"-->
 <!--data-placement="left"-->
 <!--title="{{'general.addCar' | translate}}">-->
 <!--<i class="fa fa-cart-plus"></i>-->
@@ -222,7 +222,7 @@
   <div class="modal-body">
     <div class="container">
       <div class="row">
-        <div class="col-8" style="border-bottom: thin groove;">
+        <div class="col-8 to-text" style="border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.author'">Author</h4>
           <p style="margin-bottom: 10px;">{{selectedBook.authors}}</p>
         </div>
@@ -232,29 +232,62 @@
           <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
                style="position: absolute">
         </div>
-        <div class="col-8" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
-          <p style="margin-bottom: 10px">
-            {{selectedBook.coin + selectedBook.salePrice}}
-          </p>
-        </div>
-        <div *ngIf="selectedBook.title" class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.title'">Title</h4>
           <p style="margin-bottom: 10px">{{selectedBook.title}}</p>
         </div>
-        <div *ngIf="selectedBook.editors" class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
           <p style="margin-bottom: 10px">{{selectedBook.editors}}</p>
         </div>
-        <div *ngIf="selectedBook.countriesEnglish || selectedBook.countriesSpanish" class="col-12"
-             style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'editor.editionCity'">Edition City</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.cities}}</p>
+        </div>
+        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.editionCountry'">Edition Country</h4>
           <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedBook.countriesEnglish :
             selectedBook.countriesSpanish}}</p>
         </div>
-        <div *ngIf="selectedBook.cities" class="col-12" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'editor.editionCity'">Edition City</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.cities}}</p>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.editionYear'">Edition Year</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.editionYear}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.pages'">Size</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.pages}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.size'">Size</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.size}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.weight1'">Weight(Kg)</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.weight}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.isbn'">ISBN</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.isbn}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.topic'">Size</h4>
+          <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedBook.topicsEnglish :
+            selectedBook.topicsSpanish}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.comments'">Comments</h4>
+          <p style="margin-bottom: 10px;">{{selectedBook.comments}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <!--<h4 class="d-block" [translate]="'book.classification1'">New/Used</h4>-->
+          <h4 class="d-block"></h4>
+          <p style="margin-top: 35px" [translate]="selectedBook.classification.name"></p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
+          <p style="margin-bottom: 10px">
+            {{selectedBook.coin + selectedBook.salePrice}}
+          </p>
         </div>
       </div>
     </div>

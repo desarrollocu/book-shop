@@ -1,15 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {CartService} from '../cart.service';
 import {AlertService} from '../../shared/alert/alert.service';
+import {AuthorService} from '../../admin/author/author.service';
 
 import {Doc} from './model/doc';
 import {PayPalConfig} from '../paypal/model/paypal-models';
 import {PayPalIntegrationType} from '../paypal/model/paypal-integration';
 import {PayPalEnvironment} from '../paypal/model/paypal-environment';
-import {Sale} from "./model/sale";
-import {Detail} from "./model/detail";
+import {Sale} from './model/sale';
+import {Detail} from './model/detail';
+import {ShippingInfo} from './model/shipping-info';
+import {Country} from '../../admin/user/model/country';
 
 
 @Component({
@@ -25,40 +30,108 @@ export class CartComponent implements OnInit {
   payPalConfig?: PayPalConfig;
   paymentId: string;
   reLoadPayPal: boolean = false;
+  loadPayment: boolean = false;
+  shippingInfo: ShippingInfo;
+  countryList: Country[];
+  currentLang: string;
+  shippingCost: number = 0;
+  totalKgs: number;
 
   constructor(private cartService: CartService,
               private router: Router,
+              private modalService: NgbModal,
+              private authorService: AuthorService,
+              private translateService: TranslateService,
+              config: NgbModalConfig,
               private alertService: AlertService) {
     this.load = false;
     this.elementList = [];
     this.total = 0;
+    this.totalKgs = 0;
+    this.shippingInfo = this.cartService.getShippingInfo();
+    this.currentLang = this.translateService.currentLang;
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
   ngOnInit() {
-    this.getProducts(this.cartService.getProductList());
+    this.getProducts({
+      productDTOList: this.cartService.getProductList(),
+      countryDTO: this.shippingInfo.country
+    }, this.shippingInfo.country !== undefined, false);
     this.initConfig();
+    this.getCountries();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.countryLanguage();
+    });
   }
 
-  getProducts(val?: any) {
+  getProducts(val?: any, toPayment?: boolean, cancel?: boolean) {
     this.cartService.getProducts(val)
-      .subscribe(response => this.onSuccess(response),
+      .subscribe(response => this.onSuccess(response.body, toPayment, cancel),
         response => this.onError(response));
   }
 
-  private onSuccess(res) {
+  private onSuccess(res, toPayment, cancel) {
     this.elementList = [];
-    this.elementList = res.body;
-    this.sumTotal(null);
+    this.elementList = res.shopDTOList;
+    this.total = res.amount;
+    this.totalKgs = res.totalKgs;
+    this.shippingCost = res.shippingCost;
+    let cartCant = res.cant;
+    this.cartService.setCartCant(cartCant);
+    this.cartService.getCarSubject().next(cartCant);
     this.load = true;
+
+    if (toPayment) {
+      this.createPaymentId(cancel);
+    }
   }
 
-  private onError(response) {
-    let error = response.error;
-    let fields = error.fields;
-    this.alertService.error(error.error, fields, null);
+  addElement(element) {
+    if (element.realCant >= element.cant + 1) {
+      this.cartService.toCar(element, element.isBook, false, true);
+      this.getProducts({
+        productDTOList: this.cartService.getProductList(),
+        countryDTO: this.shippingInfo.country
+      }, this.shippingInfo.country !== undefined,false);
+    }
   }
 
-  private createPaymentId() {
+  deleteOne(element) {
+    if (element.cant > 1) {
+      this.cartService.toCar(element, element.isBook, false, false);
+      this.getProducts({
+        productDTOList: this.cartService.getProductList(),
+        countryDTO: this.shippingInfo.country
+      }, this.shippingInfo.country !== undefined, false);
+    }
+  }
+
+  removeProduct(prod) {
+    this.cartService.removeFromCar(prod);
+    this.getProducts({
+      productDTOList: this.cartService.getProductList(),
+      countryDTO: this.shippingInfo.country
+    }, this.shippingInfo.country !== undefined, false);
+  }
+
+  shippingDialog(checkoutModal) {
+    this.modalService.open(checkoutModal);
+  }
+
+  saveShippingInfo() {
+    this.cartService.setShippingInfo(this.shippingInfo);
+
+    this.getProducts({
+      productDTOList: this.cartService.getProductList(),
+      countryDTO: this.shippingInfo.country
+    }, this.shippingInfo.country !== undefined, true);
+  }
+
+  private createPaymentId(cancel) {
+    this.loadPayment = true;
     this.paymentId = null;
     this.reLoadPayPal = false;
 
@@ -80,9 +153,9 @@ export class CartComponent implements OnInit {
           total: this.total,
           currency: 'USD',
           details: {
-            subtotal: this.total,
+            subtotal: this.total - this.shippingCost,
             tax: 0.00,
-            shipping: 0.00,
+            shipping: this.shippingCost,
             handling_fee: 0.00,
             shipping_discount: 0.00,
             insurance: 0.00
@@ -90,16 +163,16 @@ export class CartComponent implements OnInit {
         },
         item_list: {
           items: this.payPalItemList,
-          // shipping_address: {
-          //   recipient_name: 'Cart Cart',
-          //   line1: '6554th Floor',
-          //   line2: 'Unit #34',
-          //   city: 'San Jose',
-          //   country_code: 'US',
-          //   postal_code: '95131',
-          //   phone: '011862212345678',
-          //   state: 'CA'
-          // }
+          shipping_address: {
+            recipient_name: this.shippingInfo.fullName,
+            line1: this.shippingInfo.address,
+            line2: '',
+            city: this.shippingInfo.city,
+            country_code: this.shippingInfo.country.code,
+            postal_code: this.shippingInfo.postalCode,
+            phone: this.shippingInfo.phone,
+            state: this.shippingInfo.state
+          }
         }
       };
 
@@ -107,16 +180,22 @@ export class CartComponent implements OnInit {
         .subscribe(response => {
             this.paymentId = response.body.paymentID;
             this.cartService.setPaymentId(this.paymentId);
+            this.loadPayment = false;
+            if (cancel)
+              this.cancelMy();
           },
           response => {
             this.reLoadPayPal = true;
-            this.alertService.error('error.payPalConnection', null, null);
+            let error = response.error;
+            let fields = error.fields;
+            this.loadPayment = false;
+            this.alertService.error(error.error, fields, null);
           });
     }
   }
 
   reloadPayPalFunction() {
-    this.createPaymentId();
+    this.createPaymentId(null);
   }
 
   private initConfig(): void {
@@ -134,10 +213,6 @@ export class CartComponent implements OnInit {
           detail.id = this.elementList[j].id;
           detail.salePrice = this.elementList[j].salePrice;
           detail.cant = this.elementList[j].cant;
-          detail.city = this.elementList[j].city;
-          detail.editor = this.elementList[j].editor;
-          detail.topic = this.elementList[j].topic;
-          detail.isbn = this.elementList[j].isbn;
           detail.mount = detail.cant * detail.salePrice;
           details.push(detail);
         }
@@ -149,77 +224,53 @@ export class CartComponent implements OnInit {
           playerID: data.payerID,
           saleDTO: sale
         }).then((info) => {
-          console.log('onAuthorize');
           this.alertService.success('success.sale', null, null);
           this.cartService.cleanCart();
           this.router.navigateByUrl('search-general');
         })
       },
       onError: (err) => {
-        this.alertService.error('error.payPal', null, null);
+        let error = err.error;
+        let fields = error.fields;
+        this.alertService.error(error.error, fields, null);
       }
     });
   }
 
-  sumTotal(element) {
-    this.total = 0;
-    if (element === null) {
-      for (let i in this.elementList) {
-        this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
+  getCountries() {
+    this.authorService.getCountries()
+      .subscribe(response => this.onCountrySuccess(response),
+        response => this.onError(response));
+  }
+
+  private countryLanguage() {
+    let temp = this.countryList;
+    this.countryList = [];
+    if (temp) {
+      for (let i in temp) {
+        this.countryList = [...this.countryList, temp[i]];
       }
     }
-    else {
-      this.cartService.updateCant(element, '+');
-      for (let i in this.elementList) {
-        this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
-      }
-    }
-
-    this.createPaymentId();
   }
 
-  deleteOne(element) {
-    this.total = 0;
-    this.cartService.updateCant(element, '-');
-    for (let i in this.elementList) {
-      this.total += (this.elementList[i].cant * this.elementList[i].salePrice);
-    }
-
-    this.createPaymentId();
-  }
-
-  removeProduct(prod) {
-    let i = -1;
-    for (let j = 0; j < this.elementList.length; j++) {
-      if (this.elementList[j].id === prod.id) {
-        i = j;
-        break;
-      }
-    }
-    if (i > -1) {
-      this.elementList.splice(i, 1);
-      this.cartService.removeFromCar(prod);
-      this.sumTotal(null);
-    }
-    else
-      this.createPaymentId();
-  }
-
-  saveSale(sale) {
-    this.cartService.saveSale(sale)
-      .subscribe(response => this.onSuccessSale(response),
-        response => this.onErrorSale(response));
-  }
-
-  private onSuccessSale(res) {
-  }
-
-  private onErrorSale(response) {
+  private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.alertService.error(error.error, fields, null);
+  }
+
+  private onCountrySuccess(result) {
+    this.countryList = [];
+    if (result !== null)
+      this.countryList = result;
   }
 
   trackIdentity(index, item: Element) {
     return item.id;
+  }
+
+  cancelMy() {
+    this.cartService.setShippingInfo(this.shippingInfo);
+    this.modalService.dismissAll('cancel')
   }
 }

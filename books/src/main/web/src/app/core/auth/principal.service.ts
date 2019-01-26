@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
 import {AccountService} from './account.service';
 import {StateStorageService} from './state-storage.service';
+
+import {UiData} from "../../search/model/uiData";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +18,7 @@ export class Principal {
   private fullNameSubject = new Subject<string>();
 
   constructor(private account: AccountService,
+              private http: HttpClient,
               private translate: TranslateService,
               private stateStorageService: StateStorageService) {
     this.fullNameSubject.asObservable();
@@ -133,5 +137,9 @@ export class Principal {
 
   getImageUrl(): string {
     return this.isIdentityResolved() ? this.userIdentity.image : null;
+  }
+
+  getUIData(uiData: UiData): Observable<HttpResponse<UiData>> {
+    return this.http.post<UiData>('api/uiData', uiData, {observe: 'response'});
   }
 }

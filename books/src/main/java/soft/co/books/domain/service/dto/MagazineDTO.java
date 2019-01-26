@@ -39,10 +39,15 @@ public class MagazineDTO {
 
     private String image;
 
+    private String comments;
+
     private String publishYear;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     private int stockNumber;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private double weight;
 
     private Long visit = 0L;
 
@@ -63,6 +68,7 @@ public class MagazineDTO {
     public MagazineDTO(Magazine magazine) {
         this.id = magazine.getId();
         this.title = magazine.getTitle();
+        this.comments = magazine.getComments();
 
         this.editorList = magazine.getEditorList().stream().map(EditorDTO::new).collect(Collectors.toList());
         this.editors = "";
@@ -98,6 +104,7 @@ public class MagazineDTO {
         this.frequency = magazine.getFrequency();
         this.isbn = magazine.getIsbn();
         this.salePrice = magazine.getSalePrice();
+        this.weight = magazine.getWeight();
         this.stockNumber = magazine.getStockNumber();
         ShowDTO showDTO = new ShowDTO();
         showDTO.setElem(magazine.isToShow() == true ? "user.yes" : "user.no");
@@ -106,6 +113,14 @@ public class MagazineDTO {
         this.coin = magazine.getCoin();
         this.image = magazine.getImageUrl();
         this.visit = magazine.getVisit();
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public ShowDTO getToShow() {
@@ -244,6 +259,14 @@ public class MagazineDTO {
         this.cities = cities;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "MagazineDTO{" +
@@ -251,6 +274,7 @@ public class MagazineDTO {
                 ", coin='" + coin + '\'' +
                 ", image='" + image + '\'' +
                 ", salePrice=" + salePrice +
+                ", comments=" + comments +
                 ", publishYear='" + publishYear + '\'' +
                 ", stockNumber=" + stockNumber +
                 ", visit=" + visit +

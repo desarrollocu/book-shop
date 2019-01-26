@@ -51,7 +51,7 @@ export class UserManagementModalComponent implements OnInit {
     }
     this.user = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onError(response) {
@@ -71,6 +71,6 @@ export class UserManagementModalComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 }

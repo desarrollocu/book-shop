@@ -24,6 +24,9 @@ public final class AuthoritiesConstants {
     //Magazine
     public static final String MAGAZINE_MANAGEMENT = "magazine-management";
     public static final String MAGAZINE_LIST = "magazine-list";
+    //UIData
+    public static final String UIDATA_MANAGEMENT = "contact-management";
+    public static final String UIDATA_LIST = "contact-list";
 
     //Other
     public static final String ANONYMOUS = "ANONYMOUS";

@@ -7,9 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.AbstractAuditingEntity;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -30,6 +33,17 @@ public class Country extends AbstractAuditingEntity implements Serializable {
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String englishName;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @Size(max = 50, message = Constants.ERR_MAX50)
+    private String code;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private String group;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    @NotEmpty(message = Constants.ERR_NOT_NULL)
+    List<DhlPrice> priceList = new ArrayList<>();
 
     @Version
     private Long version;
@@ -61,6 +75,30 @@ public class Country extends AbstractAuditingEntity implements Serializable {
         this.englishName = englishName;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public List<DhlPrice> getPriceList() {
+        return priceList;
+    }
+
+    public void setPriceList(List<DhlPrice> priceList) {
+        this.priceList = priceList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,6 +118,8 @@ public class Country extends AbstractAuditingEntity implements Serializable {
         return "country{" +
                 "spanishName='" + spanishName + '\'' +
                 ", englishName='" + englishName + '\'' +
+                ", code='" + code + '\'' +
+                ", group='" + group + '\'' +
                 ", version=" + version +
                 '}';
     }

@@ -15,7 +15,7 @@ const routes: Routes = [
     component: ErrorComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore'
+      pageTitle: 'LiderLaf'
     }
   },
   {
@@ -23,7 +23,7 @@ const routes: Routes = [
     component: ErrorComponent,
     data: {
       authorities: [],
-      pageTitle: 'BooksStore',
+      pageTitle: 'LiderLaf',
       error403: true
     }
   }

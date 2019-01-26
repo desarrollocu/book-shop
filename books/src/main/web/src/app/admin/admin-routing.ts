@@ -13,6 +13,7 @@ import {MagazineManagementComponent} from './magazine/magazine-management/magazi
 import {MagazineListComponent} from './magazine/magazine-list/magazine-list.component';
 import {TopicListComponent} from './topic/topic-list/topic-list.component';
 import {TopicManagementComponent} from './topic/topic-management/topic-management.component';
+import {ContactListComponent} from './contact/contact-list/contact-list.component';
 
 
 const routes: Routes = [
@@ -112,6 +113,14 @@ const routes: Routes = [
     data: {
       authorities: ['topic-management'],
       pageTitle: 'Topic-Management',
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "info-management", component: ContactListComponent,
+    data: {
+      authorities: ['info-management'],
+      pageTitle: 'Info-Management',
     },
     canActivate: [RouteAccessService]
   }

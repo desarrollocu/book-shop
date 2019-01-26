@@ -3,14 +3,16 @@ import {Router} from '@angular/router';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
-import {AlertDialogService} from "../../shared/alert/alert.dialog.service";
+import {AlertDialogService} from '../../shared/alert/alert.dialog.service';
 import {LoginModalService} from '../../core/login/login-modal.service';
 import {LoginService} from '../../core/login/login.service';
 import {Principal} from '../../core/auth/principal.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
 import {UserService} from '../../admin/user/user.service';
-import {RegisterModalComponent} from "../../shared/register/register.modal.component";
-import {AccountModalComponent} from "../../shared/account/account.modal.component";
+import {RegisterModalComponent} from '../../shared/register/register.modal.component';
+import {AccountModalComponent} from '../../shared/account/account.modal.component';
+
+import {UiData} from '../../search/model/uiData';
 
 @Component({
   selector: 'app-navbar',
@@ -25,6 +27,9 @@ export class NavbarComponent implements OnInit {
   confirmPassword: string;
   modalRef: NgbModalRef;
   userData: string;
+  uiData: UiData;
+  lat: number = -34.898702;
+  lng: number = -56.178551;
 
   constructor(private loginService: LoginService,
               private principal: Principal,
@@ -46,6 +51,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUIData();
     this.translate.onLangChange.subscribe((event: LangChangeEvent) => {
       this.enActive = event.lang === 'en' ? true : false;
     });
@@ -53,6 +59,20 @@ export class NavbarComponent implements OnInit {
     this.principal.fullName().subscribe((value => {
       this.userData = value;
     }))
+  }
+
+  getUIData() {
+    this.principal.getUIData({})
+      .subscribe(response => this.onUIDataSuccess(response),
+        response => this.onUIDataError(response));
+  }
+
+  private onUIDataError(response) {
+    let error = response.error;
+  }
+
+  private onUIDataSuccess(res) {
+    this.uiData = res.body;
   }
 
   useLanguage(language: string) {
@@ -65,7 +85,7 @@ export class NavbarComponent implements OnInit {
         .subscribe(response => this.onSuccess(response, 'lang'),
           response => this.onError(response));
     }
-    else{
+    else {
       this.alertService.success('success.language', null, null);
     }
   }
@@ -85,6 +105,10 @@ export class NavbarComponent implements OnInit {
     this.currentPassword = "";
     this.confirmPassword = "";
     this.modalService.open(changeUserPass);
+  }
+
+  showContacts(contacts) {
+    this.modalService.open(contacts);
   }
 
   save() {

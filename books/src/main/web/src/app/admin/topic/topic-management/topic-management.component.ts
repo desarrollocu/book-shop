@@ -42,7 +42,7 @@ export class TopicManagementComponent implements OnInit {
     }
     this.topic = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onSearchSuccess(result) {
@@ -60,6 +60,6 @@ export class TopicManagementComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 }

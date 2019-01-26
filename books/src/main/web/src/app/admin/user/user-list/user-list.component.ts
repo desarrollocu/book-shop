@@ -59,8 +59,8 @@ export class UserListComponent implements OnInit {
     const modalRef = this.modalService.open(UserManagementModalComponent, {size: 'lg'});
     modalRef.componentInstance.user = new User();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getUsers('btn');
+    }, (reason => {
     }))
   }
 
@@ -68,8 +68,8 @@ export class UserListComponent implements OnInit {
     const modalRef = this.modalService.open(UserManagementModalComponent, {size: 'lg'});
     modalRef.componentInstance.user = user;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getUsers('btn');
+    }, (reason => {
     }))
   }
 
@@ -77,7 +77,7 @@ export class UserListComponent implements OnInit {
     this.userService.deleteUser(this.remUser.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   openDialog(deleteUser, user) {
@@ -107,7 +107,7 @@ export class UserListComponent implements OnInit {
     this.alertService.error(error.error, fields, null);
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 

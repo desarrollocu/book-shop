@@ -2,61 +2,88 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable, Subject} from 'rxjs';
 
-import {Doc} from './cart/model/doc';
-import {Product} from './cart/model/product';
-import {Sale} from "./cart/model/sale";
-import {AlertService} from "../shared/alert/alert.service";
-import {Payment} from "./cart/model/payment";
+import {Sale} from './cart/model/sale';
+import {AlertService} from '../shared/alert/alert.service';
+import {Payment} from './cart/model/payment';
+import {Cart} from './cart/model/cart';
+import {ShippingInfo} from "./cart/model/shipping-info";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  productList: Product[];
+  productList: any[];
   cartSubject: Subject<number>;
   paymentId: string;
+  cartCant: number = 0;
+  shippingInfo: ShippingInfo;
 
   constructor(private http: HttpClient, private alertService: AlertService) {
     this.productList = [];
+    this.shippingInfo = new ShippingInfo();
     this.cartSubject = new Subject<number>();
     this.cartSubject.asObservable();
   }
 
-  getProducts(req?: any[]): Observable<HttpResponse<Doc[]>> {
-    return this.http.post<Doc[]>('api/searchToShop', req, {observe: 'response'});
+  getProducts(req?: any[]): Observable<HttpResponse<Cart>> {
+    return this.http.post<Cart>('api/searchToShop', req, {observe: 'response'});
   }
 
-  addToCar(product?: any, book?: boolean) {
+  toCar(product?: any, book?: boolean, fromSearch?: boolean, action?: boolean) {
     let val = this.existProduct(product.id);
+
     if (val !== -1) {
-      this.alertService.info('info.inCart', null, null);
+      if (fromSearch)
+        this.alertService.info('info.inCart', null, null);
+      else {
+        if (action) {
+          this.productList[val].cant++;
+          this.cartCant++;
+        }
+        else {
+          this.productList[val].cant--;
+          this.cartCant--;
+        }
+      }
     }
     else {
-      let prod = new Product();
-      prod.id = product.id;
-      prod.cant = 1;
-      prod.book = book;
-      this.productList.push(prod);
-      let cant = 0;
-      for (let i in this.productList) {
-        cant += this.productList[i].cant;
-      }
-      this.getCarSubject().next(cant);
+      let prod = {
+        id: product.id,
+        cant: 1,
+        book: book
+      };
 
+      this.productList.push(prod);
+      this.cartCant++;
+      this.getCarSubject().next(this.cartCant);
       this.alertService.info('shopping.success', null, null);
     }
+  }
+
+  setCartCant(cant) {
+    this.cartCant = cant;
   }
 
   getCarSubject() {
     return this.cartSubject;
   }
 
+  getShippingInfo() {
+    return this.shippingInfo;
+  }
+
+  setShippingInfo(param) {
+    this.shippingInfo = param;
+  }
+
   removeFromCar(prod?) {
     let i = -1;
+    let cant = 0;
     for (let j = 0; j < this.productList.length; j++) {
       if (this.productList[j].id === prod.id) {
         i = j;
+        cant = this.productList[j].cant;
         break;
       }
     }
@@ -64,12 +91,8 @@ export class CartService {
       this.productList.splice(i, 1);
     }
 
-    let cant = 0;
-    for (let i in this.productList) {
-      cant += this.productList[i].cant;
-    }
-    this.getCarSubject().next(cant);
-    return this.productList;
+    this.cartCant -= cant;
+    this.getCarSubject().next(this.cartCant);
   }
 
   getProductList() {

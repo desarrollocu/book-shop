@@ -75,7 +75,7 @@ export class EditorManagementComponent implements OnInit {
     }
     this.editor = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onSearchSuccess(result) {
@@ -93,6 +93,6 @@ export class EditorManagementComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 }

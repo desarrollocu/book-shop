@@ -10,6 +10,7 @@
     "select": "Seleccione",
     "save": " Salvar",
     "cancel": "Cancelar",
+    "close": "Cerrar",
     "confirm": "Confirmar",
     "sureMessage": "¿Está seguro?",
     "sureMessage1": " va a ser eliminado(a)",
@@ -22,8 +23,13 @@
     "close": " Cerrar",
     "details": "Ver detalles",
     "payPal": "El botón de Paypal se está cargando",
-    "payPalReLoad":"Recargar PayPal",
-    "payPalLoad":" PayPal se está cargando."
+    "payPalReLoad": "Recargar PayPal",
+    "payPalLoad": " PayPal se está cargando.",
+    "mainText": "Libros nuevos, usados, raros y antiguos. Revistas. Con envios a todo el mundo.",
+    "checkout": "Datos del envío",
+    "shipping": "Datos del envío",
+    "updateShipping": "Datos del envío",
+    "accept": "Accept"
   },
   "login": {
     "username": "Usuario",
@@ -39,7 +45,7 @@
     "contact": "Contáctenos"
   },
   "sideBar": {
-    "menu": "Tienda de libros",
+    "menu": "LIDERLAF LIBROS",
     "menuResp": "TL",
     "home": "Inicio",
     "books": "Libros",
@@ -52,6 +58,7 @@
     "country": "País",
     "publisher": "Gestión de Editoriales",
     "magazine": "Gestión de Revistas",
+    "contact": "Gestión de Información",
     "car": "Carrito de compras"
   },
   "search": {
@@ -87,12 +94,15 @@
   "book": {
     "add": " Adicionar libro",
     "delete": "Eliminar libro",
+    "comments": "Comentarios",
     "title": "Título",
     "subTitle": "Subtítulo",
     "editor": "Editorial",
     "topic": "Temática",
     "authorList": "Autor",
     "city": "Ciudad",
+    "weight": "Peso",
+    "weight1": "Peso(Kg)",
     "editionDate": "Fecha de edición",
     "editionYear": "Año de edición",
     "editionCountry": "País de edición",
@@ -104,7 +114,8 @@
     "price": "Precio",
     "coin": "Moneda",
     "edition": "Edición",
-    "classification": "Libros Nuevos/Usados",
+    "classification": "Nuevo/Usado",
+    "classification1": "Nuevo/Usado",
     "descriptors": "Descriptores (Ejemplo: historia,todo,día)",
     "descriptorsPlaceHolder": "palabra,palabra,palabra",
     "descriptor": "Descriptor",
@@ -158,8 +169,8 @@
     "delete": "Eliminar temática"
   },
   "classification": {
-    "used": "Antiguos y usados",
-    "new": "Nuevos"
+    "used": "Antiguo y usado",
+    "new": "Nuevo"
   },
   "shopping": {
     "cant": "Cantidad",
@@ -167,9 +178,10 @@
     "buy": "Comprar",
     "price": "Precio",
     "success": "Elemento adicionado al carrito.",
-    "backBooks": "Volver a comprar libros",
-    "backMagazines": "Volver a comprar revistas",
-    "totalAmount": "Monto total"
+    "backBooks": "Comprar libros",
+    "backMagazines": "Comprar revistas",
+    "totalAmount": "Monto total",
+    "shipping": "Costo de envío"
   },
   "error": {
     "title": "Error",
@@ -179,7 +191,7 @@
     "password": {
       "equal": "Las dos contraseñas deben ser iguales."
     },
-    "payPal":"Error de PayPal, Revise sus datos y vuelva a intentarlo.",
+    "payPal": "Error de PayPal, Revise sus datos y vuelva a intentarlo.",
     "payPalConnection": "Error conectando con PayPal.",
     "pattern": {
       "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra"
@@ -204,7 +216,20 @@
       "stockNumber": "El campo números disponibles es requerido.",
       "spanishName": "El campo nombre en español es requerido.",
       "englishName": "El campo nombre en ingles es requerido.",
-      "country": "El país es requerido."
+      "country": "El país es requerido.",
+      "nameEnglish": "El campo nombre en ingles es requerido.",
+      "nameSpanish": "El campo nombre en español es requerido.",
+      "phone": "El telefono es requerido.",
+      "twitter": "La dirección de twitter es requerida.",
+      "facebook": "La dirección de facebook es requerida.",
+      "instagram": "La dirección de instagram es requerida.",
+      "google": "La dirección de google+ es requerida.",
+      "mainTextEnglish": "El texto principal en ingles es requerido.",
+      "mainTextSpanish": "El texto principal en español es requerido.",
+      "fullName": "El campo nombre completo es requerido.",
+      "address": "El campo nombre dirección es requerido.",
+      "weight": "El campo peso es requerido.",
+      "postalCode": "El código postal es requerido."
     },
     "minLength": {
       "email": "Mínimo 5 caracteres.",
@@ -226,12 +251,16 @@
     "E59": "Contraseña incorrecta.",
     "E61": "El elemento esta asociado a un documento.",
     "E62": "No puede eliminar su propio usuario.",
-    "E63": "Ha ocurrido un error durante la creación del pago."
+    "E63": "Ha ocurrido un error durante la creación del pago.",
+    "E64": "Error conectando con PayPal.",
+    "E67": "Error de PayPal, Revise sus datos y vuelva a intentarlo.",
+    "E68": "La cantidad que está intentando comprar es mayor a la que hay en existencia.",
+    "E69": "Ha ocurrido un error."
   },
   "info": {
     "title": "Información",
     "maxProduct": "Máxima cantidad alcanzada.",
-    "inCart":"El producto ya está en el carrito."
+    "inCart": "El producto ya está en el carrito."
   },
   "success": {
     "title": "Satisfactorio",
@@ -244,6 +273,32 @@
     "sale": "Compra satisfactoria."
   },
   "footer": {
-    "info": "2000–2018 Tienda de libros, Inc. Todos los derechos reservados."
-  }
+    "info": "2000–2018. Todos los derechos reservados."
+  },
+  "contact": {
+    "nameEnglish": "Nombre en ingles",
+    "nameSpanish": "Nombre en español",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "twitter": "Dirección de Twitter",
+    "facebook": "Dirección de Facebook",
+    "instagram": "Dirección de Instagram",
+    "google": "Dirección de Google+",
+    "mainTextEnglish": "Texto principal en ingles",
+    "mainTextSpanish": "Texto principal en español"
+  },
+  "cart": {
+    "fullName": "Nombre completo",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "country": "País",
+    "address": "Dirección",
+    "postalCode": "Código postal",
+    "state": "Estado",
+    "city": "Ciudad"
+  },
+  "city": "ciudad",
+  "state": "estado",
+  "zip": "código postal",
+  "line1": "Dirección"
 }

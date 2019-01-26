@@ -81,8 +81,8 @@ export class MagazineListComponent implements OnInit {
     const modalRef = this.modalService.open(MagazineManagementComponent, {size: 'lg'});
     modalRef.componentInstance.magazine = new Magazine();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getMagazines('btn');
+    }, (reason => {
     }))
   }
 
@@ -90,8 +90,8 @@ export class MagazineListComponent implements OnInit {
     const modalRef = this.modalService.open(MagazineManagementComponent, {size: 'lg'});
     modalRef.componentInstance.magazine = magazine;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getMagazines('btn');
+    }, (reason => {
     }))
   }
 
@@ -99,7 +99,7 @@ export class MagazineListComponent implements OnInit {
     this.magazineService.deleteMagazine(this.remMagazine.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   findTopics() {
@@ -177,7 +177,7 @@ export class MagazineListComponent implements OnInit {
     return item.id;
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 }

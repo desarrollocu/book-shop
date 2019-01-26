@@ -51,6 +51,7 @@ public class ExceptionTranslator {
             }
         } else if (ex instanceof CustomizeException) {
             errorDTO.setError(ex.getMessage());
+            errorDTO.setFields(((CustomizeException) ex).getParams());
         } else {
             errorDTO.setError("error.general");
         }

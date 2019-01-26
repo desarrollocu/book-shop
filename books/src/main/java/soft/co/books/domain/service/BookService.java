@@ -118,6 +118,8 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setId(bookDTO.getId());
         book.setTitle(bookDTO.getTitle());
         book.setSubTitle(bookDTO.getSubTitle());
+        book.setComments(bookDTO.getComments());
+        book.setWeight(bookDTO.getWeight());
 
         if (bookDTO.getDescriptors() != null) {
             if (bookDTO.getDescriptors() != "") {
@@ -181,6 +183,8 @@ public class BookService extends CustomBaseService<Book, String> {
                 .map(book -> {
                     book.setTitle(bookDTO.getTitle());
                     book.setSubTitle(bookDTO.getSubTitle());
+                    book.setComments(bookDTO.getComments());
+                    book.setWeight(bookDTO.getWeight());
 
                     List<Author> authorList = bookDTO.getAuthorList().stream()
                             .map(authorDTO -> authorService.findOne(authorDTO.getId()).get())

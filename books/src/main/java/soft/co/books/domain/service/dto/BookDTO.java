@@ -41,6 +41,11 @@ public class BookDTO {
 
     private String isbn;
 
+    private String comments;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private double weight;
+
     @NotNull(message = Constants.ERR_NOT_NULL)
     @NotEmpty(message = Constants.ERR_NOT_NULL)
     private List<TopicDTO> topicList = new ArrayList<>();
@@ -125,6 +130,7 @@ public class BookDTO {
         this.pages = book.getPages();
         this.size = book.getSize();
         this.isbn = book.getIsbn();
+        this.comments = book.getComments();
         this.topicList = book.getTopicList().stream().map(TopicDTO::new).collect(Collectors.toList());
         this.topicsEnglish = "";
         this.topicsSpanish = "";
@@ -140,6 +146,7 @@ public class BookDTO {
                 this.topicsSpanish += ", " + this.topicList.get(i).getSpanishName();
         }
 
+        this.weight = book.getWeight();
         this.salePrice = book.getSalePrice();
         this.coin = book.getCoin();
         this.stockNumber = book.getStockNumber();
@@ -157,6 +164,14 @@ public class BookDTO {
         }
 
         this.visit = book.getVisit();
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 
     public ShowDTO getToShow() {
@@ -359,6 +374,14 @@ public class BookDTO {
         this.countriesSpanish = countriesSpanish;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
     @Override
     public String toString() {
         return "BookDTO{" +
@@ -367,6 +390,7 @@ public class BookDTO {
                 ", coin='" + coin + '\'' +
                 ", image='" + image + '\'' +
                 ", salePrice=" + salePrice +
+                ", comments=" + comments +
                 ", editionYear='" + editionYear + '\'' +
                 ", authorList=" + authorList +
                 ", descriptors=" + descriptors +

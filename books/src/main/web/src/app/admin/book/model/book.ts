@@ -5,6 +5,8 @@ export class Book {
     public editorList?: any[],
     public topicList?: any[],
     public title?: string,
+    public comments?: string,
+    public weight?: number,
     public subTitle?: string,
     public editor?: any,
     public classification?: any,

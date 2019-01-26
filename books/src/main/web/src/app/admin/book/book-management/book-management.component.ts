@@ -151,7 +151,7 @@ export class BookManagementComponent implements OnInit {
     }
     this.book = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onSearchSuccess(result) {
@@ -185,7 +185,7 @@ export class BookManagementComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 
   preview(event) {

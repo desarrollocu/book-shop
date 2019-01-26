@@ -79,8 +79,8 @@ export class EditorListComponent implements OnInit {
     const modalRef = this.modalService.open(EditorManagementComponent, {size: 'lg'});
     modalRef.componentInstance.editor = new Editor();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getEditors('btn');
+    }, (reason => {
     }))
   }
 
@@ -88,8 +88,8 @@ export class EditorListComponent implements OnInit {
     const modalRef = this.modalService.open(EditorManagementComponent, {size: 'lg'});
     modalRef.componentInstance.editor = editor;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getEditors('btn');
+    }, (reason => {
     }))
   }
 
@@ -97,7 +97,7 @@ export class EditorListComponent implements OnInit {
     this.editorService.deleteEditor(this.remEditor.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   openDialog(deleteEditor, editor) {
@@ -151,7 +151,7 @@ export class EditorListComponent implements OnInit {
       this.countryList = result;
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 }

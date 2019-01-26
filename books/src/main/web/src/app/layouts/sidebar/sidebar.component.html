@@ -1,6 +1,6 @@
 <aside id="sidebar">
   <div class="sidebar-header">
-    <h3><i class="fa fa-bookmark"></i> {{'sideBar.menu' | translate}}</h3>
+    <h3><i class="fa fa-bookmark"></i> {{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}}</h3>
     <strong [translate]="'sideBar.menuResp'">BS</strong>
   </div>
 
@@ -59,42 +59,47 @@
         {{'sideBar.magazine' | translate}}
       </a>
     </li>
+    <li *hasAnyAuthority="'info-management'" routerLinkActive="active">
+      <a routerLink="info-management" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.contact' | translate}}
+      </a>
+    </li>
   </ul>
   <!--<div class="my-carousel img-text">-->
-    <!--<ngb-carousel *ngIf="images" [interval]="3000" [showNavigationIndicators]="true"-->
-                  <!--[showNavigationArrows]="false">-->
-      <!--<ng-template ngbSlide>-->
-        <!--<div class="item">-->
-          <!--<a href="javascript:void(0);"-->
-             <!--class="d-block mb-4 h-100 img-text">-->
-            <!--<figure>-->
-              <!--<img src="assets/images/img.jpg" height="190" width="125" alt=""/>-->
-              <!--<figcaption>-->
-                <!--$ghjghj-->
-              <!--</figcaption>-->
-              <!--<figcaption>-->
-                <!--ghjghjgh-->
-              <!--</figcaption>-->
-            <!--</figure>-->
-          <!--</a>-->
-        <!--</div>-->
-      <!--</ng-template>-->
-      <!--<ng-template ngbSlide>-->
-        <!--<div class="item">-->
-          <!--<a href="javascript:void(0);"-->
-             <!--class="d-block mb-4 h-100 img-text">-->
-            <!--<figure>-->
-              <!--<img src="assets/images/login.png" height="190" width="125" alt=""/>-->
-              <!--<figcaption>-->
-                <!--$ghjghj-->
-              <!--</figcaption>-->
-              <!--<figcaption>-->
-                <!--ghjghjgh-->
-              <!--</figcaption>-->
-            <!--</figure>-->
-          <!--</a>-->
-        <!--</div>-->
-      <!--</ng-template>-->
-    <!--</ngb-carousel>-->
+  <!--<ngb-carousel *ngIf="images" [interval]="3000" [showNavigationIndicators]="true"-->
+  <!--[showNavigationArrows]="false">-->
+  <!--<ng-template ngbSlide>-->
+  <!--<div class="item">-->
+  <!--<a href="javascript:void(0);"-->
+  <!--class="d-block mb-4 h-100 img-text">-->
+  <!--<figure>-->
+  <!--<img src="assets/images/img.jpg" height="190" width="125" alt=""/>-->
+  <!--<figcaption>-->
+  <!--$ghjghj-->
+  <!--</figcaption>-->
+  <!--<figcaption>-->
+  <!--ghjghjgh-->
+  <!--</figcaption>-->
+  <!--</figure>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--</ng-template>-->
+  <!--<ng-template ngbSlide>-->
+  <!--<div class="item">-->
+  <!--<a href="javascript:void(0);"-->
+  <!--class="d-block mb-4 h-100 img-text">-->
+  <!--<figure>-->
+  <!--<img src="assets/images/login.png" height="190" width="125" alt=""/>-->
+  <!--<figcaption>-->
+  <!--$ghjghj-->
+  <!--</figcaption>-->
+  <!--<figcaption>-->
+  <!--ghjghjgh-->
+  <!--</figcaption>-->
+  <!--</figure>-->
+  <!--</a>-->
+  <!--</div>-->
+  <!--</ng-template>-->
+  <!--</ngb-carousel>-->
   <!--</div>-->
 </aside>

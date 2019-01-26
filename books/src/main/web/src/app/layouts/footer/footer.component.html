@@ -1,15 +1,18 @@
 <footer class="footer">
   <div class="legal">
-    © {{'footer.info' | translate}} <a href="https://www.bookstore.com">bookstore.com</a>
+    {{'footer.info' | translate}} © {{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}} &nbsp;|&nbsp; {{uiData.phone}} &nbsp;|&nbsp; {{uiData.email}}
     <br>
-    <a class="waves-effect waves-light active" href="">
+    <a class="waves-effect waves-light active" [href]="uiData.twitter">
       <i class="fa fa-twitter"></i>
-    </a>  &nbsp;|&nbsp;
-    <a class="waves-effect waves-light active" href="">
+    </a> &nbsp;|&nbsp;
+    <a class="waves-effect waves-light active" [href]="uiData.facebook">
       <i class="fa fa-facebook-official"></i>
-    </a>  &nbsp;|&nbsp;
-    <a class="waves-effect waves-light active" href="">
+    </a> &nbsp;|&nbsp;
+    <a class="waves-effect waves-light active" [href]="uiData.google">
       <i class="fa fa-google-plus"></i>
+    </a> &nbsp;|&nbsp;
+    <a class="waves-effect waves-light active" [href]="uiData.instagram">
+      <i class="fa fa-instagram"></i>
     </a>
   </div>
 </footer>

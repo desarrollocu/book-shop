@@ -24,6 +24,10 @@ public final class Constants {
     public static final String ERR_MAX100 = "error.E60";
     public static final String ERR_DELETE = "error.E61";
     public static final String ERR_USER = "error.E62";
+    public static final String ERR_NOT_FOUND = "error.E65";
+    public static final String ERR_PAYPAL_CONEX = "error.E64";
+    public static final String ERR_PAYPAL_DATA = "error.E67";
+    public static final String ERR_SERVER = "error.E69";
 
     private Constants() {
     }

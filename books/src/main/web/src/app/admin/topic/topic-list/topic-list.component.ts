@@ -68,8 +68,8 @@ export class TopicListComponent implements OnInit {
     const modalRef = this.modalService.open(TopicManagementComponent, {size: 'lg'});
     modalRef.componentInstance.topic = new Topic();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getTopics('btn');
+    }, (reason => {
     }))
   }
 
@@ -77,16 +77,16 @@ export class TopicListComponent implements OnInit {
     const modalRef = this.modalService.open(TopicManagementComponent, {size: 'lg'});
     modalRef.componentInstance.topic = topic;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getTopics('btn');
-    }))
+    }, (reason => {
+    }));
   }
 
   removeTopic() {
     this.topicService.deleteTopic(this.remTopic.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   openDialog(deleteTopic, topic) {
@@ -128,7 +128,7 @@ export class TopicListComponent implements OnInit {
     return item.id;
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 }

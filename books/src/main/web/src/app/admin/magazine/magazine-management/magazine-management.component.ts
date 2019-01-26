@@ -112,7 +112,7 @@ export class MagazineManagementComponent implements OnInit {
     }
     this.magazine = response.body;
     this.alertService.success(msg, null, null);
-    this.activeModal.dismiss('cancel');
+    this.activeModal.close();
   }
 
   private onSearchSuccess(result) {
@@ -136,7 +136,7 @@ export class MagazineManagementComponent implements OnInit {
   }
 
   cancel() {
-    this.activeModal.dismiss('cancel');
+    this.activeModal.dismiss();
   }
 
   preview(event) {

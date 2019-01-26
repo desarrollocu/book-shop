@@ -28,12 +28,16 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
     @DBRef
     private List<Editor> editorList = new ArrayList<>();
 
+    @Indexed
     @Field("sell_price")
     @NotNull(message = Constants.ERR_NOT_NULL)
     private double salePrice;
 
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String isbn;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private double weight;
 
     @DBRef
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -45,7 +49,7 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
-    private String coin;
+    private String coin = "(USD)";
 
     @Field("stock_number")
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -54,6 +58,8 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
     private Long visit = 0L;
 
     private boolean toShow = false;
+
+    private String comments;
 
     @Version
     private Long version;
@@ -144,5 +150,21 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     public void setStockNumber(int stockNumber) {
         this.stockNumber = stockNumber;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 }

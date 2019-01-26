@@ -5,6 +5,7 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxAlertsModule} from '@ngx-plus/ngx-alerts';
+import {AgmCoreModule} from '@agm/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from './core/core.module';
@@ -34,6 +35,9 @@ import {FooterComponent} from './layouts/footer/footer.component';
     NgxWebstorageModule.forRoot(),
     SharedModule.forRoot(),
     NgxAlertsModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDsLWa_AijiPi5fuoS4-MMlyvqhSHPulCk'
+    }),
     CoreModule,
     AdminModule,
     SearchModule,

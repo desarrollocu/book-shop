@@ -50,7 +50,7 @@ export class SearchBookComponent implements OnInit {
     this.searchMore = false;
     this.load = false;
     this.itemsPerPage = 12;
-    this.predicate = 'id';
+    this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
     this.selectedBook = new Book();
@@ -83,7 +83,6 @@ export class SearchBookComponent implements OnInit {
       this.page = 0;
     else
       this.predicate = param;
-
 
     this.bookList = [];
     this.searchService.searchBook({
@@ -201,11 +200,16 @@ export class SearchBookComponent implements OnInit {
   }
 
   addToCar(book) {
-    this.shoppingService.addToCar(book, true);
+    if (book !== undefined)
+      this.shoppingService.toCar(book, true, true);
+    else
+      this.shoppingService.toCar(this.selectedBook, true, true);
     this.cancel();
   }
 
   bookDetails(details, book) {
+    this.selectedBook = new Book();
+    this.selectedBook = book;
     this.selectBook(book);
     this.modalService.open(details);
   }

@@ -6,7 +6,8 @@ import {createRequestOption} from '../shared/util/request-util';
 
 import {Book} from '../admin/book/model/book';
 import {Magazine} from '../admin/magazine/model/magazine';
-import {Country} from "../admin/user/model/country";
+import {Country} from '../admin/user/model/country';
+import {UiData} from './model/uiData';
 
 
 @Injectable({

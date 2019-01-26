@@ -42,7 +42,7 @@ export class BookListComponent implements OnInit {
               private editorService: EditorService,
               private authorService: AuthorService) {
     this.itemsPerPage = 5;
-    this.predicate = 'id';
+    this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
     this.currentLang = this.translateService.currentLang;
@@ -63,6 +63,8 @@ export class BookListComponent implements OnInit {
   getBooks(param) {
     if (param === 'btn')
       this.page = 0;
+    else
+      this.predicate = param;
 
     this.bookList = [];
     this.bookService.getBooks({
@@ -83,8 +85,8 @@ export class BookListComponent implements OnInit {
     const modalRef = this.modalService.open(BookManagementComponent, {size: 'lg'});
     modalRef.componentInstance.book = new Book();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getBooks('btn');
+    }, (reason => {
     }))
   }
 
@@ -92,8 +94,8 @@ export class BookListComponent implements OnInit {
     const modalRef = this.modalService.open(BookManagementComponent, {size: 'lg'});
     modalRef.componentInstance.book = book;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getBooks('btn');
+    }, (reason => {
     }))
   }
 
@@ -101,7 +103,7 @@ export class BookListComponent implements OnInit {
     this.bookService.deleteBook(this.remBook.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   findTopics() {
@@ -180,18 +182,25 @@ export class BookListComponent implements OnInit {
   }
 
   sort() {
+    this.predicate = this.predicate !== null ? this.predicate : 'id';
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
+    this.reverse = !this.reverse;
+    // if (this.predicate !== 'id') {
+    //   result.push('id');
+    // }
     return result;
+    // const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+    // if (this.predicate !== 'id') {
+    //   result.push('id');
+    // }
+    // return result;
   }
 
   trackIdentity(index, item: Book) {
     return item.id;
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 }

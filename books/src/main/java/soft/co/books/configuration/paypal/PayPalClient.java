@@ -5,15 +5,13 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.data.UserDetail;
 import soft.co.books.domain.service.BookService;
 import soft.co.books.domain.service.SaleService;
-import soft.co.books.domain.service.dto.ItemDTO;
-import soft.co.books.domain.service.dto.PaymentDTO;
-import soft.co.books.domain.service.dto.SaleDTO;
-import soft.co.books.domain.service.dto.TransactionDTO;
+import soft.co.books.domain.service.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,18 @@ public class PayPalClient {
 
         Amount amount = new Amount();
         amount.setCurrency(transactionDTO.getAmount().getCurrency());
-        amount.setTotal(String.valueOf(transactionDTO.getAmount().getTotal()));
+        amount.setTotal(String.format("%.2f", transactionDTO.getAmount().getTotal()));
+
+        AmountDetailsDTO detailsDTO = transactionDTO.getAmount().getDetails();
+
+        Details details = new Details();
+        details.setSubtotal(String.format("%.2f", detailsDTO.getSubtotal()));
+        details.setShipping(String.format("%.2f", detailsDTO.getShipping()));
+        details.setTax(String.format("%.2f", detailsDTO.getTax()));
+        details.setInsurance(String.format("%.2f", detailsDTO.getInsurance()));
+        details.setShippingDiscount(String.format("%.2f", detailsDTO.getShipping_discount()));
+        details.setHandlingFee(String.format("%.2f", detailsDTO.getHandling_fee()));
+        amount.setDetails(details);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
@@ -49,12 +58,25 @@ public class PayPalClient {
             Item item = new Item();
             item.setCurrency(itemDTO.getCurrency());
             item.setName(itemDTO.getName());
-            item.setPrice(String.valueOf(itemDTO.getPrice()));
+            item.setPrice(String.format("%.2f", itemDTO.getPrice()));
             item.setQuantity(String.valueOf(itemDTO.getQuantity()));
-            item.setTax(String.valueOf(itemDTO.getTax()));
+            item.setTax(String.format("%.2f", itemDTO.getTax()));
             item.setSku(String.valueOf(itemDTO.getSku()));
             itemList.getItems().add(item);
         }
+
+        ShippingAddressDTO addressDTO = transactionDTO.getItem_list().getShipping_address();
+        ShippingAddress shippingAddress = new ShippingAddress();
+        shippingAddress.setRecipientName(addressDTO.getRecipient_name());
+        shippingAddress.setPhone(addressDTO.getPhone());
+        shippingAddress.setCity(addressDTO.getCity());
+        shippingAddress.setCountryCode(addressDTO.getCountry_code());
+        shippingAddress.setLine1(addressDTO.getLine1());
+        shippingAddress.setLine2(addressDTO.getLine2());
+        shippingAddress.setPostalCode(addressDTO.getPostal_code());
+        shippingAddress.setState(addressDTO.getState());
+
+        itemList.setShippingAddress(shippingAddress);
 
         transaction.setItemList(itemList);
         List<Transaction> transactions = new ArrayList<>();
@@ -79,7 +101,16 @@ public class PayPalClient {
             paymentDTO.setPaymentID(createdPayment.getId());
         } catch (PayPalRESTException e) {
             System.out.println("Error happened during payment creation!");
-            throw new CustomizeException("E63");
+            if (e.getResponsecode() == 400) {
+                List<String> params = new ArrayList<>();
+                for (ErrorDetails errorDetails : e.getDetails().getDetails()) {
+                    if (errorDetails.getField().equals("city") || errorDetails.getField().equals("state")
+                            || errorDetails.getField().equals("zip") || errorDetails.getField().equals("line1"))
+                        params.add(errorDetails.getField());
+                }
+                throw new CustomizeException(Constants.ERR_PAYPAL_DATA, params);
+            } else
+                throw new CustomizeException(Constants.ERR_PAYPAL_CONEX);
         }
 
         return paymentDTO;
@@ -91,7 +122,7 @@ public class PayPalClient {
                 Book book = bookService.findOne(detail.getId()).get();
                 if (book != null) {
                     if (book.getStockNumber() < detail.getCant()) {
-                        throw new CustomizeException("E64");
+                        throw new CustomizeException("error.E68");
                     }
                 }
             });

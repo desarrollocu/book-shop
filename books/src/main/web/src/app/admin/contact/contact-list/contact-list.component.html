@@ -1,0 +1,202 @@
+<section style="margin-left: 30px; margin-right: 30px;margin-top: 40px">
+  <div class="row">
+    <div class="col-sm-12">
+      <form class="form" role="form" #contactManagementForm="ngForm" (ngSubmit)="saveUIData()">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="nameEnglish" [translate]="'contact.nameEnglish'">Name in english</label>
+            <input type="text"
+                   [(ngModel)]="uiData.nameEnglish"
+                   class="form-control"
+                   id="nameEnglish"
+                   name="nameEnglish"
+                   placeholder="{{'contact.nameEnglish' | translate}}"
+                   #nameEnglish="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="nameEnglish.invalid && (nameEnglish.dirty || nameEnglish.touched)"
+                 class="error-msg">
+              <div *ngIf="nameEnglish.errors.required" [translate]="'error.required.nameEnglish'">
+                Name in english is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="nameSpanish" [translate]="'contact.nameSpanish'">LastName</label>
+            <input type="text"
+                   [(ngModel)]="uiData.nameSpanish"
+                   class="form-control"
+                   id="nameSpanish"
+                   name="nameSpanish"
+                   placeholder="{{'contact.nameSpanish' | translate}}"
+                   #nameSpanish="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="nameSpanish.invalid && (nameSpanish.dirty || nameSpanish.touched)"
+                 class="error-msg">
+              <div *ngIf="nameSpanish.errors.required" [translate]="'error.required.nameSpanish'">
+                Name in spanish is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="email" [translate]="'contact.email'">Email</label>
+            <input type="text"
+                   [(ngModel)]="uiData.email"
+                   class="form-control"
+                   id="email"
+                   name="email"
+                   placeholder="{{'contact.email' | translate}}"
+                   #email="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                 class="error-msg">
+              <div *ngIf="email.errors.required" [translate]="'error.required.email'">
+                Email is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="phone" [translate]="'contact.phone'">Phone</label>
+            <input type="text"
+                   [(ngModel)]="uiData.phone"
+                   class="form-control"
+                   id="phone"
+                   name="phone"
+                   placeholder="{{'contact.phone' | translate}}"
+                   #phone="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+                 class="error-msg">
+              <div *ngIf="phone.errors.required" [translate]="'error.required.phone'">
+                Phone is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="twitter" [translate]="'contact.twitter'">Twitter</label>
+            <input type="text"
+                   [(ngModel)]="uiData.twitter"
+                   class="form-control"
+                   id="twitter"
+                   name="twitter"
+                   placeholder="{{'contact.twitter' | translate}}"
+                   #twitter="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="twitter.invalid && (twitter.dirty || twitter.touched)"
+                 class="error-msg">
+              <div *ngIf="twitter.errors.required" [translate]="'error.required.twitter'">
+                Twitter is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="facebook" [translate]="'contact.facebook'">Facebook</label>
+            <input type="text"
+                   [(ngModel)]="uiData.facebook"
+                   class="form-control"
+                   id="facebook"
+                   name="facebook"
+                   placeholder="{{'contact.facebook' | translate}}"
+                   #facebook="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="facebook.invalid && (facebook.dirty || facebook.touched)"
+                 class="error-msg">
+              <div *ngIf="facebook.errors.required" [translate]="'error.required.facebook'">
+                Facebook is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="instagram" [translate]="'contact.instagram'">Instagram</label>
+            <input type="text"
+                   [(ngModel)]="uiData.instagram"
+                   class="form-control"
+                   id="instagram"
+                   name="instagram"
+                   placeholder="{{'contact.instagram' | translate}}"
+                   #instagram="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="instagram.invalid && (instagram.dirty || instagram.touched)"
+                 class="error-msg">
+              <div *ngIf="instagram.errors.required" [translate]="'error.required.instagram'">
+                Instagram is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="google" [translate]="'contact.google'">Google+</label>
+            <input type="text"
+                   [(ngModel)]="uiData.google"
+                   class="form-control"
+                   id="google"
+                   name="google"
+                   placeholder="{{'contact.google' | translate}}"
+                   #google="ngModel"
+                   required
+                   maxlength="350">
+            <div *ngIf="google.invalid && (google.dirty || google.touched)"
+                 class="error-msg">
+              <div *ngIf="google.errors.required" [translate]="'error.required.google'">
+                Google is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="mainTextEnglish" [translate]="'contact.mainTextEnglish'">Main text in english</label>
+            <textarea type="text"
+                      [(ngModel)]="uiData.mainTextEnglish"
+                      class="form-control"
+                      id="mainTextEnglish"
+                      name="mainTextEnglish"
+                      placeholder="{{'contact.mainTextEnglish' | translate}}"
+                      #mainTextEnglish="ngModel"
+                      required>
+            </textarea>
+            <div *ngIf="mainTextEnglish.invalid && (mainTextEnglish.dirty || mainTextEnglish.touched)"
+                 class="error-msg">
+              <div *ngIf="mainTextEnglish.errors.required" [translate]="'error.required.mainTextEnglish'">
+                Main text in english is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="mainTextSpanish" [translate]="'contact.mainTextSpanish'">Main text in spanish</label>
+            <textarea type="text"
+                      [(ngModel)]="uiData.mainTextSpanish"
+                      class="form-control"
+                      id="mainTextSpanish"
+                      name="mainTextSpanish"
+                      placeholder="{{'contact.mainTextSpanish' | translate}}"
+                      #mainTextSpanish="ngModel"
+                      required>
+            </textarea>
+            <div *ngIf="mainTextSpanish.invalid && (mainTextSpanish.dirty || mainTextSpanish.touched)"
+                 class="error-msg">
+              <div *ngIf="mainTextSpanish.errors.required" [translate]="'error.required.mainTextSpanish'">
+                Main text in spanish is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                [disabled]="!contactManagementForm.valid || load"
+                [translate]="'general.save'"> Save
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

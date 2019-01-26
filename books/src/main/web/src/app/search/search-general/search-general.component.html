@@ -21,8 +21,17 @@
     </ngb-carousel>
   </div>
 </section>
-<section class="mag-posts-area d-flex flex-wrap">
-</section>
+<div style="margin: 0 10% 10px 10%;">
+  <!--<h3 *ngIf="!uiData.mainTextEnglish" [translate]="'general.mainText'"></h3>-->
+  <h3 *ngIf="uiData">{{currentLang === 'en' ? uiData.mainTextEnglish : uiData.mainTextSpanish}}</h3>
+  <div class="row" style="margin-top: 35px">
+    <div class="col-sm-12">
+      <span style="font-size: 1.3rem">PayPal: </span>
+      <img style="width: 200px;" src="assets/images/payment/visa-mastercard-amex.png">
+    </div>
+  </div>
+</div>
+
 
 <!--<ng-template #details let-modal>-->
 <!--<div class="modal-header modal-title">-->
@@ -64,7 +73,7 @@
 <!--</div>-->
 <!--</div>-->
 <!--<div style="margin-top: 20px">-->
-<!--<button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
+<!--<button type="button" (click)="toCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
 <!--class="fa fa-cart-plus"></i> Add to car-->
 <!--</button>-->
 <!--<button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">-->
@@ -113,7 +122,7 @@
 <!--</div>-->
 <!--</div>-->
 <!--<div style="margin-top: 20px">-->
-<!--<button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
+<!--<button type="button" (click)="toCar()" class="btn btn-info" [translate]="'general.addCar'"><i-->
 <!--class="fa fa-cart-plus"></i> Add to car-->
 <!--</button>-->
 <!--<button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">-->

@@ -72,13 +72,17 @@
     <table class="table table-hover">
       <thead class="thead-light">
       <tr>
-        <th scope="col" [translate]="'book.title'">Title</th>
-        <th scope="col" [translate]="'book.subTitle'">Subtitle</th>
-        <th scope="col" [translate]="'book.editor'">Editor</th>
-        <th scope="col" [translate]="'book.topic'">Topic</th>
-        <th scope="col" [translate]="'book.coin'">Coin</th>
-        <th scope="col" [translate]="'book.price'">Price</th>
-        <th scope="col"></th>
+        <th scope="col" style="width: 15%;" [translate]="'book.author'">Author</th>
+        <th scope="col" style="width: 15%;" [translate]="'book.title'">Title</th>
+        <!--<th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getBooks('title')">Title-->
+        <!--<i class="fa fa-sort" style="margin-left: 5px"></i></th>-->
+        <th scope="col" style="width: 15%;" [translate]="'book.editor'">Editor</th>
+        <th scope="col" style="width: 15%;" [translate]="'book.topic'">Topic</th>
+        <th scope="col" style="width: 10%;" [translate]="'book.isbn'">ISBN</th>
+        <th scope="col" style="width: 10%;" [translate]="'book.price'">Price</th>
+        <!--<th scope="col" style="width: 10%;" [translate]="'book.price'" (click)="getBooks('salePrice')">Price-->
+        <!--<i class="fa fa-sort" style="margin-left: 5px"></i></th>-->
+        <th scope="col" style="width: 15%;"></th>
       </tr>
       </thead>
       <tbody>
@@ -86,12 +90,12 @@
         <td colspan="7" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
       <tr *ngFor="let book of bookList; trackBy: trackIdentity">
-        <td scope="row">{{book.title}}</td>
-        <td>{{book.subTitle}}</td>
+        <td scope="row">{{book.authors}}</td>
+        <td>{{book.title}}</td>
         <td>{{book.editors}}</td>
         <td>{{currentLang === 'en' ? book.topicsEnglish: book.topicsSpanish}}</td>
-        <td>{{book.coin}}</td>
-        <td>{{book.salePrice}}</td>
+        <td>{{book.isbn}}</td>
+        <td>{{book.coin + book.salePrice}}</td>
         <td>
           <button class="btn btn-primary table-button"
                   (click)="editBook(book)"><i class="fa fa-edit"></i>
@@ -129,7 +133,7 @@
                 (click)="removeBook()"
                 [translate]="'general.confirm'"> Confirm
         </button>
-        <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"
+        <button type="button" (click)="cancelMy()" class="btn btn-danger table-button-search"
                 [translate]="'general.cancel'"> Cancel
         </button>
       </div>

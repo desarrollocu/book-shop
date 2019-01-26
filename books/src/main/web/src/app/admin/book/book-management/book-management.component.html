@@ -130,7 +130,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="pages" [translate]="'book.pages'">Pages</label>
             <input type="number"
                    [(ngModel)]="book.pages"
@@ -142,7 +142,7 @@
                    #pages="ngModel"
                    maxlength="50">
           </div>
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-4">
             <label for="size" [translate]="'book.size'">Size</label>
             <input type="text"
                    [(ngModel)]="book.size"
@@ -153,9 +153,28 @@
                    #size="ngModel"
                    maxlength="50">
           </div>
+          <div class="form-group col-md-4">
+            <label for="weight" [translate]="'book.weight1'">Weight(Kg)</label>
+            <input type="number"
+                   [(ngModel)]="book.weight"
+                   class="form-control"
+                   id="weight"
+                   name="weight"
+                   placeholder="{{'book.weight' | translate}}"
+                   #weight="ngModel"
+                   required
+                   min="0"
+                   maxlength="50">
+            <div *ngIf="weight.invalid && (weight.dirty || weight.touched)"
+                 class="error-msg">
+              <div *ngIf="weight.errors.required" [translate]="'error.required.weight'">
+                Weight is required.
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-6">
             <label for="isbn" [translate]="'book.isbn'">Isbn</label>
             <input type="text"
                    [(ngModel)]="book.isbn"
@@ -166,7 +185,7 @@
                    #isbn="ngModel"
                    maxlength="50">
           </div>
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label for="salePrice" [translate]="'book.salePrice'">Sale price</label>
             <input type="number"
                    [(ngModel)]="book.salePrice"
@@ -185,23 +204,23 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-3">
-            <label for="coin" [translate]="'book.coin'">Coin</label>
-            <ng-select [items]="coinList"
-                       id="coin"
-                       name="coin"
-                       placeholder="{{'book.coin' | translate}}"
-                       [(ngModel)]="book.coin"
-                       #coin="ngModel"
-                       required>
-            </ng-select>
-            <div *ngIf="coin.invalid && (coin.dirty || coin.touched)"
-                 class="error-msg">
-              <div *ngIf="coin.errors.required" [translate]="'error.required.coin'">
-                Coin is required.
-              </div>
-            </div>
-          </div>
+          <!--<div class="form-group col-md-3">-->
+          <!--<label for="coin" [translate]="'book.coin'">Coin</label>-->
+          <!--<ng-select [items]="coinList"-->
+          <!--id="coin"-->
+          <!--name="coin"-->
+          <!--placeholder="{{'book.coin' | translate}}"-->
+          <!--[(ngModel)]="book.coin"-->
+          <!--#coin="ngModel"-->
+          <!--required>-->
+          <!--</ng-select>-->
+          <!--<div *ngIf="coin.invalid && (coin.dirty || coin.touched)"-->
+          <!--class="error-msg">-->
+          <!--<div *ngIf="coin.errors.required" [translate]="'error.required.coin'">-->
+          <!--Coin is required.-->
+          <!--</div>-->
+          <!--</div>-->
+          <!--</div>-->
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
@@ -243,6 +262,14 @@
           </div>
         </div>
         <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="descriptors" [translate]="'book.comments'">Comments</label>
+            <textarea
+              [(ngModel)]="book.comments"
+              class="form-control"
+              id="comments"
+              name="comments"></textarea>
+          </div>
           <div class="form-group col-md-3">
             <label for="toShow" [translate]="'book.toShow'">ToShow</label>
             <ng-select [items]="toShowList"

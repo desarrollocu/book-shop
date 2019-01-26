@@ -80,8 +80,8 @@ export class AuthorListComponent implements OnInit {
     const modalRef = this.modalService.open(AuthorManagementComponent, {size: 'lg'});
     modalRef.componentInstance.author = new Author();
     modalRef.result.then(value => {
-    }, (reason => {
       this.getAuthors('btn');
+    }, (reason => {
     }))
   }
 
@@ -89,8 +89,8 @@ export class AuthorListComponent implements OnInit {
     const modalRef = this.modalService.open(AuthorManagementComponent, {size: 'lg'});
     modalRef.componentInstance.author = author;
     modalRef.result.then(value => {
-    }, (reason => {
       this.getAuthors('btn');
+    }, (reason => {
     }))
   }
 
@@ -98,7 +98,7 @@ export class AuthorListComponent implements OnInit {
     this.authorService.deleteAuthor(this.remAuthor.id)
       .subscribe(response => this.onSuccessDelete(),
         response => this.onErrorDelete(response));
-    this.cancel();
+    this.cancelMy();
   }
 
   openDialog(deleteAuthor, author) {
@@ -152,7 +152,7 @@ export class AuthorListComponent implements OnInit {
     return item.id;
   }
 
-  cancel() {
+  cancelMy() {
     this.modalService.dismissAll('cancel')
   }
 }

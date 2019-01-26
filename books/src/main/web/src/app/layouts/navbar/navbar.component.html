@@ -1,83 +1,3 @@
-<!--<nav class="navbar navbar-dark navbar-expand-md navColor">-->
-<!--&lt;!&ndash;<nav class="navbar navbar-expand-lg navbar-light bg-light">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="navbar-brand" routerLink="/search-general">&ndash;&gt;-->
-<!--&lt;!&ndash;<img src="assets/images/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">&ndash;&gt;-->
-<!--&lt;!&ndash;BooksStore&ndash;&gt;-->
-<!--&lt;!&ndash;</a>&ndash;&gt;-->
-<!--<button class="navbar-toggler" type="button"-->
-<!--(click)="toggleNavbar()">-->
-<!--<span class="navbar-toggler-icon"></span>-->
-<!--</button>-->
-<!--<div class="collapse navbar-collapse" ngbDropdown-->
-<!--[ngClass]="{ 'show': navbarOpen }" [ngSwitch]="isAuthenticated()">-->
-<!--&lt;!&ndash;<ul class="navbar-nav mr-auto">&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="nav-link" routerLink="search-general" routerLinkActive="active">Home <span&ndash;&gt;-->
-<!--&lt;!&ndash;class="sr-only">(current)</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="nav-link" routerLink="search-book" routerLinkActive="active">Books</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="nav-link" routerLink="search-magazine" routerLinkActive="active">Magazines</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="nav-link" routerLink="product-car" routerLinkActive="active">Shopping car</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--&lt;!&ndash;</ul>&ndash;&gt;-->
-<!--<ul class="navbar-nav ml-auto nav-flex-icons">-->
-<!--<li class="nav-item">-->
-<!--<a class="nav-link waves-effect waves-light active" routerLink="">-->
-<!--<i class="fa fa-twitter"></i>-->
-<!--</a>-->
-<!--</li>-->
-<!--<li class="nav-item">-->
-<!--<a class="nav-link waves-effect waves-light active" routerLink="">-->
-<!--<i class="fa fa-facebook-official"></i>-->
-<!--</a>-->
-<!--</li>-->
-<!--<li class="nav-item">-->
-<!--<a class="nav-link waves-effect waves-light active" routerLink="">-->
-<!--<i class="fa fa-google-plus"></i>-->
-<!--</a>-->
-<!--</li>-->
-<!--&lt;!&ndash;<li class="nav-item">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="nav-link waves-effect waves-light active" routerLink="">&ndash;&gt;-->
-<!--<i class="fa fa-envelope"></i> Contact-->
-<!--&lt;!&ndash;<span class="sr-only">(current)</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--<li ngbDropdown class="nav-item dropdown pointer" placement="bottom-right">-->
-<!--<a class="nav-link dropdown-toggle active" ngbDropdownToggle href="javascript:void(0);" id="account-menu">-->
-<!--<i class="fa fa-user"></i>-->
-<!--&lt;!&ndash;<i class="fa fa-user"></i> Profile&ndash;&gt;-->
-<!--</a>-->
-<!--<ul class="dropdown-menu" ngbDropdownMenu>-->
-<!--<li *ngSwitchCase="false">-->
-<!--<a class="dropdown-item" id="login" (click)="login()" href="javascript:void(0);">-->
-<!--&lt;!&ndash;<fa-icon icon="sign-in-alt" fixedWidth="true"></fa-icon>&ndash;&gt;-->
-<!--<span>Sign in</span>-->
-<!--&lt;!&ndash;<i class="fa fa-sign-in"></i>&ndash;&gt;-->
-<!--</a>-->
-<!--</li>-->
-<!--<li *ngSwitchCase="true">-->
-<!--<a class="dropdown-item" id="logout" (click)="logout()" href="javascript:void(0);">-->
-<!--&lt;!&ndash;<fa-icon icon="sign-in-alt" fixedWidth="true"></fa-icon>&ndash;&gt;-->
-<!--<span>Sign out</span>-->
-<!--&lt;!&ndash;<i class="fa fa-sign-in"></i>&ndash;&gt;-->
-<!--</a>-->
-<!--</li>-->
-<!--&lt;!&ndash;<li *ngSwitchCase="false">&ndash;&gt;-->
-<!--&lt;!&ndash;<a class="dropdown-item" routerLink="product-list" routerLinkActive="active" (click)="collapseNavbar()">&ndash;&gt;-->
-<!--&lt;!&ndash;<span>Register</span>&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<i class="fa fa-user-plus"></i>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;</a>&ndash;&gt;-->
-<!--&lt;!&ndash;</li>&ndash;&gt;-->
-<!--</ul>-->
-<!--</li>-->
-<!--</ul>-->
-<!--</div>-->
-<!--</nav>-->
 <nav class="navbar navbar-dark navbar-expand-md nav-back">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button"
@@ -114,16 +34,11 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a href="javascript:void(0);" class="nav-link waves-effect waves-light">
+          <a href="javascript:void(0);" class="nav-link waves-effect waves-light" (click)="showContacts(contacts)">
             <i class="fa fa-envelope"></i> {{'navBar.contact' | translate}}
             <span class="sr-only">(current)</span>
           </a>
         </li>
-        <!--<li class="nav-item">-->
-        <!--<a href="javascript:void(0);" class="nav-link waves-effect waves-light">-->
-        <!--<i class="fa fa-cart-plus"></i>-->
-        <!--</a>-->
-        <!--</li>-->
         <li ngbDropdown class="nav-item dropdown pointer" placement="bottom-right">
           <a class="nav-link dropdown-toggle" ngbDropdownToggle *ngSwitchCase="false"
              href="javascript:void(0);" id="account-menu" [translate]="'user.account'">
@@ -262,6 +177,43 @@
             </button>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #contacts let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-sm" [translate]="'navBar.contact'">Contacts</h5>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-sm-7">
+        <div style="margin-top:20px;border-bottom: thin groove;">
+          <h5 class="d-block">{{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}}</h5>
+        </div>
+        <div style="margin-top:20px;border-bottom: thin groove;">
+          <h6 class="d-block">{{uiData.address}}</h6>
+        </div>
+        <div style="margin-top:20px;border-bottom: thin groove;">
+          <h5 class="d-block">{{uiData.phone}}</h5>
+        </div>
+        <div style="margin-top:20px;border-bottom: thin groove;">
+          <h5 class="d-block">{{uiData.email}}</h5>
+        </div>
+      </div>
+      <div class="col-sm-5">
+        <agm-map [latitude]="lat" [longitude]="lng">
+          <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+        </agm-map>
+        <!--<img src="assets/images/image.gif" style="width: 160px;height: 160px;margin-top: 50px;">-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <button style="margin-left: 80%; margin-top: 20px" type="button" (click)="cancel()"
+                class="btn btn-danger table-button-search"
+                [translate]="'general.close'">Close
+        </button>
       </div>
     </div>
   </div>

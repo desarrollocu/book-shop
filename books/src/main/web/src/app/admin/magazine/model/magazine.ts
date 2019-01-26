@@ -13,6 +13,7 @@ export class Magazine {
     public stockNumber?: number,
     public toShow?: any,
     public visit?: number,
+    public weight?: number,
     public createdBy?: string,
     public createdDate?: string,
     public lastModifiedBy?: string,
