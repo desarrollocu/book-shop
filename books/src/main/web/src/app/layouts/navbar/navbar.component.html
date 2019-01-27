@@ -166,10 +166,15 @@
                     Confirm password is required to be at least 5 characters.
                   </div>
                 </div>
+                <div *ngIf="passwordConfirm.dirty || passwordConfirm.touched" class="error-msg">
+                  <div *ngIf="twoPass()" [translate]="'error.equalPassword'">
+                    Confirm password must be equal than password.
+                  </div>
+                </div>
               </div>
             </div>
             <button type="submit" class="btn btn-primary"
-                    [disabled]="!changePass.valid"
+                    [disabled]="!changePass.valid || twoPass()"
                     [translate]="'general.save'"> Save
             </button>
             <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

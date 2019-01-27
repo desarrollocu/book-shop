@@ -144,6 +144,15 @@ export class NavbarComponent implements OnInit {
     this.alertService.error(error.error, fields, null);
   }
 
+  twoPass() {
+    if (this.newPassword && this.confirmPassword) {
+      if (this.newPassword === this.confirmPassword)
+        return false;
+      else
+        return true;
+    }
+  }
+
   isAuthenticated() {
     return this.principal.isAuthenticated();
   }
