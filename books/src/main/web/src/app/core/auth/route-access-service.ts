@@ -43,7 +43,7 @@ export class RouteAccessService implements CanActivate {
             else {
               if (!url.split("-").includes("management"))
                 this.stateStorageService.storeUrl(url);
-              this.router.navigate(['/search-general']).then(() => {
+              this.router.navigate(['search-general']).then(() => {
                 // only show the login dialog, if the user hasn't logged in yet
                 if (!account) {
                   this.loginModalService.open();
@@ -56,7 +56,8 @@ export class RouteAccessService implements CanActivate {
 
         if (!url.split("-").includes("management"))
           this.stateStorageService.storeUrl(url);
-        this.router.navigate(['/search-general']).then(() => {
+
+        this.router.navigate(['search-general']).then(() => {
           // only show the login dialog, if the user hasn't logged in yet
           if (!account) {
             this.loginModalService.open();

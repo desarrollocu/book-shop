@@ -1,8 +1,10 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {LoginService} from '../../core/login/login.service';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+
+import {LoginService} from '../../core/login/login.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
+import {CartService} from "../../search/cart.service";
 
 @Component({
   selector: 'app-login',
@@ -18,6 +20,7 @@ export class LoginModalComponent implements AfterViewInit {
 
   constructor(private loginService: LoginService,
               private router: Router,
+              private cartService: CartService,
               private stateStorageService: StateStorageService,
               public activeModal: NgbActiveModal) {
     this.credentials = {};
@@ -36,8 +39,9 @@ export class LoginModalComponent implements AfterViewInit {
       .then(() => {
         this.authenticationError = false;
         this.activeModal.dismiss('login success');
-
-        if (this.router.url === '/register') {
+        // this.cartService.setCartCant(0);
+        // this.cartService.getCarSubject().next(0);
+        if (this.router.url === 'register') {
           this.router.navigate(['']);
         }
 

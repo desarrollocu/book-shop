@@ -37,7 +37,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
               }
 
               this.authServerProvider.logout();
-              this.loginModalService.open();
+              // this.loginModalService.open();
             }
           }
           // if (err instanceof HttpErrorResponse) {

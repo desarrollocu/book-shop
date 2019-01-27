@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {AlertService} from '../alert/alert.service';
 import {UserService} from '../../admin/user/user.service';
@@ -35,6 +35,29 @@ export class RegisterModalComponent implements OnInit {
 
   ngOnInit() {
     this.getCountries();
+    this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.currentLang = this.translateService.currentLang;
+      this.countryLanguage();
+    });
+  }
+
+  twoPass() {
+    if (this.user.password && this.confirmPassword) {
+      if (this.user.password === this.confirmPassword)
+        return false;
+      else
+        return true;
+    }
+  }
+
+  private countryLanguage() {
+    let temp = this.countryList;
+    this.countryList = [];
+    if (temp) {
+      for (let i in temp) {
+        this.countryList = [...this.countryList, temp[i]];
+      }
+    }
   }
 
   save() {

@@ -4,14 +4,14 @@
 <div class="modal-body">
   <div class="row justify-content-center">
     <div class="col-md-10">
-      <form class="form" role="form" #userManagementForm="ngForm" (ngSubmit)="saveUser()">
+      <form class="form" role="form" #registerForm="ngForm" (ngSubmit)="saveUser()">
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="firstName" [translate]="'user.name'">FirstName</label>
+            <label for="firstName1" [translate]="'user.name'">FirstName</label>
             <input type="text"
                    [(ngModel)]="user.firstName"
                    class="form-control"
-                   id="firstName"
+                   id="firstName1"
                    name="firstName"
                    placeholder="{{'user.name' | translate}}"
                    #firstName="ngModel"
@@ -25,11 +25,11 @@
             </div>
           </div>
           <div class="form-group col-md-6">
-            <label for="lastName" [translate]="'user.lastName'">LastName</label>
+            <label for="lastName1" [translate]="'user.lastName'">LastName</label>
             <input type="text"
                    [(ngModel)]="user.lastName"
                    class="form-control"
-                   id="lastName"
+                   id="lastName1"
                    name="lastName"
                    placeholder="{{'user.lastName' | translate}}"
                    #lastName="ngModel"
@@ -37,35 +37,31 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="username" [translate]="'user.username'">Username</label>
+          <div class="form-group col-md-4">
+            <label for="username1" [translate]="'user.username'">Username</label>
             <input type="text"
                    [(ngModel)]="user.userName"
                    class="form-control"
-                   id="username"
+                   id="username1"
                    name="username"
                    placeholder="{{'user.username' | translate}}"
                    #username="ngModel"
                    required
-                   pattern="^[_.@A-Za-z0-9-]*$"
                    maxlength="50">
             <div *ngIf="username.invalid && (username.dirty || username.touched)"
                  class="error-msg">
               <div *ngIf="username.errors.required" [translate]="'error.required.username'">
                 Username is required.
               </div>
-              <div *ngIf="username.errors.pattern" [translate]="'error.required.pattern'">
-                Username is invalid.
-              </div>
             </div>
           </div>
-          <div class="form-group col-md-6">
-            <label for="email" [translate]="'user.email'">Email</label>
+          <div class="form-group col-md-4">
+            <label for="email1" [translate]="'user.email'">Email</label>
             <div class="input-group">
-              <input type="email"
+              <input type="email1"
                      [(ngModel)]="user.email"
                      class="form-control"
-                     id="email"
+                     id="email1"
                      name="email"
                      placeholder="{{'user.email' | translate}}"
                      #email="ngModel"
@@ -86,11 +82,77 @@
               </div>
             </div>
           </div>
+          <div class="form-group col-md-4">
+            <label for="phone1" [translate]="'user.phone'">Phone</label>
+            <div class="input-group">
+              <input type="number"
+                     [(ngModel)]="user.phone"
+                     class="form-control"
+                     id="phone1"
+                     name="phone"
+                     min="0"
+                     placeholder="{{'user.phone' | translate}}">
+            </div>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="langKey" [translate]="'user.language'">Language</label>
-            <select id="langKey" class="form-control"
+            <label for="country1" [translate]="'author.country'">Country</label>
+            <ng-select [items]="countryList"
+                       id="country1"
+                       name="country"
+                       bindLabel="{{currentLang === 'en' ? 'englishName': 'spanishName'}}"
+                       [virtualScroll]="true"
+                       placeholder="{{'author.country' | translate}}"
+                       [(ngModel)]="user.country"
+                       #country="ngModel"
+                       required>
+            </ng-select>
+            <div *ngIf="country.invalid && (country.dirty || country.touched)"
+                 class="error-msg">
+              <div *ngIf="country.errors.required" [translate]="'error.required.country'">
+                Country is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="state1" [translate]="'author.state'">State</label>
+            <input type="text"
+                   [(ngModel)]="user.state"
+                   class="form-control"
+                   id="state1"
+                   name="state"
+                   placeholder="{{'author.state' | translate}}"
+                   #state="ngModel"
+                   maxlength="100">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="city1" [translate]="'author.city'">City</label>
+            <input type="text"
+                   [(ngModel)]="user.city"
+                   class="form-control"
+                   id="city1"
+                   name="city"
+                   placeholder="{{'author.city' | translate}}"
+                   #city="ngModel"
+                   maxlength="100">
+          </div>
+          <div class="form-group col-md-5">
+            <label for="cp1" [translate]="'user.cp'">Postal code</label>
+            <input type="text"
+                   [(ngModel)]="user.cp"
+                   class="form-control"
+                   id="cp1"
+                   name="cp"
+                   placeholder="{{'user.cp' | translate}}"
+                   #cp="ngModel"
+                   maxlength="100">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="langKey1" [translate]="'user.language'">Language</label>
+            <select id="langKey1" class="form-control"
                     name="langKey"
                     [(ngModel)]="user.langKey"
                     #langKey="ngModel"
@@ -106,7 +168,9 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-6">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-2">
             <label for="isAdmin" [translate]="'user.employee'">Employee</label>
             <select id="isAdmin" class="form-control"
                     name="isAdmin"
@@ -124,9 +188,58 @@
               </div>
             </div>
           </div>
+          <div class="form-group col-md-5">
+            <label for="password1" [translate]="'user.password'">Password</label>
+            <input type="password"
+                   [(ngModel)]="user.password"
+                   class="form-control"
+                   id="password1"
+                   name="password"
+                   placeholder="{{'user.password' | translate}}"
+                   #password="ngModel"
+                   minlength="5"
+                   [required]="user.id === undefined || user.id === null"
+                   maxlength="50">
+            <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                 class="error-msg">
+              <div *ngIf="password.errors.required" [translate]="'error.required.password'">
+                Password is required.
+              </div>
+              <div *ngIf="password.errors.minlength" [translate]="'error.minLength.password'">
+                Your password is required to be at least 5 characters.
+              </div>
+            </div>
+            <app-password-strength-bar [passwordToCheck]="user.password"></app-password-strength-bar>
+          </div>
+          <div class="form-group col-md-5">
+            <label for="passwordTwo" [translate]="'user.passwordTwo'">Confirm password</label>
+            <input type="password"
+                   [(ngModel)]="confirmPassword"
+                   class="form-control"
+                   id="passwordTwo"
+                   name="passwordTwo"
+                   placeholder="{{'user.passwordTwo' | translate}}"
+                   #passwordTwo="ngModel"
+                   minlength="5"
+                   maxlength="50">
+            <div *ngIf="passwordTwo.invalid && (passwordTwo.dirty || passwordTwo.touched)"
+                 class="error-msg">
+              <div *ngIf="passwordTwo.errors.required" [translate]="'error.required.passwordTwo'">
+                Confirm password is required.
+              </div>
+              <div *ngIf="passwordTwo.errors.minlength" [translate]="'error.minLength.password'">
+                Confirm password is required to be at least 5 characters.
+              </div>
+            </div>
+            <div *ngIf="passwordTwo.dirty || passwordTwo.touched" class="error-msg">
+              <div *ngIf="twoPass()" [translate]="'error.equalPassword'">
+                Confirm password must be equal than password.
+              </div>
+            </div>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary"
-                [disabled]="!userManagementForm.valid"
+                [disabled]="!registerForm.valid || twoPass()"
                 [translate]="'general.save'"> Save
         </button>
         <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

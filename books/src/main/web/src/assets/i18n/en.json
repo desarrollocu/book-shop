@@ -195,6 +195,7 @@
     "pattern": {
       "descriptors": "Bad format. Ex: word,word,word"
     },
+    "equalPassword": "Confirm password must be equal than password.",
     "required": {
       "firstName": "First name is required.",
       "email": "Email is required.",

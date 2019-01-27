@@ -197,6 +197,7 @@
     "pattern": {
       "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra"
     },
+    "equalPassword": "Las contraseñas no coinciden.",
     "required": {
       "firstName": "El nombre es requerido.",
       "email": "El correo es requerido.",

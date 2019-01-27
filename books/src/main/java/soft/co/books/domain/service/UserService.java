@@ -82,7 +82,11 @@ public class UserService extends CustomBaseService<User, String> {
 
     public Optional<UserDTO> createUser(UserDTO userDTO) {
         User user = new User();
-        user.setPassword("$2a$10$Iwn.w7FA7780RmxOBQKFQ.gV0QjFTYQCyEoAmZsYWSIr9rlHEiR7y");
+        if (userDTO.getPassword() != null) {
+            String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+            user.setPassword(encryptedPassword);
+        } else
+            user.setPassword("$2a$10$Iwn.w7FA7780RmxOBQKFQ.gV0QjFTYQCyEoAmZsYWSIr9rlHEiR7y");
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUserName(userDTO.getUserName().toLowerCase());
@@ -143,6 +147,10 @@ public class UserService extends CustomBaseService<User, String> {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(user -> {
+                    if (userDTO.getPassword() != null) {
+                        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+                        user.setPassword(encryptedPassword);
+                    }
                     user.setUserName(userDTO.getUserName().toLowerCase());
                     user.setFirstName(userDTO.getFirstName());
                     user.setLastName(userDTO.getLastName());
