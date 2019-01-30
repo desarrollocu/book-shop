@@ -59,8 +59,11 @@
     "country": "País",
     "publisher": "Gestión de Editoriales",
     "magazine": "Gestión de Revistas",
+    "sale": "Gestión de ventas",
+    "buys": "Mis compras",
     "contact": "Gestión de Información",
-    "car": "Carrito de compras"
+    "car": "Carrito de compras",
+    "shippingCost": "Costos de envío"
   },
   "search": {
     "title": "Título",
@@ -300,8 +303,23 @@
     "state": "Estado",
     "city": "Ciudad"
   },
+  "sale": {
+    "date": "Fecha de la compra",
+    "products": "Productos",
+    "shippingCost": "Costo de envío",
+    "shoppingDate": "Fecha de compra",
+    "saleState": "Estado de la venta",
+    "shoppingState": "Estado de la compra",
+    "saleDate": "Fecha de la venta",
+    "description": "Descripción",
+    "total": "Total"
+  },
   "city": "ciudad",
   "state": "estado",
   "zip": "código postal",
-  "line1": "Dirección"
+  "line1": "Dirección",
+  "inProcess": "En tramites de envío",
+  "requestedPaid": "Solicitada-Pagada",
+  "inTransit": "En curso",
+  "received": "Recibida"
 }

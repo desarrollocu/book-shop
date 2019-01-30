@@ -45,6 +45,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/app/**/*.{js,html}")
                 .antMatchers("/i18n/**")
                 .antMatchers("/swagger-ui/index.html")
+                .antMatchers("/api/uiData")
+                .antMatchers("/api/elementsInCart")
+                .antMatchers("/api/searchCarouselBooks")
+                .antMatchers("/v2/api-docs")
                 .antMatchers("/test/**");
     }
 
@@ -87,6 +91,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/addToCart").permitAll()
                 .antMatchers("/api/removeFormCart").permitAll()
                 .antMatchers("/api/elementsInCart").permitAll()
+                .antMatchers("/api/addShippingInfo").permitAll()
+                .antMatchers("/api/getShippingInfo").permitAll()
+                .antMatchers("/api/removeSession").permitAll()
                 .antMatchers("/api/allClassification").permitAll()
                 .antMatchers("/api/searchToShop").permitAll()
                 .antMatchers("/api/allCountries").permitAll()

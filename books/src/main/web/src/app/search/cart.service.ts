@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 
 import {Payment} from './cart/model/payment';
 import {Cart} from './cart/model/cart';
+import {ShippingInfo} from "./cart/model/shipping-info";
 
 
 @Injectable({
@@ -19,12 +20,16 @@ export class CartService {
     this.getCarSubject().next(this.cartCant);
   }
 
-  getProducts(req?: any[]): Observable<HttpResponse<Cart>> {
-    return this.http.post<Cart>('api/searchToShop', req, {observe: 'response'});
+  getProducts(): Observable<Cart> {
+    return this.http.post<Cart>('api/searchToShop', {observe: 'response'});
   }
 
   createPayment(trans: any): Promise<Payment> {
     return this.http.post<Payment>('api/createPayment', trans).toPromise();
+  }
+
+  removeSession(item?: any): Observable<HttpResponse<any>> {
+    return this.http.post<any>('api/removeSession', item, {observe: 'response'});
   }
 
   addToCart(item: any): Observable<HttpResponse<any>> {
@@ -37,6 +42,14 @@ export class CartService {
 
   elementsInCart(): Observable<HttpResponse<any>> {
     return this.http.post<any>('api/elementsInCart', {observe: 'response'});
+  }
+
+  addShippingInfo(item: any): Observable<HttpResponse<ShippingInfo>> {
+    return this.http.post<ShippingInfo>('api/addShippingInfo', item, {observe: 'response'});
+  }
+
+  getShippingInfo(): Observable<ShippingInfo> {
+    return this.http.post<ShippingInfo>('api/getShippingInfo', {observe: 'response'});
   }
 
   executePayment(payment: any): Promise<HttpResponse<Object>> {

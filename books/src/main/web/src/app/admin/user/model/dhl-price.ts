@@ -1,7 +1,8 @@
 export class DhlPrice {
   constructor(
     public id?: any,
-    public kg?: number,
+    public maxKg?: number,
+    public minKg?: number,
     public price?: number
   ) {
   }

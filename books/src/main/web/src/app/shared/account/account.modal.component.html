@@ -82,25 +82,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-4" *ngIf="isAdmin">
-            <label for="langKey1" [translate]="'user.language'">Language</label>
-            <select id="langKey1" class="form-control"
-                    name="langKey"
-                    [(ngModel)]="user.langKey"
-                    #langKey="ngModel"
-                    required>
-              <option *ngFor="let lang of languages" [value]="lang">
-                {{lang}}
-              </option>
-            </select>
-            <div *ngIf="langKey.invalid && (langKey.dirty || langKey.touched)"
-                 class="error-msg">
-              <div *ngIf="langKey.errors.required" [translate]="'error.required.language'">
-                Language is required.
-              </div>
-            </div>
-          </div>
-          <div class="form-group col-md-4" *ngIf="!isAdmin">
+          <div class="form-group col-md-4">
             <label for="phone" [translate]="'user.phone'">Phone</label>
             <div class="input-group">
               <input type="number"
@@ -109,11 +91,19 @@
                      id="phone"
                      name="phone"
                      min="0"
+                     required
+                     #phone="ngModel"
                      placeholder="{{'user.phone' | translate}}">
+              <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
+                   class="error-msg">
+                <div *ngIf="phone.errors.required" [translate]="'error.required.phone'">
+                  Phone is required.
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="form-row" *ngIf="!isAdmin">
+        <div class="form-row">
           <div class="form-group col-md-4">
             <label for="country" [translate]="'author.country'">Country</label>
             <ng-select [items]="countryList"
@@ -153,11 +143,35 @@
                    name="city"
                    placeholder="{{'author.city' | translate}}"
                    #city="ngModel"
+                   required
                    maxlength="100">
+            <div *ngIf="city.invalid && (city.dirty || city.touched)"
+                 class="error-msg">
+              <div *ngIf="city.errors.required" [translate]="'error.required.city'">
+                City is required.
+              </div>
+            </div>
           </div>
         </div>
-        <div class="form-row" *ngIf="!isAdmin">
-          <div class="form-group col-md-6">
+        <div class="form-row">
+          <div class="form-group col-md-5">
+            <label for="address" [translate]="'cart.address'">Address</label>
+            <input type="text"
+                   [(ngModel)]="user.address"
+                   class="form-control"
+                   id="address"
+                   name="address"
+                   placeholder="{{'cart.address' | translate}}"
+                   #address="ngModel"
+                   required>
+            <div *ngIf="address.invalid && (address.dirty || address.touched)"
+                 class="error-msg">
+              <div *ngIf="address.errors.required" [translate]="'error.required.address'">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-5">
             <label for="cp" [translate]="'user.cp'">Postal code</label>
             <input type="text"
                    [(ngModel)]="user.cp"
@@ -166,9 +180,16 @@
                    name="cp"
                    placeholder="{{'user.cp' | translate}}"
                    #cp="ngModel"
+                   required
                    maxlength="100">
+            <div *ngIf="cp.invalid && (cp.dirty || cp.touched)"
+                 class="error-msg">
+              <div *ngIf="cp.errors.required" [translate]="'error.required.postalCode'">
+                Postal code is required.
+              </div>
+            </div>
           </div>
-          <div class="form-group col-md-3">
+          <div class="form-group col-md-2">
             <label for="langKey" [translate]="'user.language'">Language</label>
             <select id="langKey" class="form-control"
                     name="langKey"

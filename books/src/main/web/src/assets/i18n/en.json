@@ -26,7 +26,7 @@
     "payPal": "Paypal button is loading",
     "payPalReLoad": "Reload PayPal",
     "payPalLoad": " Loading PayPal.",
-    "mainText": "Books news, used, rare and old. Magazines. With shipment to all the world.",
+    "mainText": "New, used, rare and old books. Magazines. With shipments to the whole world.",
     "checkout": "Shipping information",
     "shipping": "Shipping information",
     "updateShipping": "Shipping information",
@@ -59,8 +59,11 @@
     "country": "Country",
     "publisher": "Publisher Management",
     "magazine": "Magazine Management",
+    "sale": "Sale Management",
+    "buys": "My Shoppings",
     "contact": "Information Management",
-    "car": "Cart"
+    "car": "Cart",
+    "shippingCost": "Shipping Cost"
   },
   "search": {
     "title": "Title",
@@ -300,8 +303,23 @@
     "state": "State",
     "city": "City"
   },
+  "sale": {
+    "date": "Shopping date",
+    "products": "Products",
+    "shippingCost": "Shipping cost",
+    "shoppingDate": "Shopping date",
+    "shoppingState": "Shopping state",
+    "saleState": "Sale state",
+    "saleDate": "Sale date",
+    "description": "Description",
+    "total": "Total"
+  },
   "city": "city",
   "state": "state",
   "zip": "postal code",
-  "line1": "Address"
+  "line1": "Address",
+  "inProcess": "In Process",
+  "requestedPaid": "Requested-Paid",
+  "inTransit": "In Transit",
+  "received": "Received"
 }

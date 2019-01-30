@@ -7,6 +7,7 @@ import {AlertDialogService} from '../../shared/alert/alert.dialog.service';
 import {LoginModalService} from '../../core/login/login-modal.service';
 import {LoginService} from '../../core/login/login.service';
 import {Principal} from '../../core/auth/principal.service';
+import {CartService} from '../../search/cart.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
 import {UserService} from '../../admin/user/user.service';
 import {RegisterModalComponent} from '../../shared/register/register.modal.component';
@@ -36,6 +37,7 @@ export class NavbarComponent implements OnInit {
               private alertService: AlertDialogService,
               private modalService: NgbModal,
               private userService: UserService,
+              private cartService: CartService,
               private loginModalService: LoginModalService,
               private router: Router,
               private stateStorageService: StateStorageService,
@@ -96,6 +98,8 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.collapseNavbar();
+    this.cartService.setCartCant(0);
+    this.cartService.getCarSubject().next(0);
     this.loginService.logout();
     this.router.navigate(['']);
   }

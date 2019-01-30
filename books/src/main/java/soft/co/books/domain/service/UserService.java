@@ -14,6 +14,7 @@ import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.configuration.security.other.SecurityUtils;
+import soft.co.books.domain.collection.Authority;
 import soft.co.books.domain.collection.User;
 import soft.co.books.domain.repository.UserRepository;
 import soft.co.books.domain.service.dto.PageResultDTO;
@@ -93,9 +94,22 @@ public class UserService extends CustomBaseService<User, String> {
         user.setId(userDTO.getId());
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
+        user.setCountry(countryService.findOne(userDTO.getCountry().getId()).get());
+        user.setAddress(userDTO.getAddress());
+        user.setCity(userDTO.getCity());
+        user.setCp(userDTO.getCp());
+        user.setPhone(userDTO.getPhone());
+        user.setState(userDTO.getState());
 
         if (userDTO.getIsAdmin().equals("true")) {
             user.setAuthorities(new HashSet<>(authorityService.findAll()));
+        } else {
+            HashSet<Authority> authorities = new HashSet<>();
+            Authority authority = authorityService.getAuthority("search-sale");
+            if (authority != null)
+                authorities.add(authority);
+            if (!authorities.isEmpty())
+                user.setAuthorities(authorities);
         }
 
         if (userDTO.getLangKey() == null) {
@@ -124,12 +138,20 @@ public class UserService extends CustomBaseService<User, String> {
         user.setPhone(userDTO.getPhone());
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
 
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE);
         } else {
             user.setLangKey(userDTO.getLangKey());
         }
+
+        HashSet<Authority> authorities = new HashSet<>();
+        Authority authority = authorityService.getAuthority("search-sale");
+        if (authority != null)
+            authorities.add(authority);
+        if (!authorities.isEmpty())
+            user.setAuthorities(authorities);
 
         log.debug("Created Information for User: {}", user);
         userRepository.save(user);
@@ -160,11 +182,19 @@ public class UserService extends CustomBaseService<User, String> {
                     user.setState(userDTO.getState());
                     user.setCp(userDTO.getCp());
                     user.setPhone(userDTO.getPhone());
+                    user.setAddress(userDTO.getAddress());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
 
                     if (userDTO.getIsAdmin().equals("true")) {
                         user.setAuthorities(new HashSet<>(authorityService.findAll()));
+                    } else {
+                        HashSet<Authority> authorities = new HashSet<>();
+                        Authority authority = authorityService.getAuthority("search-sale");
+                        if (authority != null)
+                            authorities.add(authority);
+                        if (!authorities.isEmpty())
+                            user.setAuthorities(authorities);
                     }
 
                     userRepository.save(user);

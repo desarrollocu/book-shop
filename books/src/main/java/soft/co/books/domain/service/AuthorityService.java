@@ -34,4 +34,8 @@ public class AuthorityService extends CustomBaseService<Authority, String> {
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
+
+    public Authority getAuthority(String name) {
+        return authorityRepository.findByName(name);
+    }
 }

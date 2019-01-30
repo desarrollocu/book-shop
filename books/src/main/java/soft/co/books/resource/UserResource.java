@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import soft.co.books.configuration.security.other.AuthoritiesConstants;
+import soft.co.books.domain.service.CartServices;
 import soft.co.books.domain.service.UserService;
 import soft.co.books.domain.service.dto.PageResultDTO;
 import soft.co.books.domain.service.dto.PasswordChangeDTO;
 import soft.co.books.domain.service.dto.UserDTO;
+import soft.co.books.domain.service.session.ShippingSession;
 
 import javax.validation.Valid;
 
@@ -20,9 +22,11 @@ import javax.validation.Valid;
 public class UserResource {
 
     private final UserService userService;
+    private final CartServices cartServices;
 
-    public UserResource(UserService userService) {
+    public UserResource(UserService userService, CartServices cartServices) {
         this.userService = userService;
+        this.cartServices = cartServices;
     }
 
     @PostMapping("/users")
@@ -52,7 +56,21 @@ public class UserResource {
 
     @PostMapping("/updateAccount")
     public UserDTO updateAccount(@Valid @RequestBody UserDTO userDTO) {
-        return userService.updateUser(userDTO).get();
+        UserDTO user = userService.updateUser(userDTO).get();
+        if (user != null) {
+            ShippingSession shippingSession = new ShippingSession();
+            shippingSession.setAddress(user.getAddress());
+            shippingSession.setCity(user.getCity());
+            shippingSession.setCountry(user.getCountry());
+            shippingSession.setEmail(user.getEmail());
+            shippingSession.setFullName(user.getFullName());
+            shippingSession.setPhone(String.valueOf(user.getPhone()));
+            shippingSession.setState(user.getState());
+            shippingSession.setPostalCode(user.getCp());
+            cartServices.addShippingInfo(shippingSession);
+        }
+
+        return user;
     }
 
     @DeleteMapping("/deleteUser/{userId}")

@@ -4,7 +4,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {LoginService} from '../../core/login/login.service';
 import {StateStorageService} from '../../core/auth/state-storage.service';
-import {CartService} from "../../search/cart.service";
+import {CartService} from '../../search/cart.service';
 
 @Component({
   selector: 'app-login',
@@ -38,18 +38,19 @@ export class LoginModalComponent implements AfterViewInit {
       })
       .then(() => {
         this.authenticationError = false;
+        this.cartService.setCartCant(0);
+        this.cartService.getCarSubject().next(0);
         this.activeModal.dismiss('login success');
-        // this.cartService.setCartCant(0);
-        // this.cartService.getCarSubject().next(0);
-        if (this.router.url === 'register') {
-          this.router.navigate(['']);
-        }
-
-        const redirect = this.stateStorageService.getUrl();
-        if (redirect) {
-          this.stateStorageService.storeUrl(null);
-          this.router.navigate([redirect]);
-        }
+        this.stateStorageService.storeUrl(null);
+        this.router.navigate(['search-general']);
+        // if (this.router.url === 'register') {
+        //   this.router.navigate(['']);
+        // }
+        // const redirect = this.stateStorageService.getUrl();
+        // if (redirect) {
+        //   this.stateStorageService.storeUrl(null);
+        //   this.router.navigate([redirect]);
+        // }
       })
       .catch(() => {
         this.authenticationError = true;

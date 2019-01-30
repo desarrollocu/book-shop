@@ -8,4 +8,6 @@ import soft.co.books.domain.collection.Authority;
  * Spring Data MongoDB repository for the Authority entity.
  */
 public interface AuthorityRepository extends CustomBaseRepository<Authority, String> {
+
+    Authority findByName(String name);
 }

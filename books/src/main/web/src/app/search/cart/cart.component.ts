@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {CartService} from '../cart.service';
@@ -40,21 +40,16 @@ export class CartComponent implements OnInit {
               private modalService: NgbModal,
               private authorService: AuthorService,
               private translateService: TranslateService,
-              config: NgbModalConfig,
               private alertService: AlertService) {
     this.load = false;
     this.elementList = [];
     this.total = 0;
     this.totalKgs = 0;
     this.currentLang = this.translateService.currentLang;
-    config.backdrop = 'static';
-    config.keyboard = false;
   }
 
   ngOnInit() {
-    this.getProducts({
-      countryDTO: this.shippingInfo ? this.shippingInfo.country : null
-    }, false);
+    this.getShippingInfo(null);
     this.initConfig();
     this.getCountries();
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -63,9 +58,9 @@ export class CartComponent implements OnInit {
     });
   }
 
-  getProducts(val?: any, flag?: boolean) {
-    this.cartService.getProducts(val)
-      .subscribe(response => this.onSuccess(response.body, flag),
+  getProducts(flag?: boolean) {
+    this.cartService.getProducts()
+      .subscribe(response => this.onSuccess(response, flag),
         response => this.onError(response));
   }
 
@@ -111,10 +106,7 @@ export class CartComponent implements OnInit {
   }
 
   onCarSuccess(resp) {
-    this.getProducts({
-      countryDTO: this.shippingInfo ? this.shippingInfo.country : null
-    }, false);
-
+    this.getProducts(false);
     this.cartService.getCarSubject().next(resp.cant);
   }
 
@@ -129,21 +121,43 @@ export class CartComponent implements OnInit {
   }
 
   shippingDialog(checkoutModal) {
-    if (this.shippingInfo === undefined)
+    this.getShippingInfo(checkoutModal);
+  }
+
+  getShippingInfo(checkoutModal) {
+    this.cartService.getShippingInfo()
+      .subscribe(response => this.onShippingInfoSuccess(response, checkoutModal),
+        response => this.onError(response));
+  }
+
+  onShippingInfoSuccess(resp, checkoutModal) {
+    this.shippingInfo = resp;
+    if ((this.shippingInfo === undefined || this.shippingInfo === null) && checkoutModal != null)
       this.shippingInfo = new ShippingInfo();
 
-    this.modalService.open(checkoutModal);
+    this.getProducts(false);
+    if (checkoutModal != null) {
+      let config: NgbModalOptions = {
+        backdrop: 'static',
+        keyboard: false
+      };
+
+      this.modalService.open(checkoutModal, config);
+    }
   }
 
   saveShippingInfo() {
-    this.getProducts({
-      countryDTO: this.shippingInfo ? this.shippingInfo.country : null
-    }, true);
+    this.cartService.addShippingInfo(this.shippingInfo)
+      .subscribe(response => this.onSaveShippingInfoSuccess(response.body),
+        response => this.onError(response));
+  }
+
+  onSaveShippingInfoSuccess(resp) {
+    this.shippingInfo = resp;
+    this.getProducts(true);
   }
 
   cancelShippingInfo() {
-    if (this.shippingFlag === false)
-      this.shippingInfo = undefined;
     this.cancelMy();
   }
 
@@ -154,49 +168,8 @@ export class CartComponent implements OnInit {
         label: 'paypal',
       },
       payment: () => {
-        if (this.shippingInfo) {
-          this.payPalItemList = [];
-
-          for (let i = 0; i < this.elementList.length; i++) {
-            this.payPalItemList.push({
-              name: this.elementList[i].title,
-              quantity: this.elementList[i].cant,
-              price: this.elementList[i].salePrice,
-              // tax: '0.00',
-              // sku: '1',
-              currency: 'USD'
-            });
-          }
-
-          let transaction = {
-            amount: {
-              total: this.total,
-              currency: 'USD',
-              details: {
-                subtotal: this.total - this.shippingCost,
-                tax: 0.00,
-                shipping: this.shippingCost,
-                handling_fee: 0.00,
-                shipping_discount: 0.00,
-                insurance: 0.00
-              }
-            },
-            item_list: {
-              items: this.payPalItemList,
-              shipping_address: {
-                recipient_name: this.shippingInfo.fullName,
-                line1: this.shippingInfo.address,
-                line2: '',
-                city: this.shippingInfo.city,
-                country_code: this.shippingInfo.country.code,
-                postal_code: this.shippingInfo.postalCode,
-                phone: this.shippingInfo.phone,
-                state: this.shippingInfo.state
-              }
-            }
-          };
-
-          return this.cartService.createPayment(transaction);
+        if (this.shippingInfo && this.shippingInfo != null) {
+          return this.cartService.createPayment({});
         }
         else {
           this.errorFlag = true;
@@ -210,8 +183,11 @@ export class CartComponent implements OnInit {
         }).then((info) => {
           this.cartService.getCarSubject().next(0);
           this.alertService.success('success.sale', null, null);
-          this.router.navigateByUrl('search-general');
+          this.getProducts(false);
         })
+        // .catch(reason => {
+        //   this.alertService.error('error.E67', null, null);
+        // })
       },
       onError:
         (err) => {
@@ -222,7 +198,8 @@ export class CartComponent implements OnInit {
                 let fields = error.fields ? error.fields : null;
                 this.alertService.error(error.error, fields, null);
               }
-              this.alertService.error('error.E67', null, null);
+              else
+                this.alertService.error('error.E67', null, null);
             }
             else
               this.alertService.error('error.E67', null, null);
@@ -263,14 +240,6 @@ export class CartComponent implements OnInit {
 
   trackIdentity(index, item: Element) {
     return item.id;
-  }
-
-  stateEnable(val) {
-    if (val != undefined) {
-      val.spanishName === 'Estados Unidos de América' ? this.enableState = false : this.enableState = true;
-    }
-    else
-      this.enableState = true;
   }
 
   cancelMy() {

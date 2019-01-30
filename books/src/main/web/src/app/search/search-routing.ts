@@ -6,6 +6,8 @@ import {SearchBookComponent} from './search-book/search-book.component';
 import {SearchMagazineComponent} from './search-magazine/search-magazine.component';
 import {RouteAccessService} from '../core/auth/route-access-service';
 import {CartComponent} from './cart/cart.component';
+import {ShippingCostComponent} from './shipping-cost/shipping-cost.component';
+import {SearchSaleComponent} from "./search-sale/search-sale.component";
 
 const routes: Routes = [
   {
@@ -37,6 +39,22 @@ const routes: Routes = [
     path: "cart", component: CartComponent,
     data: {
       authorities: [],
+      pageTitle: 'LiderLaf'
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "shipping-cost", component: ShippingCostComponent,
+    data: {
+      authorities: [],
+      pageTitle: 'LiderLaf'
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "search-sale", component: SearchSaleComponent,
+    data: {
+      authorities: ['search-sale'],
       pageTitle: 'LiderLaf'
     },
     canActivate: [RouteAccessService]

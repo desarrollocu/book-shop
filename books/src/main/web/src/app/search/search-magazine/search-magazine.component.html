@@ -3,7 +3,7 @@
   <!--<app-alert></app-alert>-->
   <!--</div>-->
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
-    <form #magazineSearchForm="ngForm" (submit)="getMagazines('btn')">
+    <form #magazineSearchForm="ngForm" (submit)="getMagazines('btn', false)">
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="title" [translate]="'search.title'">Title</label>
@@ -12,18 +12,18 @@
                  class="form-control" id="title" name="title" placeholder="{{'search.title' | translate}}">
         </div>
         <div class="form-group col-md-4">
-          <label for="city" [translate]="'book.city'">City</label>
-          <input class="form-control"
-                 id="city" type="text" name="city"
-                 [(ngModel)]="search.city"
-                 placeholder="{{'book.city' | translate}}">
-        </div>
-        <div class="form-group col-md-4">
           <label for="publisher" [translate]="'book.editor'">Publisher</label>
           <input class="form-control"
                  [(ngModel)]="search.editor"
                  id="publisher" name="publisher" type="text"
                  placeholder="{{'book.editor' | translate}}">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="city" [translate]="'editor.editionCity'">Edition city</label>
+          <input class="form-control"
+                 id="city" type="text" name="city"
+                 [(ngModel)]="search.editionCity"
+                 placeholder="{{'book.city' | translate}}">
         </div>
       </div>
       <div class="form-row">
@@ -39,6 +39,13 @@
                      [(ngModel)]="search.topicList">
           </ng-select>
         </div>
+        <div class="form-group col-md-4">
+          <label for="isbn" [translate]="'book.isbn'">ISBN</label>
+          <input class="form-control"
+                 [(ngModel)]="search.isbn"
+                 id="isbn" name="isbn" type="text"
+                 placeholder="{{'book.isbn' | translate}}">
+        </div>
       </div>
       <div class="row">
         <div class="form-group col-md-8 col-sm-8">
@@ -49,46 +56,55 @@
       </div>
     </form>
   </div>
-</section>
-<div class="row text-center text-lg-left book-list">
-  <div class="col-lg-3 col-md-5 col-sm-6"
-       *ngFor="let magazine of magazineList; trackBy: trackIdentity">
-    <div class="item">
-      <a href="javascript:void(0);"
-         [ngbPopover]="popContent"
-         popoverClass="my-custom-class"
-         placement="right"
-         (click)="selectMagazine(magazine)"
-         class="d-block mb-4 h-100 img-text">
-        <figure>
-          <img *ngIf="magazine.image" [src]="magazine.image" height="190" width="125" alt=""/>
-          <img *ngIf="!magazine.image" src="assets/images/image.gif" height="190" width="125" alt=""/>
-          <figcaption>
-            <strong>{{magazine.coin + magazine.salePrice}}</strong>
-          </figcaption>
-          <figcaption>
-            <strong>{{magazine.title}}</strong>
-          </figcaption>
-          <!--&lt;!&ndash;<ngb-rating [(rate)]="currentRate"></ngb-rating>-->
-        </figure>
-      </a>
-      <ng-template #popContent>
-        <a href="javascript:void(0);" (click)="addToCar()" data-toggle="tooltip" data-placement="left"
-           title="Add to car">
-          <i class="fa fa-cart-plus"></i>
-        </a>
-        <a href="javascript:void(0);" data-toggle="tooltip" data-placement="left"
-           title="{{'general.details' | translate}}" (click)="magazineDetails(detailsBook)">
-          <i class="fa fa-book"></i>
-        </a>
-      </ng-template>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-light">
+      <tr>
+        <th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getMagazines('title', true)">Title
+          <i class="fa fa-sort" style="margin-left: 5px"></i>
+        </th>
+        <th scope="col" style="width: 15%;" [translate]="'book.editor'">Publisher</th>
+        <th scope="col" style="width: 15%;" [translate]="'editor.editionCity'">Edition city</th>
+        <th scope="col" style="width: 12%" [translate]="'magazine.publishYear'" (click)="getMagazines('publishYear', true)">
+          EditionYear <i
+          class="fa fa-sort" style="margin-left: 5px"></i></th>
+        <th scope="col" style="width: 10%" [translate]="'book.price'" (click)="getMagazines('salePrice', true)">Price
+          <i class="fa fa-sort" style="margin-left: 5px"></i>
+        </th>
+        <th scope="col" style="width: 12%"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="magazineList.length === 0">
+        <td colspan="8" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+      </tr>
+      <tr *ngFor="let magazine of magazineList; trackBy: trackIdentity">
+        <td>{{magazine.title}}</td>
+        <td>{{magazine.editors}}</td>
+        <td>{{magazine.cities}}</td>
+        <td>{{magazine.publishYear}}</td>
+        <td>{{('(USD) ') + magazine.salePrice}}</td>
+        <td>
+          <button class="btn btn-success table-button"
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  title="{{'general.details' | translate}}"
+                  (click)="magazineDetails(details, magazine)">
+            <i style="font-size: 12px" class="fa fa-book"></i>
+          </button>
+          <button class="btn btn-primary table-button-delete"
+                  data-toggle="tooltip"
+                  data-placement="left"
+                  title="{{'general.addCar' | translate}}"
+                  (click)="addToCar(magazine);">
+            <i style="font-size: 12px" class="fa fa-cart-plus"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-</div>
-<div class="d-flex justify-content-center"
-     style="padding-bottom: 20px; font-size: 34px;"
-     *ngIf="magazineList.length === 0 && load" [translate]="'general.emptyMagazine'">No Magazines Found
-</div>
+</section>
 <ngb-pagination class="d-flex justify-content-center"
                 [collectionSize]="totalItems"
                 [(page)]="page"
@@ -96,8 +112,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getMagazines(null)"></ngb-pagination>
-
+                (pageChange)="getMagazines(null, false)"></ngb-pagination>
 
 <ng-template #details let-modal>
   <div class="modal-header modal-title">
@@ -118,28 +133,41 @@
         </div>
         <div class="col-8" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.editor.name}}</p>
+          <p style="margin-bottom: 10px">{{selectedMagazine.editors}}</p>
         </div>
         <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.city'">City</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.city}}</p>
+          <p style="margin-bottom: 10px">{{selectedMagazine.cities}}</p>
         </div>
         <div class="col-6" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'magazine.publishYear'">Publish year</h4>
           <p style="margin-bottom: 10px">{{selectedMagazine.publishYear}}</p>
         </div>
         <div class="col-6" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'magazine.frequency'">Price</h4>
+          <h4 class="d-block" [translate]="'magazine.frequency'">Frequency</h4>
           <p style="margin-bottom: 10px">{{selectedMagazine.frequency}}</p>
         </div>
-        <div class="col-12" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.weight1'">Weight(Kg)</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.weight}}</p>
+        </div>
+        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.isbn'">ISBN</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.isbn}}</p>
+        </div>
+        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.topic'">Size</h4>
+          <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedMagazine.topicsEnglish :
+            selectedMagazine.topicsSpanish}}</p>
+        </div>
+        <div class="col-6" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
-          <p style="margin-bottom: 10px">{{selectedMagazine.coin + selectedMagazine.salePrice}}</p>
+          <p style="margin-bottom: 10px">{{'(USD) ' + selectedMagazine.salePrice}}</p>
         </div>
       </div>
     </div>
     <div style="margin-top: 20px">
-      <button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i
+      <button type="button" (click)="addToCar(selectedMagazine)" class="btn btn-info" [translate]="'general.addCar'"><i
         class="fa fa-cart-plus"></i> Add to car
       </button>
       <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">

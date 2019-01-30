@@ -55,6 +55,8 @@ public class UserDTO implements Serializable {
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String cp;
 
+    private String address;
+
     private int phone;
 
     private String password;
@@ -95,6 +97,7 @@ public class UserDTO implements Serializable {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
+        this.address = user.getAddress();
 
         this.authorities = user.getAuthorities().stream()
                 .map(Authority::getName)
@@ -104,6 +107,14 @@ public class UserDTO implements Serializable {
             this.isAdmin = "false";
         else
             this.isAdmin = "true";
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Country getCountry() {

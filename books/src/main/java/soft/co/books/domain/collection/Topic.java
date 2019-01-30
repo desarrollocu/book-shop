@@ -21,12 +21,12 @@ public class Topic extends AbstractAuditingEntity implements Serializable {
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String englishName;
 
-    @Indexed(unique = true)
+    @Indexed
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 50, message = Constants.ERR_MAX50)
     private String spanishName;

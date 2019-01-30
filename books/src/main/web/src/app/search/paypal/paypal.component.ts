@@ -241,6 +241,10 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
           return this.config.payment()
             .then(payment => {
               return payment.paymentID;
+            }).catch(reason => {
+              if (this.config.onError) {
+                this.config.onError(reason);
+              }
             })
         }
 

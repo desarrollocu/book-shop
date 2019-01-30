@@ -2,16 +2,27 @@ package soft.co.books.domain.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
-import soft.co.books.domain.collection.Book;
+import soft.co.books.configuration.error.CustomizeException;
+import soft.co.books.configuration.security.other.SecurityUtils;
 import soft.co.books.domain.collection.Sale;
-import soft.co.books.domain.collection.data.Detail;
+import soft.co.books.domain.collection.User;
 import soft.co.books.domain.repository.SaleRepository;
+import soft.co.books.domain.service.dto.PageResultDTO;
 import soft.co.books.domain.service.dto.SaleDTO;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
@@ -25,38 +36,87 @@ public class SaleService extends CustomBaseService<Sale, String> {
 
     private final SaleRepository saleRepository;
 
-    private final BookService bookService;
+    private final UserService userService;
 
-    private final BookTraceService bookTraceService;
+    private MongoTemplate mongoTemplate;
 
-    public SaleService(SaleRepository saleRepository, BookService bookService, BookTraceService bookTraceService) {
+    public SaleService(SaleRepository saleRepository,
+                       UserService userService,
+                       MongoTemplate mongoTemplate) {
         super(saleRepository);
         this.saleRepository = saleRepository;
-        this.bookService = bookService;
-        this.bookTraceService = bookTraceService;
+        this.userService = userService;
+        this.mongoTemplate = mongoTemplate;
     }
 
-    public Optional<SaleDTO> createSale(SaleDTO saleDTO) {
-        Sale sale = new Sale();
-        sale.setId(saleDTO.getId());
-        sale.setDetailList(saleDTO.getDetailList());
-        sale.setTotal(saleDTO.getTotal());
-        sale.setUser(saleDTO.getUser());
+    public PageResultDTO findAll(SaleDTO saleDTO, Pageable pageable) {
+        PageResultDTO<SaleDTO> resultDTO = new PageResultDTO<>();
 
-        /**
-         * Remove cant from book stock*/
-        for (Detail detail : saleDTO.getDetailList()) {
-            Book book = bookService.findOne(detail.getId()).get();
-            if (book != null) {
-                int cant = book.getStockNumber() - detail.getCant();
-                book.setStockNumber(cant);
-                bookService.save(book);
-                log.debug("Changed Information for Book: {}", book);
-            }
+        Query query = new Query();
+        query.limit(pageable.getPageSize());
+        query.skip(pageable.getPageNumber() * pageable.getPageSize());
+        query.with(pageable.getSort());
+
+        if (saleDTO.getUser() != null)
+            query.addCriteria(where("user.userId").is(saleDTO.getUser().getUserId()));
+        if (saleDTO.getSaleState() != null) {
+            query.addCriteria(where("saleState").is(saleDTO.getSaleState()));
         }
 
-        log.debug("Created Information for Sale: {}", sale);
-        return Optional.of(saleRepository.save(sale))
+        Page<Sale> sales = new PageImpl<>(mongoTemplate.find(query, Sale.class));
+        resultDTO.setElements(sales.stream().map(SaleDTO::new).collect(Collectors.toList()));
+        resultDTO.setTotal(mongoTemplate.count(query, Sale.class));
+        return resultDTO;
+    }
+
+    public PageResultDTO findAllWithUser(SaleDTO saleDTO, Pageable pageable) {
+        PageResultDTO<SaleDTO> resultDTO = new PageResultDTO<>();
+
+        User user = null;
+        String username = SecurityUtils.getCurrentUserLogin().get();
+        if (username != null && !username.toLowerCase().equals("AnonymousUser".toLowerCase())) {
+            user = userService.findOneByUserName(username).get();
+        }
+
+        if (user == null)
+            throw new CustomizeException(Constants.ERR_SERVER);
+
+        Query query = new Query();
+        query.limit(pageable.getPageSize());
+        query.skip(pageable.getPageNumber() * pageable.getPageSize());
+        query.with(pageable.getSort());
+
+        query.addCriteria(where("user.userId").is(user.getId()));
+
+        if (saleDTO.getSaleDate() != null) {
+            query.addCriteria(where("saleDate").is(saleDTO.getSaleDate()));
+        }
+
+        Page<Sale> sales = new PageImpl<>(mongoTemplate.find(query, Sale.class));
+        resultDTO.setElements(sales.stream().map(SaleDTO::new).collect(Collectors.toList()));
+        resultDTO.setTotal(mongoTemplate.count(query, Sale.class));
+        return resultDTO;
+    }
+
+    public Optional<SaleDTO> updateSale(SaleDTO saleDTO) {
+        return Optional.of(saleRepository
+                .findById(saleDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(sale -> {
+                    sale.setSaleState(saleDTO.getSaleState());
+                    sale.setDescription(saleDTO.getDescription());
+                    saleRepository.save(sale);
+                    log.debug("Changed Information for Sale: {}", sale);
+                    return sale;
+                })
                 .map(SaleDTO::new);
+    }
+
+    public void delete(String id) {
+        saleRepository.findById(id).ifPresent(sale -> {
+            saleRepository.delete(sale);
+            log.debug("Deleted Sale: {}", sale);
+        });
     }
 }

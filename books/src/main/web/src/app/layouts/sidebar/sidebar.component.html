@@ -21,6 +21,12 @@
         {{'sideBar.magazines' | translate}}
       </a>
     </li>
+    <li *hasAnyAuthority="'search-sale'" routerLinkActive="active">
+      <a routerLink="search-sale" class="a-sidebar">
+        <i class="fa fa-search"></i>
+        {{'sideBar.buys' | translate}}
+      </a>
+    </li>
     <li routerLinkActive="active">
       <a routerLink="cart" class="a-sidebar">
         <i class="fa fa-shopping-cart"></i>
@@ -57,6 +63,11 @@
     <li *hasAnyAuthority="'magazine-list'" routerLinkActive="active">
       <a routerLink="magazine-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
         {{'sideBar.magazine' | translate}}
+      </a>
+    </li>
+    <li *hasAnyAuthority="'sale-list'" routerLinkActive="active">
+      <a routerLink="sale-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
+        {{'sideBar.sale' | translate}}
       </a>
     </li>
     <li *hasAnyAuthority="'info-management'" routerLinkActive="active">

@@ -14,10 +14,10 @@ import soft.co.books.domain.service.CartServices;
 import soft.co.books.domain.service.CountryService;
 import soft.co.books.domain.service.MagazineService;
 import soft.co.books.domain.service.dto.CartDTO;
-import soft.co.books.domain.service.dto.CartHelpDTO;
 import soft.co.books.domain.service.dto.ProductDTO;
 import soft.co.books.domain.service.dto.ResultToShopDTO;
 import soft.co.books.domain.service.session.CartSession;
+import soft.co.books.domain.service.session.ShippingSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +45,13 @@ public class CartResource {
         this.magazineService = magazineService;
     }
 
+    @PostMapping("/removeSession")
+    public CartDTO removeSession(@RequestBody ProductDTO productDTO) {
+        CartDTO cartDTO = new CartDTO();
+        cartServices.clearSession();
+        return cartDTO;
+    }
+
     @PostMapping("/addToCart")
     public CartDTO addToCart(@RequestBody ProductDTO productDTO) {
         CartSession cartSession = new CartSession();
@@ -66,12 +73,22 @@ public class CartResource {
     @PostMapping("/elementsInCart")
     public CartDTO elementsInCart() {
         CartDTO cartDTO = new CartDTO();
-        cartDTO.setCant(cartServices.elemensInCart());
+        cartDTO.setCant(cartServices.elementsInCart());
         return cartDTO;
     }
 
+    @PostMapping("/addShippingInfo")
+    public ShippingSession addShippingInfo(@RequestBody ShippingSession infoDTO) {
+        return cartServices.addShippingInfo(infoDTO);
+    }
+
+    @PostMapping("/getShippingInfo")
+    public ShippingSession getShippingInfo() {
+        return cartServices.getShippingInfo();
+    }
+
     @PostMapping("/searchToShop")
-    public CartDTO searchToShop(@RequestBody CartHelpDTO cartHelpDTO) {
+    public CartDTO searchToShop() {
         int cant = 0;
         double amount = 0;
         double totalKgs = 0;
@@ -79,6 +96,7 @@ public class CartResource {
         CartDTO cartDTO = new CartDTO();
         List<ResultToShopDTO> result = new ArrayList<>();
         List<CartSession> sessionList = cartServices.cartSessionList();
+        ShippingSession shippingInfo = cartServices.getShippingInfo();
 
         if (sessionList != null) {
             for (CartSession cartSession : sessionList) {
@@ -104,12 +122,16 @@ public class CartResource {
             }
         }
 
-        if (cartHelpDTO.getCountryDTO() != null) {
-            Country country = countryService.findOne(cartHelpDTO.getCountryDTO().getId()).get();
+        if (shippingInfo != null) {
+            Country country = shippingInfo.getCountry();
             if (country != null) {
                 for (DhlPrice dhlPrice : country.getPriceList()) {
                     if (totalKgs > dhlPrice.getMinKg() && totalKgs <= dhlPrice.getMaxKg()) {
                         shippingCost = dhlPrice.getPrice();
+                        break;
+                    }
+                    if (totalKgs > 20) {
+                        shippingCost = country.getPriceList().get(country.getPriceList().size() - 1).getPrice();
                         break;
                     }
                 }

@@ -26,7 +26,7 @@ public class PayPalResource {
 
     @PostMapping("/createPayment")
     public PaymentDTO makePayment(@RequestBody TransactionDTO transactionDTO) {
-        return payPalClient.createPayment(transactionDTO);
+        return payPalClient.createPayment();
     }
 
     @PostMapping(value = "/executePayment")

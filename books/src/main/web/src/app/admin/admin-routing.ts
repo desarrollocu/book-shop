@@ -14,6 +14,8 @@ import {MagazineListComponent} from './magazine/magazine-list/magazine-list.comp
 import {TopicListComponent} from './topic/topic-list/topic-list.component';
 import {TopicManagementComponent} from './topic/topic-management/topic-management.component';
 import {ContactListComponent} from './contact/contact-list/contact-list.component';
+import {SaleListComponent} from "./sale/sale-list/sale-list.component";
+import {SaleManagementComponent} from "./sale/sale-management/sale-management.component";
 
 
 const routes: Routes = [
@@ -113,6 +115,22 @@ const routes: Routes = [
     data: {
       authorities: ['topic-management'],
       pageTitle: 'Topic-Management',
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "sale-list", component: SaleListComponent,
+    data: {
+      authorities: ['sale-list'],
+      pageTitle: 'Sale-List',
+    },
+    canActivate: [RouteAccessService]
+  },
+  {
+    path: "sale-management", component: SaleManagementComponent,
+    data: {
+      authorities: ['sale-management'],
+      pageTitle: 'Sale-Management',
     },
     canActivate: [RouteAccessService]
   },

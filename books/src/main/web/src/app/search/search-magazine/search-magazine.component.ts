@@ -25,8 +25,6 @@ export class SearchMagazineComponent implements OnInit {
   magazineList: Magazine[];
   predicate: any;
   reverse: any;
-  currentRate = 2;
-  years: string[];
   selectedMagazine: Magazine;
   images: string[];
   topics: Topic[];
@@ -38,12 +36,12 @@ export class SearchMagazineComponent implements OnInit {
               private alertService: AlertService,
               private translateService: TranslateService,
               private topicService: TopicService,
-              private shoppingService: CartService,
+              private cartService: CartService,
               private modalService: NgbModal) {
     this.searchMore = false;
     this.load = false;
     this.itemsPerPage = 12;
-    this.predicate = 'id';
+    this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
     this.selectedMagazine = new Magazine();
@@ -51,7 +49,7 @@ export class SearchMagazineComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMagazines(null);
+    this.getMagazines(null, false);
     this.findTopics();
 
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -60,9 +58,14 @@ export class SearchMagazineComponent implements OnInit {
     });
   }
 
-  getMagazines(param) {
+  getMagazines(param, flag) {
     if (param === 'btn')
       this.page = 0;
+    else {
+      this.predicate = param;
+      if (flag)
+        this.reverse = !this.reverse;
+    }
 
     this.magazineList = [];
     this.searchService.searchMagazine({
@@ -92,10 +95,11 @@ export class SearchMagazineComponent implements OnInit {
   }
 
   sort() {
+    this.predicate = this.predicate !== null ? this.predicate : 'id';
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
+    // if (this.predicate !== 'id') {
+    //   result.push('id');
+    // }
     return result;
   }
 
@@ -127,17 +131,37 @@ export class SearchMagazineComponent implements OnInit {
     }
   }
 
-  selectMagazine(magazine) {
-    this.selectedMagazine = new Magazine();
-    this.selectedMagazine = magazine;
+  addToCar(magazine) {
+    if (magazine !== undefined) {
+      this.cartService.addToCart({
+        id: magazine !== undefined ? magazine.id : this.selectedMagazine.id,
+        cant: 1,
+        book: false
+      }).subscribe(response => this.onAddCarSuccess(response.body),
+        response => this.onError(response));
+    }
   }
 
-  addToCar() {
+  onAddCarSuccess(resp) {
+    if (resp.exist)
+      this.alertService.info('info.inCart', null, null);
+    else
+      this.alertService.info('shopping.success', null, null);
+
+    this.cartService.getCarSubject().next(resp.cant);
     this.cancel();
   }
 
-  magazineDetails(details) {
+  magazineDetails(details, magazine) {
+    this.selectedMagazine = new Magazine();
+    this.selectedMagazine = magazine;
+    this.selectMagazine(magazine);
     this.modalService.open(details);
+  }
+
+  selectMagazine(magazine) {
+    this.selectedMagazine = new Magazine();
+    this.selectedMagazine = magazine;
   }
 
   cancel() {

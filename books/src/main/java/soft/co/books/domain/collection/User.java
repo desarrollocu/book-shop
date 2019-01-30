@@ -56,6 +56,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
     private String email;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     private String address;
 
     @Field("lang_key")
@@ -69,17 +70,21 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String password;
 
     @DBRef
+    @NotNull(message = Constants.ERR_NOT_NULL)
     private Country country;
 
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String state;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String city;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String cp;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
     private int phone;
 
     @DBRef

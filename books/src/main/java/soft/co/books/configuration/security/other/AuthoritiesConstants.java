@@ -27,6 +27,9 @@ public final class AuthoritiesConstants {
     //UIData
     public static final String UIDATA_MANAGEMENT = "contact-management";
     public static final String UIDATA_LIST = "contact-list";
+    //Sale
+    public static final String SALE_MANAGEMENT = "sale-management";
+    public static final String SALE_LIST = "sale-list";
 
     //Other
     public static final String ANONYMOUS = "ANONYMOUS";

@@ -7,12 +7,12 @@ public class CartSession implements Serializable {
 
     private String id;
     private boolean book;
+    private boolean pass;
     private int cant;
     private double price;
 
     public CartSession() {
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -58,5 +58,13 @@ public class CartSession implements Serializable {
 
     public void setCant(int cant) {
         this.cant = cant;
+    }
+
+    public boolean getPass() {
+        return pass;
+    }
+
+    public void setPass(boolean pass) {
+        this.pass = pass;
     }
 }

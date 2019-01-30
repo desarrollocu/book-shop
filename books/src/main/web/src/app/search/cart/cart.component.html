@@ -51,10 +51,10 @@
               <i class="fa fa-minus-square"></i>
             </a>
           </td>
-          <td style="padding-top: 13%"><strong>{{'(USD)' + element.salePrice}}</strong></td>
+          <td style="padding-top: 13%"><strong>{{'(USD) ' + element.salePrice}}</strong></td>
           <td style="padding-top: 12.5%; font-size: 20px">
             <strong>
-              {{'(USD)' + (element.mount)}}
+              {{'(USD) ' + (element.mount)}}
             </strong>
           </td>
           <td style="padding-top: 12%">
@@ -70,7 +70,7 @@
           <td style="font-size: 20px" colspan="2"><span [translate]="'shopping.shipping'">Shipping cost</span>
           </td>
           <td style="font-size: 20px">
-            <span>(USD){{shippingCost}}</span>
+            <span>{{'(USD) ' + shippingCost}}</span>
           </td>
           <td></td>
         </tr>
@@ -80,7 +80,7 @@
           <td style="font-size: 20px" colspan="2"><strong [translate]="'shopping.totalAmount'">Total amount</strong>
           </td>
           <td style="font-size: 22px">
-            <strong>(USD){{total}}</strong>
+            <strong>{{'(USD) ' + total}}</strong>
           </td>
           <td></td>
         </tr>
@@ -165,7 +165,6 @@
                          placeholder="{{'cart.country' | translate}}"
                          #country="ngModel"
                          [(ngModel)]="shippingInfo.country"
-                         (change)="stateEnable(shippingInfo.country)"
                          required>
               </ng-select>
               <div *ngIf="country.invalid && (country.dirty || country.touched)"
@@ -185,7 +184,6 @@
                      id="state"
                      name="state"
                      placeholder="{{'cart.state' | translate}}"
-                     [disabled]="enableState"
                      maxlength="100">
             </div>
             <div class="form-group col-md-6">

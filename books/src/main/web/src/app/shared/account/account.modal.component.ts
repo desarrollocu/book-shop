@@ -9,6 +9,7 @@ import {Principal} from '../../core/auth/principal.service';
 
 import {User} from '../../core/user/user.model';
 import {Country} from '../../admin/user/model/country';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-account',
@@ -26,6 +27,7 @@ export class AccountModalComponent implements OnInit {
   constructor(private alertService: AlertService,
               private userService: UserService,
               private authorService: AuthorService,
+              private router: Router,
               private translateService: TranslateService,
               private principal: Principal,
               public activeModal: NgbActiveModal) {
@@ -66,6 +68,7 @@ export class AccountModalComponent implements OnInit {
     this.principal.getFullNameSubject().next(this.user.fullName);
     this.alertService.success('success.edited', null, null);
     this.activeModal.dismiss('cancel');
+    this.router.navigate(['search-general']);
   }
 
   private onError(response) {

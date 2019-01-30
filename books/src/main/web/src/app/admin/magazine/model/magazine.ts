@@ -5,6 +5,7 @@ export class Magazine {
     public editorList?: any[],
     public topicList?: any[],
     public isbn?: string,
+    public comments?: string,
     public frequency?: string,
     public salePrice?: number,
     public coin?: string,

@@ -28,7 +28,6 @@ export class SearchBookComponent implements OnInit {
   bookList: Book[];
   predicate: any;
   reverse: any;
-  currentRate = 2;
   years: string[];
   classifications: Classification[];
   classificationsTemp: Classification[];
@@ -64,7 +63,7 @@ export class SearchBookComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getBooks(null);
+    this.getBooks(null, false);
     this.findClassifications();
     this.findTopics();
     this.getCountries();
@@ -75,15 +74,14 @@ export class SearchBookComponent implements OnInit {
     });
   }
 
-  searchMoreChange() {
-    this.searchMore = !this.searchMore;
-  }
-
-  getBooks(param) {
+  getBooks(param, flag) {
     if (param === 'btn')
       this.page = 0;
-    else
+    else {
       this.predicate = param;
+      if (flag)
+        this.reverse = !this.reverse;
+    }
 
     this.bookList = [];
     this.searchService.searchBook({
@@ -115,12 +113,19 @@ export class SearchBookComponent implements OnInit {
   sort() {
     this.predicate = this.predicate !== null ? this.predicate : 'id';
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    this.reverse = !this.reverse;
     // if (this.predicate !== 'id') {
     //   result.push('id');
     // }
     return result;
   }
+
+  // sort() {
+  //   const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
+  //   if (this.predicate !== 'id') {
+  //     result.push('id');
+  //   }
+  //   return result;
+  // }
 
   trackIdentity(index, item: Book) {
     return item.id;

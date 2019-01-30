@@ -6,16 +6,16 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.Constants;
+import soft.co.books.configuration.SaleState;
 import soft.co.books.configuration.error.CustomizeException;
-import soft.co.books.domain.collection.Document;
-import soft.co.books.domain.collection.data.Detail;
-import soft.co.books.domain.collection.data.UserDetail;
-import soft.co.books.domain.service.BookService;
-import soft.co.books.domain.service.CartServices;
-import soft.co.books.domain.service.MagazineService;
-import soft.co.books.domain.service.SaleService;
-import soft.co.books.domain.service.dto.*;
+import soft.co.books.configuration.security.other.SecurityUtils;
+import soft.co.books.domain.collection.*;
+import soft.co.books.domain.collection.Sale;
+import soft.co.books.domain.collection.data.*;
+import soft.co.books.domain.service.*;
+import soft.co.books.domain.service.dto.PaymentDTO;
 import soft.co.books.domain.service.session.CartSession;
+import soft.co.books.domain.service.session.ShippingSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.List;
 @Transactional
 public class PayPalClient {
 
+    private final UserService userService;
     private final SaleService saleService;
     private final BookService bookService;
     private final CartServices cartServices;
@@ -31,8 +32,10 @@ public class PayPalClient {
 
     public PayPalClient(SaleService saleService,
                         CartServices cartServices,
+                        UserService userService,
                         MagazineService magazineService,
                         BookService bookService) {
+        this.userService = userService;
         this.saleService = saleService;
         this.bookService = bookService;
         this.cartServices = cartServices;
@@ -42,54 +45,88 @@ public class PayPalClient {
     String clientId = "Ae3kB7nSbmR3Ty9NKg6bIrHHU64mt0hZutwVG5Wz80tpQsn2HTblJeoKA2nJQPOUXjGYUA1nxidsCUGu";
     String clientSecret = "EFF3bZ-n4Ro6rwQjowFrz3Q1mwNU2y_QpznwhUyK2lHSQp9c2yCFHKAbq_wKdQJqAtXXK9vrmk-eUfrR";
 
-    public PaymentDTO createPayment(TransactionDTO transactionDTO) {
+    public PaymentDTO createPayment() {
+        double amountTotal = 0;
+        double totalKgs = 0;
+        double shippingCost = 0;
         PaymentDTO paymentDTO = new PaymentDTO();
+        ShippingSession shippingInfo = cartServices.getShippingInfo();
+        List<CartSession> sessionList = cartServices.cartSessionList();
+
+        ItemList itemList = new ItemList();
+        itemList.setItems(new ArrayList<>());
+
+        if (sessionList != null) {
+            for (CartSession cartSession : sessionList) {
+                Document document;
+                if (cartSession.getBook()) {
+                    document = bookService.findOne(cartSession.getId()).get();
+                } else {
+                    document = magazineService.findOne(cartSession.getId()).get();
+                }
+
+                if (document.getStockNumber() < cartSession.getCant())
+                    throw new CustomizeException("error.E68");
+
+                amountTotal += (cartSession.getCant() * document.getSalePrice());
+                totalKgs += document.getWeight();
+
+                Item item = new Item();
+                item.setCurrency("USD");
+                item.setName(document.getTitle());
+                item.setPrice(String.format("%.2f", document.getSalePrice()));
+                item.setQuantity(String.valueOf(cartSession.getCant()));
+                item.setTax("0");
+                item.setSku("0");
+                itemList.getItems().add(item);
+            }
+        }
+
+        if (shippingInfo != null) {
+            Country country = shippingInfo.getCountry();
+            if (country != null) {
+                for (DhlPrice dhlPrice : country.getPriceList()) {
+                    if (totalKgs > dhlPrice.getMinKg() && totalKgs <= dhlPrice.getMaxKg()) {
+                        shippingCost = dhlPrice.getPrice();
+                        break;
+                    }
+                    if (totalKgs > 20) {
+                        shippingCost = country.getPriceList().get(country.getPriceList().size() - 1).getPrice();
+                        break;
+                    }
+                }
+            } else
+                throw new CustomizeException(Constants.ERR_SERVER);
+
+            ShippingAddress shippingAddress = new ShippingAddress();
+            shippingAddress.setRecipientName(shippingInfo.getFullName());
+            shippingAddress.setPhone(shippingInfo.getPhone());
+            shippingAddress.setCity(shippingInfo.getCity());
+            shippingAddress.setCountryCode(shippingInfo.getCountry().getCode());
+            shippingAddress.setLine1(shippingInfo.getAddress());
+            shippingAddress.setLine2("");
+            shippingAddress.setPostalCode(shippingInfo.getPostalCode());
+            shippingAddress.setState(shippingInfo.getState() != null ? shippingInfo.getState() : "");
+            itemList.setShippingAddress(shippingAddress);
+        }
 
         Amount amount = new Amount();
-        amount.setCurrency(transactionDTO.getAmount().getCurrency());
-        amount.setTotal(String.format("%.2f", transactionDTO.getAmount().getTotal()));
-
-        AmountDetailsDTO detailsDTO = transactionDTO.getAmount().getDetails();
+        amount.setCurrency("USD");
+        amount.setTotal(String.format("%.2f", amountTotal + shippingCost));
 
         Details details = new Details();
-        details.setSubtotal(String.format("%.2f", detailsDTO.getSubtotal()));
-        details.setShipping(String.format("%.2f", detailsDTO.getShipping()));
-        details.setTax(String.format("%.2f", detailsDTO.getTax()));
-        details.setInsurance(String.format("%.2f", detailsDTO.getInsurance()));
-        details.setShippingDiscount(String.format("%.2f", detailsDTO.getShipping_discount()));
-        details.setHandlingFee(String.format("%.2f", detailsDTO.getHandling_fee()));
+        details.setSubtotal(String.format("%.2f", amountTotal));
+        details.setShipping(String.format("%.2f", shippingCost));
+        details.setTax("0");
+        details.setInsurance("0");
+        details.setShippingDiscount("0");
+        details.setHandlingFee("0");
         amount.setDetails(details);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-
-        ItemList itemList = new ItemList();
-        itemList.setItems(new ArrayList<>());
-        for (ItemDTO itemDTO : transactionDTO.getItem_list().getItems()) {
-            Item item = new Item();
-            item.setCurrency(itemDTO.getCurrency());
-            item.setName(itemDTO.getName());
-            item.setPrice(String.format("%.2f", itemDTO.getPrice()));
-            item.setQuantity(String.valueOf(itemDTO.getQuantity()));
-            item.setTax(String.format("%.2f", itemDTO.getTax()));
-            item.setSku(String.valueOf(itemDTO.getSku()));
-            itemList.getItems().add(item);
-        }
-
-        ShippingAddressDTO addressDTO = transactionDTO.getItem_list().getShipping_address();
-        ShippingAddress shippingAddress = new ShippingAddress();
-        shippingAddress.setRecipientName(addressDTO.getRecipient_name());
-        shippingAddress.setPhone(addressDTO.getPhone());
-        shippingAddress.setCity(addressDTO.getCity());
-        shippingAddress.setCountryCode(addressDTO.getCountry_code());
-        shippingAddress.setLine1(addressDTO.getLine1());
-        shippingAddress.setLine2(addressDTO.getLine2());
-        shippingAddress.setPostalCode(addressDTO.getPostal_code());
-        shippingAddress.setState(addressDTO.getState());
-
-        itemList.setShippingAddress(shippingAddress);
-
         transaction.setItemList(itemList);
+
         List<Transaction> transactions = new ArrayList<>();
         transactions.add(transaction);
 
@@ -129,73 +166,126 @@ public class PayPalClient {
 
     public void completePayment(PaymentDTO paymentDTO) {
         synchronized (this) {
-            SaleDTO saleDTO = new SaleDTO();
-            List<Detail> detailList = new ArrayList<>();
-            double total = 0;
-            for (CartSession info : cartServices.cartSessionList()) {
-                Document document;
-                if (info.getBook())
-                    document = bookService.findOne(info.getId()).get();
-                else
-                    document = magazineService.findOne(info.getId()).get();
+            Sale sale = new Sale();
+            ShippingSession shippingSession = cartServices.getShippingInfo();
+            List<CartSession> cartSessionList = cartServices.cartSessionList();
 
-                if (document != null) {
-                    if (document.getStockNumber() < info.getCant()) {
-                        throw new CustomizeException("error.E68");
+            try {
+                double total = 0;
+                List<Detail> detailList = new ArrayList<>();
+
+                double totalKgs = 0;
+                double shippingCost = 0;
+
+                for (CartSession info : cartSessionList) {
+                    Document document;
+                    DocumentSale documentSale;
+                    if (info.getBook()) {
+                        document = bookService.findOne(info.getId()).get();
+                        documentSale = new BookSale((Book) document);
                     } else {
-                        Detail detail = new Detail();
-                        detail.setId(document.getId());
-                        detail.setCant(info.getCant());
-                        detail.setIsbn(document.getIsbn());
-                        detail.setSalePrice(document.getSalePrice());
-                        detail.setTitle(document.getTitle());
-                        detail.setMount(info.getCant() * info.getPrice());
-                        total += detail.getMount();
+                        document = magazineService.findOne(info.getId()).get();
+                        documentSale = new MagazineSale((Magazine) document);
+                    }
 
-                        detailList.add(detail);
+                    if (document != null) {
+                        if (document.getStockNumber() < info.getCant()) {
+                            throw new CustomizeException("error.E68");
+                        } else {
+                            Detail detail = new Detail();
+                            detail.setCant(info.getCant());
+                            detail.setDocument(documentSale);
+                            detail.setMount(Double.valueOf(String.format("%.2f", info.getCant() * document.getSalePrice())));
+                            total += detail.getMount();
+                            totalKgs += Double.valueOf(String.format("%.2f", info.getCant() * document.getWeight()));
+                            detailList.add(detail);
+
+                            int cant = document.getStockNumber() - detail.getCant();
+                            document.setStockNumber(cant);
+
+                            if (info.getBook()) {
+                                bookService.save((Book) document);
+                            } else {
+                                magazineService.save((Magazine) document);
+                            }
+                            info.setPass(true);
+                        }
                     }
                 }
-            }
-            saleDTO.setTotal(total);
-            saleDTO.setDetailList(detailList);
 
-            Payment payment = new Payment();
-            payment.setId(paymentDTO.getPaymentID());
+                if (shippingSession != null) {
+                    Country country = shippingSession.getCountry();
+                    if (country != null) {
+                        for (DhlPrice dhlPrice : country.getPriceList()) {
+                            if (totalKgs > dhlPrice.getMinKg() && totalKgs <= dhlPrice.getMaxKg()) {
+                                shippingCost = dhlPrice.getPrice();
+                                break;
+                            }
+                            if (totalKgs > 20) {
+                                shippingCost = country.getPriceList().get(country.getPriceList().size() - 1).getPrice();
+                                break;
+                            }
+                        }
+                    } else
+                        throw new CustomizeException(Constants.ERR_SERVER);
+                }
 
-            PaymentExecution paymentExecution = new PaymentExecution();
-            paymentExecution.setPayerId(paymentDTO.getPlayerID());
-            try {
+                sale.setSaleState(SaleState.inProcess);
+                sale.setTotal(Double.valueOf(String.format("%.2f", total)));
+                sale.setDetailList(detailList);
+                sale.setShipping(shippingSession);
+                sale.setShippingCost(Double.valueOf(String.format("%.2f", shippingCost)));
+
+                String username = SecurityUtils.getCurrentUserLogin().get();
+                if (username != null && !username.toLowerCase().equals("AnonymousUser".toLowerCase())) {
+                    User user = userService.findOneByUserName(username).get();
+                    sale.setUser(new UserSale(user));
+                }
+
+                sale = saleService.save(sale);
+
+                Payment payment = new Payment();
+                payment.setId(paymentDTO.getPaymentID());
+
+                PaymentExecution paymentExecution = new PaymentExecution();
+                paymentExecution.setPayerId(paymentDTO.getPlayerID());
+
                 APIContext context = new APIContext(clientId, clientSecret, "sandbox");
                 Payment createdPayment = payment.execute(context, paymentExecution);
 
                 if (createdPayment != null) {
-                    UserDetail userDetail = new UserDetail();
-                    userDetail.setFirstName(createdPayment.getPayer().getPayerInfo().getFirstName());
-                    userDetail.setLastName(createdPayment.getPayer().getPayerInfo().getLastName());
-
-                    PayerInfo payerInfo = createdPayment.getPayer().getPayerInfo();
-                    if (payerInfo != null) {
-                        ShippingAddress address = payerInfo.getShippingAddress();
-                        if (address != null) {
-                            String line1 = address.getLine1() != null ? address.getLine1() : "";
-                            String line2 = address.getLine2() != null ? address.getLine2() : "";
-                            String city = address.getCity() != null ? address.getCity() : "";
-                            String postalCode = address.getPostalCode() != null ? address.getPostalCode() : "";
-                            String countryCode = address.getCountryCode() != null ? address.getCountryCode() : "";
-                            String addressString = line1 + " " + line2 + " " + city + " " + postalCode + " " + countryCode;
-                            userDetail.setAddress(addressString);
-                            userDetail.setRecipientName(address.getRecipientName());
-                            userDetail.setPhone(address.getPhone() != null ? address.getPhone() : "");
-                        }
-
-                        userDetail.setEmail(payerInfo.getEmail() != null ? payerInfo.getEmail() : "");
-                    }
-                    cartServices.clearSession();
-                    saleDTO.setUser(userDetail);
-                    saleService.createSale(saleDTO);
+                    cartServices.clearCartSessionList();
                 }
-            } catch (PayPalRESTException e) {
-                System.err.println(e.getDetails());
+            } catch (Exception e) {
+                if (e instanceof PayPalRESTException)
+                    System.err.println(((PayPalRESTException) e).getDetails());
+
+                if (sale.getId() != null && !sale.getId().isEmpty()) {
+                    saleService.delete(sale);
+                }
+
+                for (CartSession info : cartSessionList) {
+                    if (info.getPass()) {
+                        Document document;
+                        if (info.getBook())
+                            document = bookService.findOne(info.getId()).get();
+                        else
+                            document = magazineService.findOne(info.getId()).get();
+
+                        if (document != null) {
+                            int cant = document.getStockNumber() + info.getCant();
+                            document.setStockNumber(cant);
+
+                            if (info.getBook()) {
+                                bookService.save((Book) document);
+                            } else {
+                                magazineService.save((Magazine) document);
+                            }
+                        }
+                    }
+                }
+
+                throw new CustomizeException(e.getMessage());
             }
         }
     }

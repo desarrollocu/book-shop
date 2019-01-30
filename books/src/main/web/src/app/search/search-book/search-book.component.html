@@ -3,7 +3,7 @@
   <!--<app-alert></app-alert>-->
   <!--</div>-->
   <div class="mag-posts-content mt-30 mb-30 p-30 box-shadow">
-    <form #generalSearchForm="ngForm" (submit)="getBooks('btn')">
+    <form #generalSearchForm="ngForm" (submit)="getBooks('btn', false)">
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="author" [translate]="'search.author'">Author</label>
@@ -110,16 +110,16 @@
       <thead class="thead-light">
       <tr>
         <th scope="col" style="width: 15%;" [translate]="'book.author'">Author</th>
-        <th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getBooks('title')">Title
+        <th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getBooks('title', true)">Title
           <i class="fa fa-sort" style="margin-left: 5px"></i>
         </th>
         <th scope="col" style="width: 15%;" [translate]="'book.editor'">Publisher</th>
         <th scope="col" style="width: 12%" [translate]="'editor.editionCity'">Edition City</th>
-        <th scope="col" style="width: 12%" [translate]="'book.editionYear'" (click)="getBooks('editionYear')">
+        <th scope="col" style="width: 12%" [translate]="'book.editionYear'" (click)="getBooks('editionYear', true)">
           EditionYear <i
           class="fa fa-sort" style="margin-left: 5px"></i></th>
         <th scope="col" [translate]="'book.isbn'">ISBN</th>
-        <th scope="col" style="width: 10%" [translate]="'book.price'" (click)="getBooks('salePrice')">Price
+        <th scope="col" style="width: 10%" [translate]="'book.price'" (click)="getBooks('salePrice', true)">Price
           <i class="fa fa-sort" style="margin-left: 5px"></i>
         </th>
         <th scope="col" style="width: 12%"></th>
@@ -136,7 +136,7 @@
         <td>{{book.cities}}</td>
         <td>{{book.editionYear}}</td>
         <td>{{book.isbn}}</td>
-        <td>{{book.coin + book.salePrice}}</td>
+        <td>{{('(USD) ') + book.salePrice}}</td>
         <td>
           <button class="btn btn-success table-button"
                   data-toggle="tooltip"
@@ -165,7 +165,7 @@
                 [maxSize]="5"
                 [rotate]="true"
                 [boundaryLinks]="true"
-                (pageChange)="getBooks(null)"></ngb-pagination>
+                (pageChange)="getBooks(null, false)"></ngb-pagination>
 
 <!--<div class="row text-center text-lg-left book-list">-->
 <!--<div class="col-lg-3 col-md-5 col-sm-6" *ngFor="let book of bookList; trackBy: trackIdentity">-->
@@ -286,13 +286,13 @@
         <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
           <p style="margin-bottom: 10px">
-            {{selectedBook.coin + selectedBook.salePrice}}
+            {{'(USD) ' + selectedBook.salePrice}}
           </p>
         </div>
       </div>
     </div>
     <div style="margin-top: 20px">
-      <button type="button" (click)="addToCar()" class="btn btn-info" [translate]="'general.addCar'"><i
+      <button type="button" (click)="addToCar(selectedBook)" class="btn btn-info" [translate]="'general.addCar'"><i
         class="fa fa-cart-plus"></i> Add to car
       </button>
       <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">

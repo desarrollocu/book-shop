@@ -13,6 +13,7 @@ export class User {
     public authorities?: any[],
     public city?: string,
     public state?: string,
+    public address?: string,
     public cp?: string,
     public phone?: number,
     public country?: Country,

@@ -23,9 +23,11 @@ export class MainComponent implements OnInit {
     let language = this.stateStorageService.getLanguage();
     if (language) {
       translate.setDefaultLang(language);
+      this.translate.currentLang = language;
     }
     else {
       translate.setDefaultLang('en');
+      this.translate.currentLang = 'en';
     }
     this.config.notFoundText = '';
   }
