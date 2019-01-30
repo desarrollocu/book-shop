@@ -19,6 +19,7 @@ import soft.co.books.domain.service.dto.ResultToShopDTO;
 import soft.co.books.domain.service.session.CartSession;
 import soft.co.books.domain.service.session.ShippingSession;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,9 +140,9 @@ public class CartResource {
                 throw new CustomizeException(Constants.ERR_SERVER);
         }
 
-        cartDTO.setShippingCost(Double.valueOf(String.format("%.2f", shippingCost)));
+        cartDTO.setShippingCost(shippingCost);
         cartDTO.setTotalKgs(totalKgs);
-        cartDTO.setAmount(Double.valueOf(String.format("%.2f", amount + cartDTO.getShippingCost())));
+        cartDTO.setAmount(amount + cartDTO.getShippingCost());
         cartDTO.setCant(cant);
         cartDTO.setShopDTOList(result);
         return cartDTO;

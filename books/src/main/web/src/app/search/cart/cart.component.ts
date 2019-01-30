@@ -169,7 +169,19 @@ export class CartComponent implements OnInit {
       },
       payment: () => {
         if (this.shippingInfo && this.shippingInfo != null) {
-          return this.cartService.createPayment({});
+          if (this.shippingInfo.address && this.shippingInfo.address != null
+            && this.shippingInfo.city && this.shippingInfo.city !== null
+            && this.shippingInfo.country && this.shippingInfo.country !== null
+            && this.shippingInfo.postalCode && this.shippingInfo.postalCode != null
+            && this.shippingInfo.phone && this.shippingInfo.phone != null
+            && this.shippingInfo.fullName && this.shippingInfo.fullName != null
+            && this.shippingInfo.email && this.shippingInfo.email !== null) {
+            return this.cartService.createPayment({});
+          }
+          else {
+            this.errorFlag = true;
+            this.alertService.info('info.missingShippingInfo', null, null);
+          }
         }
         else {
           this.errorFlag = true;

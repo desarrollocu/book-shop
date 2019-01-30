@@ -120,7 +120,6 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         magazine.setCoin(magazineDTO.getCoin());
         magazine.setImageUrl(magazineDTO.getImage());
         magazine.setVisit(magazineDTO.getVisit());
-        magazine.setWeight(magazineDTO.getVisit());
 
         log.debug("Created Information for Magazine: {}", magazine);
         return Optional.of(magazineRepository.save(magazine))

@@ -762,10 +762,10 @@ public class InitialDatabaseMigration {
         data.setNameEnglish("LIDERLAF BOOKS");
         data.setNameSpanish("LIDERLAF LIBROS");
         data.setPhone("+5 5255665544");
-        data.setMainTextSpanish("Libros nuevos, usados, raros y antiguos. Revistas. Con envios a todo el mundo.");
-        data.setMainTextEnglish("Books news, used, rare and old. Magazines. With shipment to all the world.");
+        data.setMainTextSpanish("Libros nuevos, usados, raros y antiguos. Revistas. Con envíos a todo el mundo.");
+        data.setMainTextEnglish("New, used, rare and old books. Magazines. With shipments to the whole world.");
         data.setEmail("liderlaf@gmail.com");
-        data.setAddress("Address Address Address Address Address.");
+        data.setAddress("Paysandú 1838 e/ Dr Tristan Narvaja y Av. Daniel Fernández Crespo.");
         data.setTwitter("https://www.twitter.com");
         data.setFacebook("https://www.facebook.com");
         data.setInstagram("https://www.instagram.com");

@@ -58,7 +58,7 @@
           </a>
           <ul class="dropdown-menu" ngbDropdownMenu>
             <li *ngSwitchCase="true">
-              <a class="dropdown-item" id="apkid" href="/swagger-ui.html#/">
+              <a class="dropdown-item" id="apkid" href="swagger-ui.html#/">
                 <span>API</span>
               </a>
             </li>
@@ -213,10 +213,9 @@
         </div>
       </div>
       <div class="col-sm-5">
-        <agm-map [latitude]="lat" [longitude]="lng">
+        <agm-map [latitude]="lat" [longitude]="lng" [zoom]="18">
           <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
         </agm-map>
-        <!--<img src="assets/images/image.gif" style="width: 160px;height: 160px;margin-top: 50px;">-->
       </div>
     </div>
     <div class="row">
