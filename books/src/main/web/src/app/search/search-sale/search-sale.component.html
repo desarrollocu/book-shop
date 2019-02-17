@@ -29,8 +29,8 @@
         <th scope="col" style="width: 15%;" [translate]="'sale.total'">Total
         <th scope="col" style="width: 15%;" [translate]="'sale.shippingCost'">Shipping cost
         <th scope="col" style="width: 15%;" [translate]="'sale.shoppingDate'">Shopping date
-        <th scope="col" style="width: 15%;" [translate]="'sale.shoppingState'">Shopping state
-        </th>
+        <th scope="col" style="width: 15%;" [translate]="'sale.shoppingState'">Shopping state</th>
+        <th scope="col" style="width: 15%;" [translate]="'sale.info'">Shipping info</th>
       </tr>
       </thead>
       <tbody>
@@ -43,6 +43,10 @@
         <td>{{'(USD) ' + sale.shippingCost}}</td>
         <td>{{sale.saleDate}}</td>
         <td [translate]="sale.saleState"></td>
+        <td [translate]="sale.shipping.fullName + ', ' + sale.shipping.phone + ', ' + sale.shipping.email + ', '
+        + sale.shipping.line1 + (sale.shipping.line2 !== null ? sale.shipping.line2 : '')
+        + ', ' + sale.shipping.city + ', ' + (sale.shipping.state !== null ? sale.shipping.state + ', ' : '')
+        + sale.shipping.country.code + ', ' + sale.shipping.postalCode"></td>
       </tr>
       </tbody>
     </table>

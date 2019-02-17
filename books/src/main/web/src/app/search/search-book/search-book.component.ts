@@ -49,7 +49,7 @@ export class SearchBookComponent implements OnInit {
               private modalService: NgbModal) {
     this.searchMore = false;
     this.load = false;
-    this.itemsPerPage = 12;
+    this.itemsPerPage = 10;
     this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
@@ -230,7 +230,7 @@ export class SearchBookComponent implements OnInit {
     this.selectedBook = new Book();
     this.selectedBook = book;
     this.selectBook(book);
-    this.modalService.open(details);
+    this.modalService.open(details, {size: 'lg'});
   }
 
   cancel() {

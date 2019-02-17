@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-6">
             <label for="country" [translate]="'author.country'">Country</label>
             <ng-select [items]="countryList"
                        id="country"
@@ -56,18 +56,18 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-4">
-            <label for="state" [translate]="'author.state'">State</label>
-            <input type="text"
-                   [(ngModel)]="author.state"
-                   class="form-control"
-                   id="state"
-                   name="state"
-                   placeholder="{{'author.state' | translate}}"
-                   #state="ngModel"
-                   maxlength="100">
-          </div>
-          <div class="form-group col-md-4">
+          <!--<div class="form-group col-md-4">-->
+            <!--<label for="state" [translate]="'author.state'">State</label>-->
+            <!--<input type="text"-->
+                   <!--[(ngModel)]="author.state"-->
+                   <!--class="form-control"-->
+                   <!--id="state"-->
+                   <!--name="state"-->
+                   <!--placeholder="{{'author.state' | translate}}"-->
+                   <!--#state="ngModel"-->
+                   <!--maxlength="100">-->
+          <!--</div>-->
+          <div class="form-group col-md-6">
             <label for="city" [translate]="'author.city'">City</label>
             <input type="text"
                    [(ngModel)]="author.city"
@@ -102,7 +102,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary"
-                [disabled]="!authorManagementForm.valid"
+                [disabled]="!authorManagementForm.valid || load"
                 [translate]="'general.save'"> Save
         </button>
         <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

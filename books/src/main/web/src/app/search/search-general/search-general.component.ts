@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 
 import {AlertService} from '../../shared/alert/alert.service';
@@ -10,7 +10,9 @@ import {Book} from '../../admin/book/model/book';
 import {Search} from '../model/search';
 import {Magazine} from '../../admin/magazine/model/magazine';
 import {CartService} from '../cart.service';
-import {UiData} from "../model/uiData";
+import {UiData} from '../model/uiData';
+import {BookService} from "../../admin/book/book.service";
+import {MagazineService} from "../../admin/magazine/magazine.service";
 
 
 @Component({
@@ -42,6 +44,10 @@ export class SearchGeneralComponent implements OnInit {
               private alertService: AlertService,
               private translateService: TranslateService,
               private shoppingService: CartService,
+              private bookService: BookService,
+              private magazineService: MagazineService,
+              private modalService: NgbModal,
+              private cartService: CartService,
               private principal: Principal) {
     this.itemsPerPage = 4;
     this.predicate = 'id';
@@ -88,6 +94,61 @@ export class SearchGeneralComponent implements OnInit {
       );
   }
 
+  showDetails(details, detailMagazine, document) {
+    if (document.book === true) {
+      this.bookService.getBook({
+        id: document.documentId
+      }).subscribe(response => this.onSearchSuccess(response, details, true),
+        response => this.onError(response));
+    }
+    else {
+      this.magazineService.getMagazine({
+        id: document.documentId
+      }).subscribe(response => this.onSearchSuccess(response, detailMagazine, false),
+        response => this.onError(response));
+    }
+  }
+
+  addToCarMagazine(magazine) {
+    if (magazine !== undefined) {
+      this.cartService.addToCart({
+        id: magazine !== undefined ? magazine.id : this.selectedMagazine.id,
+        cant: 1,
+        book: false
+      }).subscribe(response => this.onAddCarSuccess(response.body),
+        response => this.onError(response));
+    }
+  }
+
+  addToCarBook(book) {
+    if (book !== undefined) {
+      this.cartService.addToCart({
+        id: book !== undefined ? book.id : this.selectedBook.id,
+        cant: 1,
+        book: true
+      }).subscribe(response => this.onAddCarSuccess(response.body),
+        response => this.onError(response));
+    }
+  }
+
+  onAddCarSuccess(resp) {
+    if (resp.exist)
+      this.alertService.info('info.inCart', null, null);
+    else
+      this.alertService.info('shopping.success', null, null);
+
+    this.cartService.getCarSubject().next(resp.cant);
+    this.cancel();
+  }
+
+  private onSearchSuccess(result, details, isBook) {
+    if (isBook)
+      this.selectedBook = result.body;
+    else
+      this.selectedMagazine = result.body;
+    this.modalService.open(details, {size: 'lg'});
+  }
+
   private onCarouselSuccess(res) {
     this.imageUrlList = res;
   }
@@ -100,5 +161,9 @@ export class SearchGeneralComponent implements OnInit {
 
   trackIdentity(index, item: Book) {
     return item.id;
+  }
+
+  cancel() {
+    this.modalService.dismissAll('cancel')
   }
 }

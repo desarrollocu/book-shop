@@ -58,7 +58,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary"
-                [disabled]="!editorManagementForm.valid"
+                [disabled]="!editorManagementForm.valid || load"
                 [translate]="'general.save'"> Save
         </button>
         <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

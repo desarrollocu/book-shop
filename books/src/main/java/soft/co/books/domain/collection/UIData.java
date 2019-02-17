@@ -47,6 +47,10 @@ public class UIData extends AbstractAuditingEntity implements Serializable {
 
     private String google;
 
+    @Field("shipment_percent")
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private double shipmentPercent = 1;
+
     @Email
     @NotNull(message = Constants.ERR_NOT_NULL)
     private String email;
@@ -67,6 +71,15 @@ public class UIData extends AbstractAuditingEntity implements Serializable {
         this.facebook = uiData.getFacebook();
         this.instagram = uiData.getInstagram();
         this.google = uiData.getGoogle();
+        this.shipmentPercent = uiData.getShipmentPercent();
+    }
+
+    public double getShipmentPercent() {
+        return shipmentPercent;
+    }
+
+    public void setShipmentPercent(double shipmentPercent) {
+        this.shipmentPercent = shipmentPercent;
     }
 
     public String getTwitter() {

@@ -52,8 +52,9 @@
       <tr>
         <th scope="col" [translate]="'magazine.title'">Title</th>
         <th scope="col" [translate]="'magazine.editor'">Editor</th>
+        <th scope="col" [translate]="'magazine.frequency'">Frequency</th>
+        <th scope="col" [translate]="'book.isbn'">ISBN</th>
         <th scope="col" [translate]="'magazine.topic'">Topic</th>
-        <th scope="col" [translate]="'magazine.coin'">Coin</th>
         <th scope="col" [translate]="'magazine.price'">Price</th>
         <th scope="col"></th>
       </tr>
@@ -65,9 +66,10 @@
       <tr *ngFor="let magazine of magazineList; trackBy: trackIdentity">
         <td scope="row">{{magazine.title}}</td>
         <td>{{magazine.editors}}</td>
+        <td>{{magazine.frequency}}</td>
+        <td>{{magazine.isbn}}</td>
         <td>{{currentLang === 'en' ? magazine.topicsEnglish: magazine.topicsSpanish}}</td>
-        <td>{{magazine.coin}}</td>
-        <td>{{magazine.salePrice}}</td>
+        <td>{{'(USD) ' + magazine.salePrice}}</td>
         <td>
           <button class="btn btn-primary table-button"
                   (click)="editMagazine(magazine)"><i class="fa fa-edit"></i>

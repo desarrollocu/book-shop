@@ -135,13 +135,15 @@ export class CartComponent implements OnInit {
     if ((this.shippingInfo === undefined || this.shippingInfo === null) && checkoutModal != null)
       this.shippingInfo = new ShippingInfo();
 
+    if (this.shippingInfo != null)
+      this.stateEnable(this.shippingInfo.country);
+
     this.getProducts(false);
     if (checkoutModal != null) {
       let config: NgbModalOptions = {
         backdrop: 'static',
         keyboard: false
       };
-
       this.modalService.open(checkoutModal, config);
     }
   }
@@ -169,7 +171,7 @@ export class CartComponent implements OnInit {
       },
       payment: () => {
         if (this.shippingInfo && this.shippingInfo != null) {
-          if (this.shippingInfo.address && this.shippingInfo.address != null
+          if (this.shippingInfo.line1 && this.shippingInfo.line1 != null
             && this.shippingInfo.city && this.shippingInfo.city !== null
             && this.shippingInfo.country && this.shippingInfo.country !== null
             && this.shippingInfo.postalCode && this.shippingInfo.postalCode != null
@@ -196,10 +198,11 @@ export class CartComponent implements OnInit {
           this.cartService.getCarSubject().next(0);
           this.alertService.success('success.sale', null, null);
           this.getProducts(false);
+        }).catch(reason => {
+          if (this.payPalConfig.onError) {
+            this.payPalConfig.onError(reason);
+          }
         })
-        // .catch(reason => {
-        //   this.alertService.error('error.E67', null, null);
-        // })
       },
       onError:
         (err) => {
@@ -256,5 +259,22 @@ export class CartComponent implements OnInit {
 
   cancelMy() {
     this.modalService.dismissAll('cancel')
+  }
+
+  stateEnable(val) {
+    if (val != undefined) {
+      if (val.code === 'US' || val.code === 'MX' || val.code === 'AR'
+        || val.code === 'AU' || val.code === 'CA' || val.code === 'C2' || val.code === 'HK' || val.code === 'ID'
+        || val.code === 'JP' || val.code === 'RU' || val.code === 'CH' || val.code === 'TH') {
+        this.enableState = false
+      } else {
+        this.enableState = true;
+        this.shippingInfo.state = null;
+      }
+    }
+    else {
+      this.enableState = true;
+      this.shippingInfo.state = null;
+    }
   }
 }

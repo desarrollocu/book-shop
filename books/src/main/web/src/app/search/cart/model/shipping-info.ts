@@ -10,7 +10,8 @@ export class ShippingInfo {
     public city?: string,
     public state?: string,
     public postalCode?: string,
-    public address?: string,
+    public line1?: string,
+    public line2?: string,
   ) {
   }
 }

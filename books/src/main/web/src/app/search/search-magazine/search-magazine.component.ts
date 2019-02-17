@@ -40,7 +40,7 @@ export class SearchMagazineComponent implements OnInit {
               private modalService: NgbModal) {
     this.searchMore = false;
     this.load = false;
-    this.itemsPerPage = 12;
+    this.itemsPerPage = 10;
     this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
@@ -156,7 +156,7 @@ export class SearchMagazineComponent implements OnInit {
     this.selectedMagazine = new Magazine();
     this.selectedMagazine = magazine;
     this.selectMagazine(magazine);
-    this.modalService.open(details);
+    this.modalService.open(details, {size: 'lg'});
   }
 
   selectMagazine(magazine) {

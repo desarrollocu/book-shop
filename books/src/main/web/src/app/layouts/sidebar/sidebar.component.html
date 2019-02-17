@@ -1,6 +1,6 @@
 <aside id="sidebar">
   <div class="sidebar-header">
-    <h3><i class="fa fa-bookmark"></i> {{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}}</h3>
+    <h3 style="text-align: center">{{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}}</h3>
     <strong [translate]="'sideBar.menuResp'">BS</strong>
   </div>
 
@@ -70,6 +70,11 @@
         {{'sideBar.sale' | translate}}
       </a>
     </li>
+    <!--<li *hasAnyAuthority="'trace-list'" routerLinkActive="active">-->
+      <!--<a routerLink="trace-list" class="a-sidebar"><i class="fa fa-angle-double-right"></i>-->
+        <!--{{'sideBar.trace' | translate}}-->
+      <!--</a>-->
+    <!--</li>-->
     <li *hasAnyAuthority="'info-management'" routerLinkActive="active">
       <a routerLink="info-management" class="a-sidebar"><i class="fa fa-angle-double-right"></i>
         {{'sideBar.contact' | translate}}

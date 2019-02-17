@@ -23,6 +23,8 @@ export class AccountModalComponent implements OnInit {
   countryList: Country[];
   currentLang: string;
   isAdmin: boolean;
+  load: boolean = false;
+  enableState: boolean = true;
 
   constructor(private alertService: AlertService,
               private userService: UserService,
@@ -48,10 +50,12 @@ export class AccountModalComponent implements OnInit {
     this.principal.identity(true).then(account => {
       this.user = account;
       this.isAdmin = this.user.isAdmin === "true" ? true : false;
+      this.stateEnable(this.user.country);
     })
   }
 
   save() {
+    this.load = true;
     this.userService.updateAccount(this.user)
       .subscribe(response => this.onSuccess(response),
         response => this.onError(response));
@@ -65,6 +69,7 @@ export class AccountModalComponent implements OnInit {
 
   private onSuccess(response) {
     this.user = response.body;
+    this.load = false;
     this.principal.getFullNameSubject().next(this.user.fullName);
     this.alertService.success('success.edited', null, null);
     this.activeModal.dismiss('cancel');
@@ -74,6 +79,7 @@ export class AccountModalComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 
@@ -85,5 +91,22 @@ export class AccountModalComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss('cancel');
+  }
+
+  stateEnable(val) {
+    if (val != undefined) {
+      if (val.code === 'US' || val.code === 'MX' || val.code === 'AR'
+        || val.code === 'AU' || val.code === 'CA' || val.code === 'C2' || val.code === 'HK' || val.code === 'ID'
+        || val.code === 'JP' || val.code === 'RU' || val.code === 'CH' || val.code === 'TH') {
+        this.enableState = false
+      } else {
+        this.enableState = true;
+        this.user.state = null;
+      }
+    }
+    else {
+      this.enableState = true;
+      this.user.state = null;
+    }
   }
 }

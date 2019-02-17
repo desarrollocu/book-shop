@@ -6,21 +6,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
+import soft.co.books.configuration.security.other.SecurityUtils;
 import soft.co.books.configuration.storage.StorageService;
-import soft.co.books.domain.collection.Author;
-import soft.co.books.domain.collection.Book;
-import soft.co.books.domain.collection.Editor;
-import soft.co.books.domain.collection.Topic;
+import soft.co.books.domain.collection.*;
+import soft.co.books.domain.collection.data.Trace;
 import soft.co.books.domain.repository.BookRepository;
 import soft.co.books.domain.service.dto.*;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -43,11 +43,11 @@ public class BookService extends CustomBaseService<Book, String> {
 
     private final TopicService topicService;
 
+    private final UserService userService;
+
     private final ClassificationService classificationService;
 
     private final StorageService storageService;
-
-    private final BookTraceService bookTraceService;
 
     private MongoTemplate mongoTemplate;
 
@@ -56,17 +56,22 @@ public class BookService extends CustomBaseService<Book, String> {
                        TopicService topicService,
                        AuthorService authorService,
                        StorageService storageService,
-                       BookTraceService bookTraceService,
-                       EditorService editorService, ClassificationService classificationService) {
+                       EditorService editorService,
+                       UserService userService,
+                       ClassificationService classificationService) {
         super(bookRepository);
         this.bookRepository = bookRepository;
         this.mongoTemplate = mongoTemplate;
         this.authorService = authorService;
         this.editorService = editorService;
         this.topicService = topicService;
+        this.userService = userService;
         this.classificationService = classificationService;
         this.storageService = storageService;
-        this.bookTraceService = bookTraceService;
+    }
+
+    public Book findByIdAndVisible(String id, boolean visible) {
+        return bookRepository.findByIdAndVisible(id, visible);
     }
 
     public PageResultDTO findAll(BookDTO bookDTO, Pageable pageable) {
@@ -76,6 +81,7 @@ public class BookService extends CustomBaseService<Book, String> {
         query.limit(pageable.getPageSize());
         query.skip(pageable.getPageNumber() * pageable.getPageSize());
         query.with(pageable.getSort());
+        query.fields().exclude("traceList");
 
         if (bookDTO.getToShow() != null) {
             if (bookDTO.getToShow().isVal())
@@ -107,6 +113,8 @@ public class BookService extends CustomBaseService<Book, String> {
             }
         }
 
+        query.addCriteria(where("visible").is(true));
+
         Page<Book> books = new PageImpl<>(mongoTemplate.find(query, Book.class));
         resultDTO.setElements(books.stream().map(BookDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, Book.class));
@@ -120,6 +128,7 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setSubTitle(bookDTO.getSubTitle());
         book.setComments(bookDTO.getComments());
         book.setWeight(bookDTO.getWeight());
+        book.setVisible(true);
 
         if (bookDTO.getDescriptors() != null) {
             if (bookDTO.getDescriptors() != "") {
@@ -132,11 +141,25 @@ public class BookService extends CustomBaseService<Book, String> {
                 .map(authorDTO -> authorService.findOne(authorDTO.getId()).get())
                 .collect(Collectors.toList());
         book.setAuthorList(authorList);
+        if (authorList.size() > 0) {
+            Author author = authorList.get(0);
+            AuthorBook authorBook = new AuthorBook();
+            authorBook.setId(author.getId());
+            authorBook.setAuthorName(author.getFirstName() + " " + author.getLastName());
+            book.setAuthorBook(authorBook);
+        }
 
         List<Editor> editorList = bookDTO.getEditorList().stream()
                 .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
                 .collect(Collectors.toList());
         book.setEditorList(editorList);
+        if (editorList.size() > 0) {
+            Editor editor = editorList.get(0);
+            EditorDocument editorDocument = new EditorDocument();
+            editorDocument.setId(editor.getId());
+            editorDocument.setName(editor.getName());
+            book.setEditorDocument(editorDocument);
+        }
 
         List<Topic> topicList = bookDTO.getTopicList().stream()
                 .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
@@ -161,10 +184,20 @@ public class BookService extends CustomBaseService<Book, String> {
         book.setImageUrl(bookDTO.getImage());
         book.setVisit(bookDTO.getVisit());
 
-        log.debug("Created Information for Book: {}", book);
-        Book result = bookRepository.save(book);
+        Trace trace = new Trace();
+        String userName = SecurityUtils.getCurrentUserLogin().get();
+        if (userName != null) {
+            User user = userService.findOneByUserName(userName).get();
+            book.setCreatedBy(user);
+            trace.setUser(user);
+        }
 
-        bookTraceService.createBookTrace(result, "Create", null);
+        trace.setAction("Create");
+        trace.setDate(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now())));
+        book.getTraceList().add(trace);
+
+        Book result = bookRepository.save(book);
+        log.debug("Created Information for Book: {}", result);
         return Optional.of(result)
                 .map(BookDTO::new);
     }
@@ -190,6 +223,13 @@ public class BookService extends CustomBaseService<Book, String> {
                             .map(authorDTO -> authorService.findOne(authorDTO.getId()).get())
                             .collect(Collectors.toList());
                     book.setAuthorList(authorList);
+                    if (authorList.size() > 0) {
+                        Author author = authorList.get(0);
+                        AuthorBook authorBook = new AuthorBook();
+                        authorBook.setId(author.getId());
+                        authorBook.setAuthorName(author.getFirstName() + " " + author.getLastName());
+                        book.setAuthorBook(authorBook);
+                    }
 
                     List<Topic> topicList = bookDTO.getTopicList().stream()
                             .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
@@ -200,6 +240,13 @@ public class BookService extends CustomBaseService<Book, String> {
                             .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
                             .collect(Collectors.toList());
                     book.setEditorList(editorList);
+                    if (editorList.size() > 0) {
+                        Editor editor = editorList.get(0);
+                        EditorDocument editorDocument = new EditorDocument();
+                        editorDocument.setId(editor.getId());
+                        editorDocument.setName(editor.getName());
+                        book.setEditorDocument(editorDocument);
+                    }
 
                     if (bookDTO.getClassification() != null) {
                         book.setClassification(classificationService.findOne(bookDTO.getClassification().getId()).get());
@@ -228,10 +275,24 @@ public class BookService extends CustomBaseService<Book, String> {
                             book.setDescriptorList(Arrays.stream(temp).collect(Collectors.toList()));
                         }
                     }
-                    Book result = bookRepository.save(book);
-                    log.debug("Changed Information for Book: {}", book);
 
-                    bookTraceService.createBookTrace(result, "Update", null);
+                    Trace trace = new Trace();
+                    String userName = SecurityUtils.getCurrentUserLogin().get();
+                    if (userName != null) {
+                        book.setLastModifiedDate(new SimpleDateFormat("yyyy-MM-dd")
+                                .format(Date.from(Instant.now())));
+
+                        User user = userService.findOneByUserName(userName).get();
+                        book.setLastModifiedBy(user);
+                        trace.setUser(user);
+                    }
+
+                    trace.setAction("Update");
+                    trace.setDate(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now())));
+                    book.getTraceList().add(trace);
+
+                    bookRepository.save(book);
+                    log.debug("Changed Information for Book: {}", book);
                     return book;
                 })
                 .map(BookDTO::new);
@@ -239,11 +300,34 @@ public class BookService extends CustomBaseService<Book, String> {
 
     public void delete(String id) {
         bookRepository.findById(id).ifPresent(book -> {
-            storageService.deleteById(book.getId());
-            bookRepository.delete(book);
-            log.debug("Deleted Book: {}", book);
+            book.setVisible(false);
+//            storageService.deleteById(book.getId());
+            Trace trace = new Trace();
+            trace.setAction("Delete");
+            trace.setDate(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now())));
+            String userName = SecurityUtils.getCurrentUserLogin().get();
+            if (userName != null) {
+                book.setLastModifiedDate(new SimpleDateFormat("yyyy-MM-dd")
+                        .format(Date.from(Instant.now())));
 
-            bookTraceService.createBookTrace(book, "Delete", null);
+                User user = userService.findOneByUserName(userName).get();
+                book.setLastModifiedBy(user);
+                trace.setUser(user);
+            }
+
+            book.getTraceList().add(trace);
+            bookRepository.save(book);
+            log.debug("Deleted Book: {}", book);
         });
+    }
+
+    public List<BookTraceDTO> traceList(String id) {
+        List<BookTraceDTO> dtoList = new ArrayList<>();
+        Query query = new Query();
+        query.fields().include("traceList");
+        query.addCriteria(Criteria.where("id").is(id));
+        Book book = mongoTemplate.findOne(query, Book.class);
+        book.getTraceList().forEach(trace -> dtoList.add(new BookTraceDTO(trace)));
+        return dtoList;
     }
 }

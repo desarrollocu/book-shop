@@ -17,6 +17,7 @@ export class EditorManagementComponent implements OnInit {
   @Input() editor;
   countryList: Country[];
   currentLang: string;
+  load: boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private editorService: EditorService,
@@ -57,6 +58,7 @@ export class EditorManagementComponent implements OnInit {
   }
 
   saveEditor() {
+    this.load = true;
     this.editorService.saveEditor(this.editor)
       .subscribe(response => this.onSuccess(response, this.editor),
         response => this.onError(response));
@@ -74,6 +76,7 @@ export class EditorManagementComponent implements OnInit {
       msg = 'success.edited';
     }
     this.editor = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -89,6 +92,7 @@ export class EditorManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

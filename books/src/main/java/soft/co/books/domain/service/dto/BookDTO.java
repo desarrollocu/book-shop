@@ -6,7 +6,9 @@ import soft.co.books.domain.collection.Book;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,7 @@ public class BookDTO {
 
     private String editionYear;
 
-    private int pages = 0;
+    private String pages;
 
     private String size;
 
@@ -80,6 +82,14 @@ public class BookDTO {
     private String countriesEnglish;
 
     private String countriesSpanish;
+
+    private String createdDate;
+
+    private String createdBy;
+
+    private String lastModifiedDate;
+
+    private String lastModifiedBy;
 
     public BookDTO() {
         // Empty constructor needed for Jackson.
@@ -164,6 +174,42 @@ public class BookDTO {
         }
 
         this.visit = book.getVisit();
+        this.createdDate = new SimpleDateFormat("yyyy-MM-dd").format(Date.from(book.getCreatedDate()));
+        this.createdBy = book.getCreatedBy() != null ? book.getCreatedBy().getUserName() : "";
+        this.lastModifiedDate = book.getLastModifiedDate() != null ? book.getLastModifiedDate() : "";
+        this.lastModifiedBy = book.getLastModifiedBy() != null ? book.getLastModifiedBy().getUserName() : "";
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     public double getWeight() {
@@ -246,11 +292,11 @@ public class BookDTO {
         this.title = title;
     }
 
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
 

@@ -27,6 +27,8 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
     @NotEmpty(message = Constants.ERR_NOT_NULL)
     private List<Author> authorList = new ArrayList<>();
 
+    private AuthorBook authorBook;
+
     @Indexed
     @Field("sub_title")
     @Size(max = 500, message = Constants.ERR_MAX500)
@@ -35,9 +37,8 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
     @Field("edition_year")
     private String editionYear;
 
-    private int pages = 0;
+    private String pages;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
     private String size;
 
     @DBRef
@@ -48,6 +49,14 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
     private List<String> descriptorList = new ArrayList<>();
 
     public Book() {
+    }
+
+    public AuthorBook getAuthorBook() {
+        return authorBook;
+    }
+
+    public void setAuthorBook(AuthorBook authorBook) {
+        this.authorBook = authorBook;
     }
 
     public String getSubTitle() {
@@ -66,11 +75,11 @@ public class Book extends soft.co.books.domain.collection.Document implements Se
         this.size = size;
     }
 
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
 

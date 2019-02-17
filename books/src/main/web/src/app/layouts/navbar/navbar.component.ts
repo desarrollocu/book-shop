@@ -112,7 +112,7 @@ export class NavbarComponent implements OnInit {
   }
 
   showContacts(contacts) {
-    this.modalService.open(contacts);
+    this.modalService.open(contacts, {size: 'lg'});
   }
 
   save() {

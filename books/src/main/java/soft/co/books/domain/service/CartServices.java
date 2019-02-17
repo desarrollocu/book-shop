@@ -1,15 +1,24 @@
 package soft.co.books.domain.service;
 
+import com.paypal.api.payments.ItemList;
+import com.paypal.api.payments.ShippingAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import soft.co.books.configuration.Constants;
+import soft.co.books.configuration.error.CustomizeException;
+import soft.co.books.domain.collection.Country;
+import soft.co.books.domain.collection.DhlPrice;
 import soft.co.books.domain.collection.Document;
+import soft.co.books.domain.collection.UIData;
 import soft.co.books.domain.service.dto.CartDTO;
 import soft.co.books.domain.service.session.CartSession;
 import soft.co.books.domain.service.session.ShippingSession;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CartServices {
@@ -20,6 +29,8 @@ public class CartServices {
     private BookService bookService;
     @Autowired
     private MagazineService magazineService;
+    @Autowired
+    private UIDataService uiDataService;
 
     public CartDTO addToCart(CartSession toAdd) {
         int cant = 0;
@@ -29,9 +40,12 @@ public class CartServices {
 
         Document document;
         if (toAdd.getBook())
-            document = bookService.findOne(toAdd.getId()).get();
+            document = bookService.findByIdAndVisible(toAdd.getId(), true);
         else
-            document = magazineService.findOne(toAdd.getId()).get();
+            document = magazineService.findByIdAndVisible(toAdd.getId(), true);
+
+        if (document == null)
+            throw new CustomizeException(Constants.ERR_NOT_BOOK);
 
         toAdd.setPrice(document.getSalePrice());
 
@@ -94,7 +108,8 @@ public class CartServices {
 
     public ShippingSession addShippingInfo(ShippingSession infoDTO) {
         ShippingSession shippingSession = new ShippingSession();
-        shippingSession.setAddress(infoDTO.getAddress());
+        shippingSession.setLine1(infoDTO.getLine1());
+        shippingSession.setLine2(infoDTO.getLine2());
         shippingSession.setCity(infoDTO.getCity());
         shippingSession.setCountry(infoDTO.getCountry());
         shippingSession.setEmail(infoDTO.getEmail());
@@ -119,5 +134,54 @@ public class CartServices {
 
     public void clearCartSessionList() {
         httpSession.setAttribute("cartSessionList", new ArrayList<>());
+    }
+
+    public Map<String, Object> shippingData(double totalKgs, double shippingCost, ItemList itemList) {
+        Map<String, Object> result = new HashMap<>();
+        ShippingSession shippingInfo = getShippingInfo();
+        if (shippingInfo != null) {
+            Country country = shippingInfo.getCountry();
+            if (country != null) {
+                for (DhlPrice dhlPrice : country.getPriceList()) {
+                    if (totalKgs > dhlPrice.getMinKg() && totalKgs <= dhlPrice.getMaxKg()) {
+                        shippingCost = dhlPrice.getPrice();
+                        break;
+                    }
+                    if (totalKgs > 20) {
+                        shippingCost = country.getPriceList().get(country.getPriceList().size() - 1).getPrice();
+                        break;
+                    }
+                }
+            } else
+                throw new CustomizeException(Constants.ERR_SERVER);
+
+            double part = 0;
+            List<UIData> uiDataList = uiDataService.findAll();
+            if (uiDataList.size() > 0) {
+                UIData uiData = uiDataList.get(0);
+                double total = shippingCost;
+                double percent = uiData.getShipmentPercent();
+                part = (percent / 100) * total;
+            }
+            shippingCost = shippingCost + part;
+
+            if (itemList != null) {
+                ShippingAddress shippingAddress = new ShippingAddress();
+                shippingAddress.setRecipientName(shippingInfo.getFullName());
+                shippingAddress.setPhone(shippingInfo.getPhone());
+                shippingAddress.setCity(shippingInfo.getCity());
+                shippingAddress.setCountryCode(shippingInfo.getCountry().getCode());
+                shippingAddress.setLine1(shippingInfo.getLine1());
+                shippingAddress.setLine2(shippingInfo.getLine2());
+                shippingAddress.setPostalCode(shippingInfo.getPostalCode());
+                shippingAddress.setState(shippingInfo.getState() != null ? shippingInfo.getState() : "");
+                itemList.setShippingAddress(shippingAddress);
+            }
+        }
+        result.put("totalKgs", totalKgs);
+        result.put("shippingCost", shippingCost);
+        result.put("itemList", itemList);
+
+        return result;
     }
 }

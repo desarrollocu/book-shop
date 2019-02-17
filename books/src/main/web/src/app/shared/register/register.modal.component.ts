@@ -20,6 +20,8 @@ export class RegisterModalComponent implements OnInit {
   confirmPassword: string;
   countryList: Country[];
   currentLang: string;
+  load: boolean = false;
+  enableState: boolean = true;
 
   constructor(private alertService: AlertService,
               private userService: UserService,
@@ -61,6 +63,7 @@ export class RegisterModalComponent implements OnInit {
   }
 
   save() {
+    this.load = true;
     this.userService.registerUser(this.user)
       .subscribe(response => this.onSuccess(response),
         response => this.onError(response));
@@ -74,6 +77,7 @@ export class RegisterModalComponent implements OnInit {
 
   private onSuccess(response) {
     this.user = response.body;
+    this.load = false;
     this.alertService.success('success.register', null, null);
     this.activeModal.dismiss('cancel');
   }
@@ -81,6 +85,7 @@ export class RegisterModalComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 
@@ -92,5 +97,22 @@ export class RegisterModalComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss('cancel');
+  }
+
+  stateEnable(val) {
+    if (val != undefined) {
+      if (val.code === 'US' || val.code === 'MX' || val.code === 'AR'
+        || val.code === 'AU' || val.code === 'CA' || val.code === 'C2' || val.code === 'HK' || val.code === 'ID'
+        || val.code === 'JP' || val.code === 'RU' || val.code === 'CH' || val.code === 'TH') {
+        this.enableState = false
+      } else {
+        this.enableState = true;
+        this.user.state = null;
+      }
+    }
+    else {
+      this.enableState = true;
+      this.user.state = null;
+    }
   }
 }

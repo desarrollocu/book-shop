@@ -22,6 +22,7 @@ import soft.co.books.domain.service.dto.UserDTO;
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -75,6 +76,7 @@ public class UserService extends CustomBaseService<User, String> {
         if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty())
             query.addCriteria(where("email").regex(userDTO.getEmail(), "i"));
 
+        query.addCriteria(where("visible").is(true));
         Page<User> users = new PageImpl<>(mongoTemplate.find(query, User.class));
         resultDTO.setElements(users.stream().map(UserDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, User.class));
@@ -88,6 +90,7 @@ public class UserService extends CustomBaseService<User, String> {
             user.setPassword(encryptedPassword);
         } else
             user.setPassword("$2a$10$Iwn.w7FA7780RmxOBQKFQ.gV0QjFTYQCyEoAmZsYWSIr9rlHEiR7y");
+        user.setVisible(true);
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUserName(userDTO.getUserName().toLowerCase());
@@ -95,7 +98,8 @@ public class UserService extends CustomBaseService<User, String> {
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
         user.setCountry(countryService.findOne(userDTO.getCountry().getId()).get());
-        user.setAddress(userDTO.getAddress());
+        user.setLine1(userDTO.getLine1());
+        user.setLine2(userDTO.getLine2());
         user.setCity(userDTO.getCity());
         user.setCp(userDTO.getCp());
         user.setPhone(userDTO.getPhone());
@@ -125,6 +129,7 @@ public class UserService extends CustomBaseService<User, String> {
 
     public void registerUser(UserDTO userDTO) {
         User user = new User();
+        user.setVisible(true);
         String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
         user.setPassword(encryptedPassword);
         user.setFirstName(userDTO.getFirstName());
@@ -138,7 +143,8 @@ public class UserService extends CustomBaseService<User, String> {
         user.setPhone(userDTO.getPhone());
         user.setActivated(true);
         user.setEmail(userDTO.getEmail());
-        user.setAddress(userDTO.getAddress());
+        user.setLine1(userDTO.getLine1());
+        user.setLine2(userDTO.getLine2());
 
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE);
@@ -182,7 +188,8 @@ public class UserService extends CustomBaseService<User, String> {
                     user.setState(userDTO.getState());
                     user.setCp(userDTO.getCp());
                     user.setPhone(userDTO.getPhone());
-                    user.setAddress(userDTO.getAddress());
+                    user.setLine1(userDTO.getLine1());
+                    user.setLine2(userDTO.getLine2());
                     user.setActivated(userDTO.isActivated());
                     user.setLangKey(userDTO.getLangKey());
 
@@ -204,6 +211,37 @@ public class UserService extends CustomBaseService<User, String> {
                 .map(UserDTO::new);
     }
 
+    public Optional<UserDTO> updateAccount(UserDTO userDTO) {
+        return Optional.of(userRepository
+                .findById(userDTO.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(user -> {
+                    if (userDTO.getPassword() != null) {
+                        String encryptedPassword = passwordEncoder.encode(userDTO.getPassword());
+                        user.setPassword(encryptedPassword);
+                    }
+                    user.setUserName(userDTO.getUserName().toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    user.setEmail(userDTO.getEmail());
+                    user.setCity(userDTO.getCity());
+                    user.setCountry(countryService.findOne(userDTO.getCountry().getId()).get());
+                    user.setState(userDTO.getState());
+                    user.setCp(userDTO.getCp());
+                    user.setPhone(userDTO.getPhone());
+                    user.setLine1(userDTO.getLine1());
+                    user.setLine2(userDTO.getLine2());
+                    user.setActivated(userDTO.isActivated());
+                    user.setLangKey(userDTO.getLangKey());
+
+                    userRepository.save(user);
+                    log.debug("Changed Information for the account: {}", user);
+                    return user;
+                })
+                .map(UserDTO::new);
+    }
+
     public void updateLang(String lang) {
         SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByUserName)
@@ -219,7 +257,8 @@ public class UserService extends CustomBaseService<User, String> {
             throw new CustomizeException(Constants.ERR_USER);
         } else {
             userRepository.findOneByUserName(login).ifPresent(user -> {
-                userRepository.delete(user);
+                user.setVisible(false);
+                userRepository.save(user);
                 log.debug("Deleted User: {}", user);
             });
         }
@@ -232,10 +271,11 @@ public class UserService extends CustomBaseService<User, String> {
                     if (user.getId().equals(id)) {
                         throw new CustomizeException(Constants.ERR_USER);
                     } else {
-                        userRepository.findById(id).ifPresent(userById -> {
-                            userRepository.delete(userById);
-                            log.debug("Deleted User: {}", userById);
-                        });
+                        User toDelete = userRepository.findById(id).get();
+                        toDelete.setVisible(false);
+                        toDelete.setDeleted(UUID.randomUUID().toString());
+                        userRepository.save(toDelete);
+                        log.debug("Deleted User: {}", toDelete);
                     }
                 });
     }

@@ -14,6 +14,7 @@ import {Book} from '../model/book';
 import {Topic} from '../../topic/model/topic';
 import {Editor} from "../../editor/model/editor";
 import {Author} from "../../author/model/author";
+import {BookTraceComponent} from "../book-trace/book-trace.component";
 
 @Component({
   selector: 'app-book-list',
@@ -41,7 +42,7 @@ export class BookListComponent implements OnInit {
               private translateService: TranslateService,
               private editorService: EditorService,
               private authorService: AuthorService) {
-    this.itemsPerPage = 5;
+    this.itemsPerPage = 10;
     this.predicate = 'title';
     this.reverse = true;
     this.page = 0;
@@ -97,6 +98,11 @@ export class BookListComponent implements OnInit {
       this.getBooks('btn');
     }, (reason => {
     }))
+  }
+
+  bookTrace(book) {
+    const modalRef = this.modalService.open(BookTraceComponent, {size: 'lg'});
+    modalRef.componentInstance.book = book;
   }
 
   removeBook() {

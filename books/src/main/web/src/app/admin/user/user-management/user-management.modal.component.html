@@ -67,7 +67,7 @@
                      #email="ngModel"
                      required
                      minlength="5"
-                     maxlength="254">
+                     maxlength="100">
               <div *ngIf="email.invalid && (email.dirty || email.touched)"
                    class="error-msg">
                 <div *ngIf="email.errors.required" [translate]="'error.required.email'">
@@ -85,13 +85,13 @@
           <div class="form-group col-md-4">
             <label for="phone" [translate]="'user.phone'">Phone</label>
             <div class="input-group">
-              <input type="number"
+              <input type="text"
                      [(ngModel)]="user.phone"
                      class="form-control"
                      id="phone"
                      name="phone"
-                     min="0"
                      required
+                     maxlength="50"
                      #phone="ngModel"
                      placeholder="{{'user.phone' | translate}}">
               <div *ngIf="phone.invalid && (phone.dirty || phone.touched)"
@@ -113,6 +113,7 @@
                        [virtualScroll]="true"
                        placeholder="{{'author.country' | translate}}"
                        [(ngModel)]="user.country"
+                       (change)="stateEnable(user.country)"
                        #country="ngModel"
                        required>
             </ng-select>
@@ -130,6 +131,7 @@
                    class="form-control"
                    id="state1"
                    name="state"
+                   [disabled]="enableState"
                    placeholder="{{'author.state' | translate}}"
                    #state="ngModel"
                    maxlength="100">
@@ -154,24 +156,36 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-5">
-            <label for="address" [translate]="'cart.address'">Address</label>
+          <div class="form-group col-md-4">
+            <label for="line1" [translate]="'user.line1'">Line1</label>
             <input type="text"
-                   [(ngModel)]="user.address"
+                   [(ngModel)]="user.line1"
                    class="form-control"
-                   id="address"
-                   name="address"
-                   placeholder="{{'cart.address' | translate}}"
-                   #address="ngModel"
+                   id="line1"
+                   name="line1"
+                   placeholder="{{'user.line1' | translate}}"
+                   maxlength="100"
+                   #line1="ngModel"
                    required>
-            <div *ngIf="address.invalid && (address.dirty || address.touched)"
+            <div *ngIf="line1.invalid && (line1.dirty || line1.touched)"
                  class="error-msg">
-              <div *ngIf="address.errors.required" [translate]="'error.required.address'">
+              <div *ngIf="line1.errors.required" [translate]="'error.required.address'">
                 Address is required.
               </div>
             </div>
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-4">
+            <label for="line2" [translate]="'user.line2'">Line2</label>
+            <input type="text"
+                   [(ngModel)]="user.line2"
+                   class="form-control"
+                   id="line2"
+                   name="line2"
+                   placeholder="{{'user.line2' | translate}}"
+                   maxlength="100"
+                   #line2="ngModel">
+          </div>
+          <div class="form-group col-md-4">
             <label for="cp" [translate]="'user.cp'">Postal code</label>
             <input type="text"
                    [(ngModel)]="user.cp"
@@ -189,6 +203,8 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="form-row">
           <div class="form-group col-md-2">
             <label for="langKey1" [translate]="'user.language'">Language</label>
             <select id="langKey1" class="form-control"
@@ -207,8 +223,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="form-row">
           <div class="form-group col-md-2">
             <label for="isAdmin" [translate]="'user.employee'">Employee</label>
             <select id="isAdmin" class="form-control"
@@ -227,7 +241,7 @@
               </div>
             </div>
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-4">
             <label for="password1" [translate]="'user.password'">Password</label>
             <input type="password"
                    [(ngModel)]="user.password"
@@ -250,7 +264,7 @@
             </div>
             <app-password-strength-bar [passwordToCheck]="user.password"></app-password-strength-bar>
           </div>
-          <div class="form-group col-md-5">
+          <div class="form-group col-md-4">
             <label for="passwordTwo" [translate]="'user.passwordTwo'">Confirm password</label>
             <input type="password"
                    [(ngModel)]="confirmPassword"
@@ -278,7 +292,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary"
-                [disabled]="!registerForm.valid || twoPass()"
+                [disabled]="!registerForm.valid || twoPass() || load"
                 [translate]="'general.save'"> Save
         </button>
         <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

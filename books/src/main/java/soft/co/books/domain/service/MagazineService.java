@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.storage.StorageService;
 import soft.co.books.domain.collection.Editor;
+import soft.co.books.domain.collection.EditorDocument;
 import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.collection.Topic;
 import soft.co.books.domain.repository.MagazineRepository;
@@ -48,13 +49,18 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
     public MagazineService(MagazineRepository magazineRepository,
                            MongoTemplate mongoTemplate,
                            StorageService storageService,
-                           TopicService topicService, EditorService editorService) {
+                           TopicService topicService,
+                           EditorService editorService) {
         super(magazineRepository);
         this.magazineRepository = magazineRepository;
         this.mongoTemplate = mongoTemplate;
         this.topicService = topicService;
         this.editorService = editorService;
         this.storageService = storageService;
+    }
+
+    public Magazine findByIdAndVisible(String id, boolean visible) {
+        return magazineRepository.findByIdAndVisible(id, visible);
     }
 
     public PageResultDTO findAll(MagazineDTO magazineDTO, Pageable pageable) {
@@ -86,6 +92,8 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
             }
         }
 
+        query.addCriteria(where("visible").is(true));
+
         Page<Magazine> magazines = new PageImpl<>(mongoTemplate.find(query, Magazine.class));
         resultDTO.setElements(magazines.stream().map(MagazineDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, Magazine.class));
@@ -98,11 +106,19 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         magazine.setTitle(magazineDTO.getTitle());
         magazine.setComments(magazineDTO.getComments());
         magazine.setWeight(magazineDTO.getWeight());
+        magazine.setVisible(true);
 
         List<Editor> editorList = magazineDTO.getEditorList().stream()
                 .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
                 .collect(Collectors.toList());
         magazine.setEditorList(editorList);
+        if (editorList.size() > 0) {
+            Editor editor = editorList.get(0);
+            EditorDocument editorDocument = new EditorDocument();
+            editorDocument.setId(editor.getId());
+            editorDocument.setName(editor.getName());
+            magazine.setEditorDocument(editorDocument);
+        }
 
         List<Topic> topicList = magazineDTO.getTopicList().stream()
                 .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
@@ -121,8 +137,9 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
         magazine.setImageUrl(magazineDTO.getImage());
         magazine.setVisit(magazineDTO.getVisit());
 
-        log.debug("Created Information for Magazine: {}", magazine);
-        return Optional.of(magazineRepository.save(magazine))
+        Magazine result = magazineRepository.save(magazine);
+        log.debug("Created Information for Magazine: {}", result);
+        return Optional.of(result)
                 .map(MagazineDTO::new);
     }
 
@@ -154,6 +171,13 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
                             .map(editorDTO -> editorService.findOne(editorDTO.getId()).get())
                             .collect(Collectors.toList());
                     magazine.setEditorList(editorList);
+                    if (editorList.size() > 0) {
+                        Editor editor = editorList.get(0);
+                        EditorDocument editorDocument = new EditorDocument();
+                        editorDocument.setId(editor.getId());
+                        editorDocument.setName(editor.getName());
+                        magazine.setEditorDocument(editorDocument);
+                    }
 
                     List<Topic> topicList = magazineDTO.getTopicList().stream()
                             .map(topicDTO -> topicService.findOne(topicDTO.getId()).get())
@@ -177,8 +201,21 @@ public class MagazineService extends CustomBaseService<Magazine, String> {
 
     public void delete(String id) {
         magazineRepository.findById(id).ifPresent(magazine -> {
-            storageService.deleteById(magazine.getId());
-            magazineRepository.delete(magazine);
+            magazine.setVisible(false);
+//            storageService.deleteById(magazine.getId());
+//            Trace trace = new Trace();
+//            trace.setAction("Delete");
+//            trace.setDate(new SimpleDateFormat("yyyy-MM-dd").format(Date.from(Instant.now())));
+//            String userName = SecurityUtils.getCurrentUserLogin().get();
+//            if (userName != null) {
+//                magazine.setLastModifiedDate(new SimpleDateFormat("yyyy-MM-dd")
+//                        .format(Date.from(Instant.now())));
+//                magazine.setLastModifiedBy(userName);
+//            }
+//            trace.setUserName(userName);
+//            magazine.getTraceList().add(trace);
+
+            magazineRepository.save(magazine);
             log.debug("Deleted Magazine: {}", magazine);
         });
     }

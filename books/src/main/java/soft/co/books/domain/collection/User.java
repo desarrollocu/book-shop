@@ -26,15 +26,16 @@ import java.util.Set;
  */
 @Document(collection = "sys_user")
 @CompoundIndexes({
-        @CompoundIndex(name = "user_idx", def = "{'user_name': 1, 'first_name': 1, 'last_name': 1, 'email': 1}",
-                unique = true)
+        @CompoundIndex(name = "user_emailx", def = "{'email': 1, 'deleted': 1}",
+                unique = true),
+        @CompoundIndex(name = "user_namex", def = "{'user_name': 1, 'deleted': 1}", unique = true)
 })
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id
     private String id;
 
-    @Indexed(unique = true)
+    @Indexed
     @Field("user_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
     @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
@@ -51,13 +52,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private String lastName;
 
     @Email
-    @Indexed(unique = true)
+    @Indexed
     @NotNull(message = Constants.ERR_NOT_NULL)
-    @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
+    @Size(min = 5, max = 100, message = Constants.ERR_MAX100)
     private String email;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private String address;
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String line1;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String line2;
 
     @Field("lang_key")
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -84,8 +89,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String cp;
 
+    @Size(max = 50, message = Constants.ERR_MAX50)
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private int phone;
+    private String phone;
+
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private boolean visible;
+
+    private String deleted = "empty";
 
     @DBRef
     private Set<Authority> authorities = new HashSet<>();
@@ -94,6 +105,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Version
     private Long version;
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
 
     public String getId() {
         return id;
@@ -167,12 +194,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.authorities = authorities;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLine1() {
+        return line1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    public String getLine2() {
+        return line2;
+    }
+
+    public void setLine2(String line2) {
+        this.line2 = line2;
     }
 
     @Override
@@ -190,7 +225,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
                 ", langKey='" + langKey + '\'' +
                 ", password='" + password + '\'' +
                 ", activated=" + activated +
-                ", address=" + address +
+                ", line1=" + line1 +
+                ", line2=" + line2 +
                 ", version=" + version +
                 '}';
     }
@@ -227,11 +263,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.cp = cp;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

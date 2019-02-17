@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.Constants;
@@ -14,6 +16,7 @@ import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Editor;
+import soft.co.books.domain.collection.EditorDocument;
 import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.repository.EditorRepository;
 import soft.co.books.domain.service.dto.EditorDTO;
@@ -96,7 +99,21 @@ public class EditorService extends CustomBaseService<Editor, String> {
                     editor.setName(editorDTO.getName());
                     editor.setCity(editorDTO.getCity());
                     editor.setCountry(countryService.findOne(editorDTO.getCountry().getId()).get());
-                    editorRepository.save(editor);
+                    Editor editorTemp = editorRepository.save(editor);
+
+                    /**
+                     * Update all books*/
+                    EditorDocument editorDocument = new EditorDocument();
+                    editorDocument.setId(editorTemp.getId());
+                    editorDocument.setName(editorTemp.getName());
+
+                    Query query = new Query();
+                    query.addCriteria(Criteria.where("editorDocument.id").is(editorTemp.getId()));
+                    Update update = new Update();
+                    update.set("editorDocument", editorDocument);
+                    mongoTemplate.updateMulti(query, update, Book.class);
+                    mongoTemplate.updateMulti(query, update, Magazine.class);
+
                     log.debug("Changed Information for Editor: {}", editor);
                     return editor;
                 })
@@ -105,7 +122,7 @@ public class EditorService extends CustomBaseService<Editor, String> {
 
     public void delete(String id) {
         Query query = new Query();
-        query.addCriteria(where("editor.id").is(id));
+        query.addCriteria(where("editorList.id").is(id));
         if (mongoTemplate.count(query, Book.class) > 0 || mongoTemplate.count(query, Magazine.class) > 0) {
             throw new CustomizeException(Constants.ERR_DELETE);
         } else {

@@ -34,6 +34,7 @@ export class BookManagementComponent implements OnInit {
   message: string;
   imageSize: any;
   file: File;
+  load:boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private bookService: BookService,
@@ -73,6 +74,7 @@ export class BookManagementComponent implements OnInit {
   }
 
   saveBook() {
+    this.load = true;
     this.bookService.saveBook(this.book, this.file)
       .subscribe(response => this.onSuccess(response, this.book),
         response => this.onError(response));
@@ -150,6 +152,7 @@ export class BookManagementComponent implements OnInit {
       msg = 'success.edited';
     }
     this.book = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -181,6 +184,7 @@ export class BookManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

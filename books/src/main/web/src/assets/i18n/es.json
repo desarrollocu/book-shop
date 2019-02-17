@@ -63,6 +63,7 @@
     "buys": "Mis compras",
     "contact": "Gestión de Información",
     "car": "Carrito de compras",
+    "trace": "Listado de trazas",
     "shippingCost": "Costos de envío"
   },
   "search": {
@@ -79,6 +80,8 @@
     "account": " Cuenta",
     "admin": "Administrador",
     "cp": "Código postal",
+    "line1": "Primera línea de la dirección",
+    "line2": "Segunda línea de la dirección",
     "phone": "Teléfono",
     "language": "Idioma",
     "password": "Contraseña",
@@ -111,7 +114,8 @@
     "editionYear": "Año de edición",
     "editionCountry": "País de edición",
     "pages": "Páginas",
-    "size": "Medidas",
+    "size": "Medidas(cm)",
+    "size1": "Ej:20x20",
     "isbn": "ISBN",
     "author": "Autor",
     "salePrice": "Precio de venta",
@@ -127,7 +131,15 @@
     "detail": "Detalles del libro",
     "toShow": "Mostar en portada",
     "toShowPlaceholder": "Sí/No",
-    "mostSale": "Libros más vendidos"
+    "mostSale": "Libros más vendidos",
+    "createdData": "Datos de creación",
+    "updateData": "Última modificación",
+    "trace": {
+      "title": "Historial del libro",
+      "action": "Acción",
+      "user": "Usuario",
+      "date": "Fecha"
+    }
   },
   "magazine": {
     "add": " Adicionar revista",
@@ -198,7 +210,8 @@
     "payPal": "Error de PayPal, Revise sus datos y vuelva a intentarlo.",
     "payPalConnection": "Error conectando con PayPal.",
     "pattern": {
-      "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra"
+      "descriptors": "Formato incorrecto. Ej: palabra,palabra,palabra",
+      "size": "Medidas incorrectas.Ej:20x20."
     },
     "equalPassword": "Las contraseñas no coinciden.",
     "required": {
@@ -224,7 +237,7 @@
       "country": "El país es requerido.",
       "nameEnglish": "El campo nombre en ingles es requerido.",
       "nameSpanish": "El campo nombre en español es requerido.",
-      "phone": "El telefono es requerido.",
+      "phone": "El teléfono es requerido.",
       "twitter": "La dirección de twitter es requerida.",
       "facebook": "La dirección de facebook es requerida.",
       "instagram": "La dirección de instagram es requerida.",
@@ -258,9 +271,11 @@
     "E62": "No puede eliminar su propio usuario.",
     "E63": "Ha ocurrido un error durante la creación del pago.",
     "E64": "Error conectando con PayPal.",
-    "E67": "Error de PayPal, Revise sus datos y vuelva a intentarlo.",
+    "E67": "Error de PayPal, Revise sus datos de envío y vuelva a intentarlo.",
     "E68": "La cantidad que está intentando comprar es mayor a la que hay en existencia.",
-    "E69": "Ha ocurrido un error."
+    "E69": "Ha ocurrido un error.",
+    "E70": "Alguno de los documentos fue eliminado. Actualice la página.",
+    "E71": "Máximo 120 caracteres."
   },
   "info": {
     "title": "Información",
@@ -291,7 +306,9 @@
     "instagram": "Dirección de Instagram",
     "google": "Dirección de Google+",
     "mainTextEnglish": "Texto principal en ingles",
-    "mainTextSpanish": "Texto principal en español"
+    "mainTextSpanish": "Texto principal en español",
+    "address": "Dirección",
+    "shipmentPercent": "Porciento de envío (%)"
   },
   "cart": {
     "fullName": "Nombre completo",
@@ -312,7 +329,9 @@
     "shoppingState": "Estado de la compra",
     "saleDate": "Fecha de la venta",
     "description": "Descripción",
-    "total": "Total"
+    "total": "Total",
+    "user":"Información del comprador",
+    "info": "Datos de envío"
   },
   "city": "ciudad",
   "state": "estado",
@@ -321,5 +340,8 @@
   "inProcess": "En tramites de envío",
   "requestedPaid": "Solicitada-Pagada",
   "inTransit": "En curso",
-  "received": "Recibida"
+  "received": "Recibida",
+  "Update": "Modificación",
+  "Create": "Creación",
+  "Delete": "Eliminación"
 }

@@ -12,7 +12,7 @@ export class Book {
     public classification?: any,
     public editionYear?: string,
     public descriptors?: string,
-    public pages?: number,
+    public pages?: string,
     public size?: string,
     public isbn?: string,
     public topic?: any,

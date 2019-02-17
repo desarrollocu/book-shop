@@ -56,10 +56,11 @@ public class UserResource {
 
     @PostMapping("/updateAccount")
     public UserDTO updateAccount(@Valid @RequestBody UserDTO userDTO) {
-        UserDTO user = userService.updateUser(userDTO).get();
+        UserDTO user = userService.updateAccount(userDTO).get();
         if (user != null) {
             ShippingSession shippingSession = new ShippingSession();
-            shippingSession.setAddress(user.getAddress());
+            shippingSession.setLine1(user.getLine1());
+            shippingSession.setLine2(user.getLine2());
             shippingSession.setCity(user.getCity());
             shippingSession.setCountry(user.getCountry());
             shippingSession.setEmail(user.getEmail());

@@ -26,6 +26,6 @@ public class CountryService extends CustomBaseService<Country, String> {
     public CountryService(CountryRepository countryRepository, MongoTemplate mongoTemplate) {
         super(countryRepository);
         this.countryRepository = countryRepository;
-        this.mongoTemplate = mongoTemplate;
+         this.mongoTemplate = mongoTemplate;
     }
 }

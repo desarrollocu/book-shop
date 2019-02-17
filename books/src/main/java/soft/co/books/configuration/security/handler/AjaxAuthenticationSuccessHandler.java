@@ -39,7 +39,8 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
                 shippingSession.setPhone(String.valueOf(user.getPhone()));
                 shippingSession.setFullName(user.getFirstName() + " " + user.getLastName());
                 shippingSession.setCountry(user.getCountry());
-                shippingSession.setAddress(user.getAddress());
+                shippingSession.setLine1(user.getLine1());
+                shippingSession.setLine2(user.getLine2());
                 shippingSession.setCity(user.getCity());
                 shippingSession.setEmail(user.getEmail());
                 cartServices.addShippingInfo(shippingSession);

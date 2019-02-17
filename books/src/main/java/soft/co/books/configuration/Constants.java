@@ -28,6 +28,8 @@ public final class Constants {
     public static final String ERR_PAYPAL_CONEX = "error.E64";
     public static final String ERR_PAYPAL_DATA = "error.E67";
     public static final String ERR_SERVER = "error.E69";
+    public static final String ERR_NOT_BOOK = "error.70";
+    public static final String ERR_MAX120 = "error.E71";
 
     private Constants() {
     }

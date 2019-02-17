@@ -9,7 +9,8 @@ public class ShippingSession implements Serializable {
     private String fullName;
     private String email;
     private String phone;
-    private String address;
+    private String line1;
+    private String line2;
     private String state;
     private String city;
     private String postalCode;
@@ -42,12 +43,20 @@ public class ShippingSession implements Serializable {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLine1() {
+        return line1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    public String getLine2() {
+        return line2;
+    }
+
+    public void setLine2(String line2) {
+        this.line2 = line2;
     }
 
     public String getState() {

@@ -5,8 +5,18 @@ public class ElementDTO {
     private String url;
     private String position;
     private String left;
+    private String documentId;
+    private boolean book;
 
     public ElementDTO() {
+    }
+
+    public boolean getBook() {
+        return book;
+    }
+
+    public void setBook(boolean book) {
+        this.book = book;
     }
 
     public String getUrl() {
@@ -31,5 +41,13 @@ public class ElementDTO {
 
     public void setLeft(String left) {
         this.left = left;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }

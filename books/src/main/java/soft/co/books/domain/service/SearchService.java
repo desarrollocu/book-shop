@@ -13,6 +13,7 @@ import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.collection.Editor;
 import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.service.dto.*;
+import soft.co.books.domain.service.temporal.Temp;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +44,9 @@ public class SearchService {
         query.limit(pageable.getPageSize());
         query.skip(pageable.getPageNumber() * pageable.getPageSize());
         query.with(pageable.getSort());
+        query.fields().exclude("traceList");
+        query.fields().exclude("createdBy");
+        query.fields().exclude("lastModifiedBy");
 
         if (searchDTO.getAuthor() != null && !searchDTO.getAuthor().isEmpty()) {
             Query authorQuery = new Query(Criteria.where("fullName").regex(searchDTO.getAuthor().toLowerCase(), "i"));
@@ -122,8 +126,7 @@ public class SearchService {
             }
         }
 
-        query.addCriteria(where("stockNumber").gt(0));
-
+        query.addCriteria(where("stockNumber").gt(0).and("visible").is(true));
         Page<Book> books = new PageImpl<>(mongoTemplate.find(query, Book.class));
         resultDTO.setElements(books.stream().map(BookDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, Book.class));
@@ -137,6 +140,9 @@ public class SearchService {
         query.limit(pageable.getPageSize());
         query.skip(pageable.getPageNumber() * pageable.getPageSize());
         query.with(pageable.getSort());
+        query.fields().exclude("traceList");
+        query.fields().exclude("createdBy");
+        query.fields().exclude("lastModifiedBy");
 
         boolean editorFlag = false;
         Set<Editor> editorList = new HashSet<>();
@@ -185,7 +191,7 @@ public class SearchService {
         if (editorFlag)
             query.addCriteria(where("editorList").in(editorList));
 
-        query.addCriteria(where("stockNumber").gt(0));
+        query.addCriteria(where("stockNumber").gt(0).and("visible").is(true));
         Page<Magazine> magazines = new PageImpl<>(mongoTemplate.find(query, Magazine.class));
         resultDTO.setElements(magazines.stream().map(MagazineDTO::new).collect(Collectors.toList()));
         resultDTO.setTotal(mongoTemplate.count(query, Book.class));
@@ -195,28 +201,38 @@ public class SearchService {
     public List<CarouselDTO> searchCarouselBooks() {
         Query query = new Query();
         query.fields().include("image_url");
-        query.addCriteria(where("stockNumber").gt(0));
-        query.addCriteria(where("toShow").is(true));
+        query.addCriteria(where("stockNumber").gt(0).and("toShow").is(true).and("visible").is(true));
+
         List<Book> books = mongoTemplate.find(query, Book.class);
         List<Magazine> magazines = mongoTemplate.find(query, Magazine.class);
 
-        List<String> urls = new ArrayList<>();
+        List<Temp> urls = new ArrayList<>();
         for (int i = 0; i < books.size(); i++) {
-            urls.add(books.get(i).getImageUrl());
+            Temp bookTemp = new Temp();
+            bookTemp.setUrl(books.get(i).getImageUrl());
+            bookTemp.setDocumentId(books.get(i).getId());
+            bookTemp.setBook(true);
+            urls.add(bookTemp);
         }
         for (int i = 0; i < magazines.size(); i++) {
-            urls.add(magazines.get(i).getImageUrl());
+            Temp magazineTemp = new Temp();
+            magazineTemp.setUrl(magazines.get(i).getImageUrl());
+            magazineTemp.setDocumentId(magazines.get(i).getId());
+            magazineTemp.setBook(false);
+            urls.add(magazineTemp);
         }
 
         List<CarouselDTO> carouselDTOS = new ArrayList<>();
         while (urls.size() > 0) {
             List<ElementDTO> toPush = new ArrayList<>();
-            List<String> temp = new ArrayList<>(urls.subList(0, urls.size() < 4 ? urls.size() : 4));
+            List<Temp> temp = new ArrayList<>(urls.subList(0, urls.size() < 4 ? urls.size() : 4));
             urls.removeAll(temp);
 
             for (int i = 0; i < temp.size(); i++) {
                 ElementDTO elementDTO = new ElementDTO();
-                elementDTO.setUrl(temp.get(i));
+                elementDTO.setUrl(temp.get(i).getUrl());
+                elementDTO.setDocumentId(temp.get(i).getDocumentId());
+                elementDTO.setBook(temp.get(i).getBook());
                 elementDTO.setPosition(i > 0 ? "absolute" : null);
                 elementDTO.setLeft(i > 0 ? 167 * i + "px" : null);
                 toPush.add(elementDTO);
@@ -228,6 +244,7 @@ public class SearchService {
                 ElementDTO elementDTO = new ElementDTO();
                 elementDTO.setUrl("assets/images/image.gif");
                 elementDTO.setPosition("absolute");
+                elementDTO.setDocumentId(null);
                 elementDTO.setLeft(167 * pos + "px");
                 toPush.add(elementDTO);
                 pos++;

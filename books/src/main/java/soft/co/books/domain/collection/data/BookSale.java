@@ -31,9 +31,8 @@ public class BookSale extends DocumentSale implements Serializable {
     @Field("edition_year")
     private String editionYear;
 
-    private int pages = 0;
+    private String pages;
 
-    @Size(max = 50, message = Constants.ERR_MAX50)
     private String size;
 
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -72,11 +71,11 @@ public class BookSale extends DocumentSale implements Serializable {
         this.size = size;
     }
 
-    public int getPages() {
+    public String getPages() {
         return pages;
     }
 
-    public void setPages(int pages) {
+    public void setPages(String pages) {
         this.pages = pages;
     }
 

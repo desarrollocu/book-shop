@@ -1,4 +1,7 @@
 import {NgModule} from '@angular/core';
+import {AngularEditorModule} from '@kolkov/angular-editor';
+import {FormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
 
 import {UserManagementModalComponent} from './user/user-management/user-management.modal.component';
 import {SharedModule} from '../shared/shared.module';
@@ -17,6 +20,8 @@ import {TopicListComponent} from './topic/topic-list/topic-list.component';
 import {ContactListComponent} from './contact/contact-list/contact-list.component';
 import {SaleListComponent} from './sale/sale-list/sale-list.component';
 import {SaleManagementComponent} from './sale/sale-management/sale-management.component';
+import {BookTraceComponent} from './book/book-trace/book-trace.component';
+
 
 @NgModule({
   declarations: [
@@ -34,13 +39,15 @@ import {SaleManagementComponent} from './sale/sale-management/sale-management.co
     TopicListComponent,
     ContactListComponent,
     SaleListComponent,
-    SaleManagementComponent
+    SaleManagementComponent,
+    BookTraceComponent
   ],
   imports: [
+    BrowserModule, FormsModule, AngularEditorModule,
     SharedModule,
     AdminRoutingModule
   ],
-  entryComponents: [AuthorManagementComponent, BookManagementComponent, EditorManagementComponent,
+  entryComponents: [AuthorManagementComponent, BookManagementComponent, BookTraceComponent, EditorManagementComponent,
     MagazineManagementComponent, SaleManagementComponent, TopicManagementComponent, UserManagementModalComponent]
 })
 export class AdminModule {

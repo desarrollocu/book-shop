@@ -63,6 +63,7 @@
     "buys": "My Shoppings",
     "contact": "Information Management",
     "car": "Cart",
+    "trace": "Trace List",
     "shippingCost": "Shipping Cost"
   },
   "search": {
@@ -79,6 +80,8 @@
     "account": " Account",
     "admin": "Administrator",
     "cp": "Postal code",
+    "line1": "First line of address",
+    "line2": "Second line of address",
     "phone": "Phone",
     "language": "Language",
     "password": "Password",
@@ -111,7 +114,8 @@
     "editionYear": "Edition year",
     "editionCountry": "Edition country",
     "pages": "Pages",
-    "size": "Sizes",
+    "size": "Size(cm)",
+    "size1": "Ex:20x20",
     "isbn": "ISBN",
     "author": "Author",
     "salePrice": "Sale price",
@@ -127,7 +131,15 @@
     "detail": "Book details",
     "toShow": "Show in home",
     "toShowPlaceholder": "Yes/No",
-    "mostSale": "Most sales books"
+    "mostSale": "Most sales books",
+    "createdData": "Created info",
+    "updateData": "Last modified info",
+    "trace": {
+      "title": "Book trace",
+      "action": "Action",
+      "user": "User",
+      "date": "Date"
+    }
   },
   "magazine": {
     "add": " Add magazine",
@@ -196,7 +208,8 @@
     "payPal": "PayPal error, Checks your info an try again.",
     "payPalConnection": "PayPal error, Checks your connection.",
     "pattern": {
-      "descriptors": "Bad format. Ex: word,word,word"
+      "descriptors": "Bad format. Ex: word,word,word",
+      "size": "Wrong size.Ex:20x20."
     },
     "equalPassword": "Confirm password must be equal than password.",
     "required": {
@@ -256,9 +269,11 @@
     "E62": "You cant remove yourself.",
     "E63": "Error happened during payment creation!",
     "E64": "PayPal error, Checks your connection.",
-    "E67": "PayPal error, Checks your info and try again.",
+    "E67": "PayPal error, Checks your shipping info and try again.",
     "E68": "The amount you are trying to buy is greater than the amount in stock.",
-    "E69": "Internal server error."
+    "E69": "Internal server error.",
+    "E70": "Some document was removed. Refresh the page.",
+    "E71": "Max 120 characters."
   },
   "info": {
     "title": "Info",
@@ -291,6 +306,8 @@
     "google": "Google+ address",
     "mainTextEnglish": "Main text in english",
     "mainTextSpanish": "Main text in spanish",
+    "address": "Address",
+    "shipmentPercent": "Shipment percent (%)",
     "success": ""
   },
   "cart": {
@@ -312,7 +329,9 @@
     "saleState": "Sale state",
     "saleDate": "Sale date",
     "description": "Description",
-    "total": "Total"
+    "total": "Total",
+    "user": "Buyer info",
+    "info": "Shipping info"
   },
   "city": "city",
   "state": "state",
@@ -321,5 +340,8 @@
   "inProcess": "In Process",
   "requestedPaid": "Requested-Paid",
   "inTransit": "In Transit",
-  "received": "Received"
+  "received": "Received",
+  "Update": "Update",
+  "Create": "Create",
+  "Delete": "Delete"
 }

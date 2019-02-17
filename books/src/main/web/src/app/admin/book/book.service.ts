@@ -3,7 +3,8 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from "rxjs";
 
 import {createRequestOption} from '../../shared/util/request-util';
-import {Book} from "./model/book";
+import {Book} from './model/book';
+import {BookTrace} from './model/book-trace';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class BookService {
 
   getBook(book: Book): Observable<HttpResponse<Book>> {
     return this.http.post<Book>('api/book', book, {observe: 'response'});
+  }
+
+  findTrace(book: Book): Observable<HttpResponse<BookTrace>> {
+    return this.http.post<BookTrace>('api/bookTrace', book, {observe: 'response'});
   }
 
   saveBook(book: Book, file: File): Observable<HttpResponse<Book>> {

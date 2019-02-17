@@ -14,6 +14,26 @@ public class CustomError implements Serializable {
 
     private String error;
 
+    private String realError;
+
+    private StackTraceElement[] traceElement;
+
+    public StackTraceElement[] getTraceElement() {
+        return traceElement;
+    }
+
+    public String getRealError() {
+        return realError;
+    }
+
+    public void setRealError(String realError) {
+        this.realError = realError;
+    }
+
+    public void setTraceElement(StackTraceElement[] traceElement) {
+        this.traceElement = traceElement;
+    }
+
     public String getId() {
         return id;
     }

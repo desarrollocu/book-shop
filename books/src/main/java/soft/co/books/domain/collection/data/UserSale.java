@@ -28,16 +28,20 @@ public class UserSale implements Serializable {
 
     @Field("full_name")
     @NotNull(message = Constants.ERR_NOT_NULL)
-    @Size(min = 1, max = 50, message = Constants.ERR_MIN1_MAX50)
+    @Size(min = 1, max = 100, message = Constants.ERR_MAX100)
     private String fullName;
 
     @Email
     @NotNull(message = Constants.ERR_NOT_NULL)
-    @Size(min = 5, max = 254, message = Constants.ERR_MIN5_MAX254)
+    @Size(min = 5, max = 100, message = Constants.ERR_MAX100)
     private String email;
 
+    @Size(max = 140, message = Constants.ERR_MAX120)
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private String address;
+    private String line1;
+
+    @Size(max = 100, message = Constants.ERR_MAX100)
+    private String line2;
 
     @DBRef
     @NotNull(message = Constants.ERR_NOT_NULL)
@@ -54,8 +58,9 @@ public class UserSale implements Serializable {
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String cp;
 
+    @Size(max = 50, message = Constants.ERR_MAX50)
     @NotNull(message = Constants.ERR_NOT_NULL)
-    private int phone;
+    private String phone;
 
     public UserSale() {
     }
@@ -65,12 +70,29 @@ public class UserSale implements Serializable {
         this.userName = user.getUserName();
         this.fullName = user.getFirstName() + " " + user.getLastName();
         this.email = user.getEmail();
-        this.address = user.getAddress();
+        this.line1 = user.getLine1();
+        this.line2 = user.getLine2();
         this.country = user.getCountry();
         this.state = user.getState();
         this.city = user.getCity();
         this.cp = user.getCp();
         this.phone = user.getPhone();
+    }
+
+    public String getLine1() {
+        return line1;
+    }
+
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    public String getLine2() {
+        return line2;
+    }
+
+    public void setLine2(String line2) {
+        this.line2 = line2;
     }
 
     public String getUserId() {
@@ -105,14 +127,6 @@ public class UserSale implements Serializable {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public Country getCountry() {
         return country;
     }
@@ -145,11 +159,11 @@ public class UserSale implements Serializable {
         this.cp = cp;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -168,7 +182,8 @@ public class UserSale implements Serializable {
                 ", country='" + country + '\'' +
                 ", state='" + state + '\'' +
                 ", phone='" + phone + '\'' +
-                ", address=" + address +
+                ", line1=" + line1 +
+                ", line2=" + line2 +
                 '}';
     }
 

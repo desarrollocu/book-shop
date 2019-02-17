@@ -17,6 +17,7 @@ export class AuthorManagementComponent implements OnInit {
   @Input() author;
   countryList: Country[];
   currentLang: string;
+  load: boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private authorService: AuthorService,
@@ -41,6 +42,7 @@ export class AuthorManagementComponent implements OnInit {
   }
 
   saveAuthor() {
+    this.load = true;
     this.authorService.saveAuthor(this.author)
       .subscribe(response => this.onSuccess(response, this.author),
         response => this.onError(response));
@@ -68,6 +70,7 @@ export class AuthorManagementComponent implements OnInit {
       msg = 'success.edited';
     }
     this.author = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -89,6 +92,7 @@ export class AuthorManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

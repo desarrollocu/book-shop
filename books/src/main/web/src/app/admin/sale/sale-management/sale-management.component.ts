@@ -13,6 +13,7 @@ import {TranslateService} from "@ngx-translate/core";
 export class SaleManagementComponent implements OnInit {
   @Input() sale;
   stateList: string[];
+  load: boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private saleService: SaleService,
@@ -32,6 +33,7 @@ export class SaleManagementComponent implements OnInit {
   }
 
   saveSale() {
+    this.load = true;
     this.saleService.saveSale(this.sale)
       .subscribe(response => this.onSuccess(response, this.sale),
         response => this.onError(response));
@@ -40,6 +42,7 @@ export class SaleManagementComponent implements OnInit {
   private onSuccess(response, sale) {
     let msg = 'success.edited';
     this.sale = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -52,6 +55,7 @@ export class SaleManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

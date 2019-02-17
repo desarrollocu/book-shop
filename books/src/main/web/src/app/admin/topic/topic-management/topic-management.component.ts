@@ -13,6 +13,7 @@ import {Topic} from "../model/topic";
 })
 export class TopicManagementComponent implements OnInit {
   @Input() topic;
+  load: boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private topicService: TopicService,
@@ -30,6 +31,7 @@ export class TopicManagementComponent implements OnInit {
   }
 
   saveTopic() {
+    this.load = false;
     this.topicService.saveTopic(this.topic)
       .subscribe(response => this.onSuccess(response, this.topic),
         response => this.onError(response));
@@ -41,6 +43,7 @@ export class TopicManagementComponent implements OnInit {
       msg = 'success.edited';
     }
     this.topic = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -56,6 +59,7 @@ export class TopicManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

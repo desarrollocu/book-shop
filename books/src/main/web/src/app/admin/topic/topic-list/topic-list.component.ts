@@ -30,7 +30,7 @@ export class TopicListComponent implements OnInit {
               private alertService: AlertService,
               private translateService: TranslateService,
               private modalService: NgbModal) {
-    this.itemsPerPage = 5;
+    this.itemsPerPage = 10;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;

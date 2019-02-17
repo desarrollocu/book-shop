@@ -23,6 +23,8 @@ export class UserManagementModalComponent implements OnInit {
   countryList: Country[];
   confirmPassword: string;
   currentLang: string;
+  load: boolean = false;
+  enableState: boolean = true;
 
   constructor(private userService: UserService,
               private alertService: AlertDialogService,
@@ -70,6 +72,7 @@ export class UserManagementModalComponent implements OnInit {
     if (this.user.password === "")
       this.user.password = null;
 
+    this.load = true;
     this.userService.saveUser(this.user)
       .subscribe(response => this.onSuccess(response, this.user),
         response => this.onError(response));
@@ -87,6 +90,7 @@ export class UserManagementModalComponent implements OnInit {
       msg = 'success.edited';
     }
     this.user = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -94,17 +98,20 @@ export class UserManagementModalComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 
   private onSearchSuccess(result) {
-    if (result.body !== null)
+    if (result.body !== null) {
       this.user = result.body;
+    }
     else {
       this.user = new User();
       this.user.langKey = "en";
       this.user.isAdmin = "true";
     }
+    this.stateEnable(this.user.country);
   }
 
   getCountries() {
@@ -122,5 +129,22 @@ export class UserManagementModalComponent implements OnInit {
 
   cancel() {
     this.activeModal.dismiss();
+  }
+
+  stateEnable(val) {
+    if (val != undefined) {
+      if (val.code === 'US' || val.code === 'MX' || val.code === 'AR'
+        || val.code === 'AU' || val.code === 'CA' || val.code === 'C2' || val.code === 'HK' || val.code === 'ID'
+        || val.code === 'JP' || val.code === 'RU' || val.code === 'CH' || val.code === 'TH') {
+        this.enableState = false
+      } else {
+        this.enableState = true;
+        this.user.state = null;
+      }
+    }
+    else {
+      this.enableState = true;
+      this.user.state = null;
+    }
   }
 }

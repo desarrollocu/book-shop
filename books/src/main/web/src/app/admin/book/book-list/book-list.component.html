@@ -77,9 +77,10 @@
         <!--<th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getBooks('title')">Title-->
         <!--<i class="fa fa-sort" style="margin-left: 5px"></i></th>-->
         <th scope="col" style="width: 15%;" [translate]="'book.editor'">Editor</th>
-        <th scope="col" style="width: 15%;" [translate]="'book.topic'">Topic</th>
-        <th scope="col" style="width: 10%;" [translate]="'book.isbn'">ISBN</th>
+        <!--<th scope="col" style="width: 15%;" [translate]="'book.topic'">Topic</th>-->
+        <!--<th scope="col" style="width: 10%;" [translate]="'book.isbn'">ISBN</th>-->
         <th scope="col" style="width: 10%;" [translate]="'book.price'">Price</th>
+        <th scope="col" style="width: 10%;" [translate]="'book.createdData'">Created data</th>
         <!--<th scope="col" style="width: 10%;" [translate]="'book.price'" (click)="getBooks('salePrice')">Price-->
         <!--<i class="fa fa-sort" style="margin-left: 5px"></i></th>-->
         <th scope="col" style="width: 15%;"></th>
@@ -87,18 +88,22 @@
       </thead>
       <tbody>
       <tr *ngIf="bookList.length === 0">
-        <td colspan="7" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
+        <td colspan="8" align="center" class="table-empty" [translate]="'general.empty'">Elements not found!</td>
       </tr>
       <tr *ngFor="let book of bookList; trackBy: trackIdentity">
         <td scope="row">{{book.authors}}</td>
         <td>{{book.title}}</td>
         <td>{{book.editors}}</td>
-        <td>{{currentLang === 'en' ? book.topicsEnglish: book.topicsSpanish}}</td>
-        <td>{{book.isbn}}</td>
-        <td>{{book.coin + book.salePrice}}</td>
+        <!--<td>{{currentLang === 'en' ? book.topicsEnglish: book.topicsSpanish}}</td>-->
+        <!--<td>{{book.isbn}}</td>-->
+        <td>{{'(USD) ' + book.salePrice}}</td>
+        <td>{{book.createdBy + ', ' + book.createdDate}}</td>
         <td>
           <button class="btn btn-primary table-button"
                   (click)="editBook(book)"><i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-info table-button-delete"
+                  (click)="bookTrace(book)"><i class="fa fa-info-circle"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
                   (click)="openDialog(deleteBook, book)"><i class="fa fa-trash"></i>

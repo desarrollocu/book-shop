@@ -109,17 +109,18 @@
     <table class="table table-hover">
       <thead class="thead-light">
       <tr>
-        <th scope="col" style="width: 15%;" [translate]="'book.author'">Author</th>
+        <th scope="col" style="width: 15%;" [translate]="'book.author'" (click)="getBooks('authorBook.authorName', true)">Author
+          <i class="fa fa-sort" style="margin-left: 5px"></i></th>
         <th scope="col" style="width: 15%;" [translate]="'book.title'" (click)="getBooks('title', true)">Title
           <i class="fa fa-sort" style="margin-left: 5px"></i>
         </th>
-        <th scope="col" style="width: 15%;" [translate]="'book.editor'">Publisher</th>
-        <th scope="col" style="width: 12%" [translate]="'editor.editionCity'">Edition City</th>
+        <th scope="col" style="width: 15%;" [translate]="'book.editor'" (click)="getBooks('editorDocument.name', true)">Publisher
+          <i class="fa fa-sort" style="margin-left: 5px"></i></th>
+        <th scope="col" style="width: 10%" [translate]="'editor.editionCity'">Edition City</th>
         <th scope="col" style="width: 12%" [translate]="'book.editionYear'" (click)="getBooks('editionYear', true)">
-          EditionYear <i
-          class="fa fa-sort" style="margin-left: 5px"></i></th>
+          EditionYear <i class="fa fa-sort" style="margin-left: 5px"></i></th>
         <th scope="col" [translate]="'book.isbn'">ISBN</th>
-        <th scope="col" style="width: 10%" [translate]="'book.price'" (click)="getBooks('salePrice', true)">Price
+        <th scope="col" style="width: 12%" [translate]="'book.price'" (click)="getBooks('salePrice', true)">Price
           <i class="fa fa-sort" style="margin-left: 5px"></i>
         </th>
         <th scope="col" style="width: 12%"></th>
@@ -217,74 +218,52 @@
 
 <ng-template #details let-modal>
   <div class="modal-header modal-title">
-    <h5 class="modal-sm" [translate]="'book.detail'">Book details</h5>
+    <h5 class="modal-lg">{{selectedBook.title + ' / ' + (selectedBook.classification.name | translate) }}</h5>
   </div>
   <div class="modal-body">
     <div class="container">
       <div class="row">
-        <div class="col-8 to-text" style="border-bottom: thin groove;">
+        <div class="col-5 to-text" style="border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.author'">Author</h4>
           <p style="margin-bottom: 10px;">{{selectedBook.authors}}</p>
         </div>
-        <div class="col-4">
+        <div class="col-4 to-text" style="border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.title'">Title</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.title}}</p>
+        </div>
+        <div class="col-3">
           <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"
                style="position: absolute">
           <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
                style="position: absolute">
         </div>
-        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.title'">Title</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.title}}</p>
-        </div>
-        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-4 to-text" style="margin-top: 5px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
           <p style="margin-bottom: 10px">{{selectedBook.editors}}</p>
         </div>
-        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'editor.editionCity'">Edition City</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.cities}}</p>
+        <div class="col-5 to-text" style="margin-top:40px;border-bottom: thin groove;">
+          <h5 style="margin-bottom: 10px">{{selectedBook.cities + ', ' + (currentLang === 'en' ?
+            selectedBook.countriesEnglish : selectedBook.countriesSpanish) + ', ' + selectedBook.editionYear}}</h5>
         </div>
-        <div class="col-6 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.editionCountry'">Edition Country</h4>
-          <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedBook.countriesEnglish :
-            selectedBook.countriesSpanish}}</p>
+        <div class="col-5 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h5 style="margin-top: 35px">{{selectedBook.pages + (currentLang === 'en' ? ' pages. ' : ' págs. ') +
+            selectedBook.size + ' cm'}}</h5>
         </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.editionYear'">Edition Year</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.editionYear}}</p>
-        </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.pages'">Size</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.pages}}</p>
-        </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.size'">Size</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.size}}</p>
-        </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.weight1'">Weight(Kg)</h4>
-          <p style="margin-bottom: 10px">{{selectedBook.weight}}</p>
-        </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-7 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.isbn'">ISBN</h4>
           <p style="margin-bottom: 10px">{{selectedBook.isbn}}</p>
         </div>
         <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.topic'">Size</h4>
+          <h4 class="d-block" [translate]="'book.topic'">Topic</h4>
           <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedBook.topicsEnglish :
             selectedBook.topicsSpanish}}</p>
         </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
           <h4 class="d-block" [translate]="'book.comments'">Comments</h4>
           <p style="margin-bottom: 10px;">{{selectedBook.comments}}</p>
         </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <!--<h4 class="d-block" [translate]="'book.classification1'">New/Used</h4>-->
-          <h4 class="d-block"></h4>
-          <p style="margin-top: 35px" [translate]="selectedBook.classification.name"></p>
-        </div>
-        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
-          <h4 class="d-block" [translate]="'book.salePrice'">Price</h4>
+        <div class="col-12 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.price'">Price</h4>
           <p style="margin-bottom: 10px">
             {{'(USD) ' + selectedBook.salePrice}}
           </p>

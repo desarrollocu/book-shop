@@ -40,7 +40,7 @@ export class MagazineListComponent implements OnInit {
               private topicService: TopicService,
               private translateService: TranslateService,
               private editorService: EditorService) {
-    this.itemsPerPage = 5;
+    this.itemsPerPage = 10;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;

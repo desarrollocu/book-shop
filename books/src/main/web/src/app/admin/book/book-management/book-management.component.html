@@ -132,26 +132,32 @@
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="pages" [translate]="'book.pages'">Pages</label>
-            <input type="number"
+            <input type="text"
                    [(ngModel)]="book.pages"
                    class="form-control"
                    id="pages"
                    name="pages"
-                   min="0"
                    placeholder="{{'book.pages' | translate}}"
                    #pages="ngModel"
                    maxlength="50">
           </div>
           <div class="form-group col-md-4">
-            <label for="size" [translate]="'book.size'">Size</label>
+            <label for="size" [translate]="'book.size'">Size(cm)</label>
             <input type="text"
                    [(ngModel)]="book.size"
                    class="form-control"
                    id="size"
                    name="size"
-                   placeholder="{{'book.size' | translate}}"
+                   placeholder="{{'book.size1' | translate}}"
+                   pattern="[0-9]+[x][0-9]+"
                    #size="ngModel"
                    maxlength="50">
+            <div *ngIf="size.invalid && (size.dirty || size.touched)"
+                 class="error-msg">
+              <div *ngIf="size.errors.pattern" [translate]="'error.pattern.size'">
+                Wrong size.Ex:20x20.
+              </div>
+            </div>
           </div>
           <div class="form-group col-md-4">
             <label for="weight" [translate]="'book.weight1'">Weight(Kg)</label>
@@ -268,6 +274,7 @@
               [(ngModel)]="book.comments"
               class="form-control"
               id="comments"
+              maxlength="300"
               name="comments"></textarea>
           </div>
           <div class="form-group col-md-3">
@@ -318,7 +325,7 @@
         </div>
         <br>
         <button type="submit" class="btn btn-primary"
-                [disabled]="!bookManagementForm.valid"
+                [disabled]="!bookManagementForm.valid || load"
                 [translate]="'general.save'"> Save
         </button>
         <button type="button" (click)="cancel()" class="btn btn-danger table-button-search"

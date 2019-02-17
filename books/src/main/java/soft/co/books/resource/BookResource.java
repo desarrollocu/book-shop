@@ -13,11 +13,12 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import soft.co.books.configuration.security.other.AuthoritiesConstants;
 import soft.co.books.configuration.storage.StorageService;
 import soft.co.books.domain.service.BookService;
-import soft.co.books.domain.service.CartServices;
 import soft.co.books.domain.service.dto.BookDTO;
+import soft.co.books.domain.service.dto.BookTraceDTO;
 import soft.co.books.domain.service.dto.PageResultDTO;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,7 +42,6 @@ public class BookResource {
     }
 
     @PostMapping("/book")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_MANAGEMENT + "\")")
     public BookDTO getBook(@RequestBody BookDTO bookDTO) {
         if (bookDTO.getId() != null)
             return bookService.findOne(bookDTO.getId())
@@ -80,5 +80,11 @@ public class BookResource {
     public ResponseEntity<Void> deleteBook(@PathVariable String bookId) {
         bookService.delete(bookId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/bookTrace")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.BOOK_TRACE + "\")")
+    public List<BookTraceDTO> bookTrace(@RequestBody BookDTO bookDTO) {
+        return bookService.traceList(bookDTO.getId());
     }
 }

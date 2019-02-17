@@ -24,7 +24,8 @@ public class InitialDatabaseMigration {
         authorityList.add(new Authority("user-management", "Create or update user data"));
         authorityList.add(new Authority("user-list", "Users list"));
         authorityList.add(new Authority("book-list", "Books list"));
-        authorityList.add(new Authority("book-management", "List users"));
+        authorityList.add(new Authority("book-trace", "Books trace"));
+        authorityList.add(new Authority("book-management", "Create or update book data"));
         authorityList.add(new Authority("author-management", "Create or update author data"));
         authorityList.add(new Authority("author-list", "Authors list"));
         authorityList.add(new Authority("editor-management", "Create or update editor data"));
@@ -37,6 +38,7 @@ public class InitialDatabaseMigration {
         authorityList.add(new Authority("topic-list", "Topics list"));
         authorityList.add(new Authority("sale-management", "Update sale data"));
         authorityList.add(new Authority("sale-list", "Sales list"));
+//        authorityList.add(new Authority("trace-list", "Trace list"));
         authorityList.add(new Authority("search-sale", "Search sale"));
         authorityList.add(new Authority("info-management", "Create or update contact data"));
 
@@ -260,8 +262,11 @@ public class InitialDatabaseMigration {
         for (String line : countryArray) {
             String[] countryTemp = line.split(",");
             Country country = new Country();
-            country.setSpanishName(countryTemp[0].replaceAll("\"", ""));
-            country.setEnglishName(countryTemp[1].replaceAll("\"", ""));
+
+            String spanishName = countryTemp[0].replaceAll("\"", "");
+            String englishName = countryTemp[1].replaceAll("\"", "");
+            country.setSpanishName(spanishName != null ? spanishName : englishName);
+            country.setEnglishName(englishName != null ? englishName : spanishName);
             country.setCode(countryTemp[3].replaceAll("\"", ""));
 
             String[] africaArray = africa.split("\n");
@@ -312,10 +317,11 @@ public class InitialDatabaseMigration {
         user.setLastName("Admin");
         user.setUserName("admin");
         user.setEmail("admin@localhost");
-        user.setPhone(555555555);
+        user.setPhone("+5 55555555");
         user.setCp("1000");
         user.setCity("Montevideo");
-        user.setAddress("Address Address Address");
+        user.setLine1("Address Address Address");
+        user.setVisible(true);
 
         Query query = new Query();
         query.addCriteria(Criteria.where("spanish_name").is("Uruguay"));
@@ -390,339 +396,179 @@ public class InitialDatabaseMigration {
     }
 
     private List<DhlPrice> createDhlList(String group, List<DhlPrice> result) {
-        String kgs = "0.5\n" +
-                "1.0\n" +
-                "1.5\n" +
+        String kgs = "1.0\n" +
                 "2.0\n" +
-                "2.5\n" +
                 "3.0\n" +
-                "3.5\n" +
                 "4.0\n" +
-                "4.5\n" +
                 "5.0\n" +
-                "5.5\n" +
                 "6.0\n" +
-                "6.5\n" +
                 "7.0\n" +
-                "7.5\n" +
                 "8.0\n" +
-                "8.5\n" +
                 "9.0\n" +
-                "9.5\n" +
                 "10.0\n" +
-                "10.5\n" +
                 "11.0\n" +
-                "11.5\n" +
                 "12.0\n" +
-                "12.5\n" +
                 "13.0\n" +
-                "13.5\n" +
                 "14.0\n" +
-                "14.5\n" +
                 "15.0\n" +
-                "15.5\n" +
                 "16.0\n" +
-                "16.5\n" +
                 "17.0\n" +
-                "17.5\n" +
                 "18.0\n" +
-                "18.5\n" +
                 "19.0\n" +
-                "19.5\n" +
                 "20.0\n";
         String[] kgArray = kgs.split("\n");
 
-        String group1 = "9.07\n" +
-                "10.31\n" +
-                "11.56\n" +
+        String group1 = "10.31\n" +
                 "12.81\n" +
-                "14.05\n" +
                 "14.68\n" +
-                "15.31\n" +
                 "15.94\n" +
-                "16.57\n" +
                 "17.20\n" +
-                "17.90\n" +
                 "18.60\n" +
-                "19.30\n" +
                 "20.00\n" +
-                "20.70\n" +
                 "21.40\n" +
-                "22.10\n" +
                 "22.80\n" +
-                "23.50\n" +
                 "24.20\n" +
-                "24.91\n" +
                 "25.62\n" +
-                "26.33\n" +
                 "27.04\n" +
-                "27.75\n" +
                 "28.46\n" +
-                "29.17\n" +
                 "29.88\n" +
-                "30.59\n" +
                 "31.30\n" +
-                "32.01\n" +
                 "32.72\n" +
-                "33.43\n" +
                 "34.14\n" +
-                "34.85\n" +
                 "35.56\n" +
-                "36.27\n" +
                 "36.98\n" +
-                "37.69\n" +
                 "38.40\n";
         String[] group1Array = group1.split("\n");
 
-        String group2 = "15.38\n" +
-                "16.90\n" +
-                "18.40\n" +
+        String group2 = "16.90\n" +
                 "19.90\n" +
-                "21.40\n" +
                 "22.89\n" +
-                "24.38\n" +
                 "25.87\n" +
-                "27.36\n" +
                 "28.85\n" +
-                "30.38\n" +
                 "31.91\n" +
-                "33.44\n" +
                 "34.97\n" +
-                "36.50\n" +
                 "38.03\n" +
-                "39.56\n" +
                 "41.09\n" +
-                "42.62\n" +
                 "44.15\n" +
-                "45.53\n" +
                 "46.91\n" +
-                "48.29\n" +
                 "49.67\n" +
-                "51.05\n" +
                 "52.43\n" +
-                "53.81\n" +
                 "55.19\n" +
-                "56.57\n" +
                 "57.95\n" +
-                "59.33\n" +
                 "60.71\n" +
-                "62.09\n" +
                 "63.47\n" +
-                "64.85\n" +
                 "66.23\n" +
-                "67.61\n" +
                 "68.99\n" +
-                "70.37\n" +
                 "71.75\n";
         String[] group2Array = group2.split("\n");
 
-        String group3 = "15.89\n" +
-                "17.35\n" +
-                "18.81\n" +
+        String group3 = "17.35\n" +
                 "20.27\n" +
-                "21.73\n" +
                 "23.25\n" +
-                "24.77\n" +
                 "26.29\n" +
-                "27.81\n" +
                 "29.33\n" +
-                "30.83\n" +
                 "32.33\n" +
-                "33.83\n" +
                 "35.33\n" +
-                "36.83\n" +
                 "38.33\n" +
-                "39.83\n" +
                 "41.33\n" +
-                "42.83\n" +
                 "44.33\n" +
-                "45.84\n" +
                 "47.35\n" +
-                "48.86\n" +
                 "50.37\n" +
-                "51.88\n" +
                 "53.39\n" +
-                "54.90\n" +
                 "56.41\n" +
-                "57.92\n" +
                 "59.43\n" +
-                "60.94\n" +
                 "62.45\n" +
-                "63.96\n" +
                 "65.47\n" +
-                "66.98\n" +
                 "68.49\n" +
-                "70.00\n" +
                 "71.51\n" +
-                "73.02\n" +
                 "74.53\n";
         String[] group3Array = group3.split("\n");
 
-        String group4 = "16.33\n" +
-                "17.98\n" +
-                "19.63\n" +
+        String group4 = "17.98\n" +
                 "21.28\n" +
-                "22.93\n" +
                 "24.65\n" +
-                "26.37\n" +
                 "28.09\n" +
-                "29.81\n" +
                 "31.53\n" +
-                "33.20\n" +
                 "34.87\n" +
-                "36.54\n" +
                 "38.21\n" +
-                "39.88\n" +
                 "41.55\n" +
-                "43.22\n" +
                 "44.89\n" +
-                "46.56\n" +
                 "48.23\n" +
-                "49.89\n" +
                 "51.55\n" +
-                "53.21\n" +
                 "54.87\n" +
-                "56.53\n" +
                 "58.19\n" +
-                "59.85\n" +
                 "61.51\n" +
-                "63.17\n" +
                 "64.83\n" +
-                "66.49\n" +
                 "68.15\n" +
-                "69.81\n" +
                 "71.47\n" +
-                "73.13\n" +
                 "74.79\n" +
-                "76.45\n" +
                 "78.11\n" +
-                "79.77\n" +
                 "81.43\n";
         String[] group4Array = group4.split("\n");
 
-        String group5 = "16.80\n" +
-                "18.71\n" +
-                "20.64\n" +
+        String group5 = "18.71\n" +
                 "22.57\n" +
-                "24.47\n" +
                 "26.43\n" +
-                "28.39\n" +
                 "30.35\n" +
-                "32.31\n" +
                 "34.27\n" +
-                "36.09\n" +
                 "37.91\n" +
-                "39.73\n" +
                 "41.55\n" +
-                "43.37\n" +
                 "45.19\n" +
-                "47.01\n" +
                 "48.83\n" +
-                "50.65\n" +
                 "52.47\n" +
-                "54.31\n" +
                 "56.15\n" +
-                "57.99\n" +
                 "59.83\n" +
-                "61.67\n" +
                 "63.51\n" +
-                "65.35\n" +
                 "67.19\n" +
-                "69.03\n" +
                 "70.87\n" +
-                "72.71\n" +
                 "74.55\n" +
-                "76.39\n" +
                 "78.23\n" +
-                "80.07\n" +
                 "81.91\n" +
-                "83.75\n" +
                 "85.59\n" +
-                "87.43\n" +
                 "89.27\n";
         String[] group5Array = group5.split("\n");
 
-        String group6 = "17.57\n" +
-                "19.72\n" +
-                "21.91\n" +
+        String group6 = "19.72\n" +
                 "24.10\n" +
-                "26.24\n" +
                 "28.41\n" +
-                "30.58\n" +
                 "32.75\n" +
-                "34.92\n" +
                 "37.09\n" +
-                "39.26\n" +
                 "41.43\n" +
-                "43.60\n" +
                 "45.77\n" +
-                "47.94\n" +
                 "50.11\n" +
-                "52.28\n" +
                 "54.45\n" +
-                "56.62\n" +
                 "58.79\n" +
-                "60.98\n" +
                 "63.17\n" +
-                "65.36\n" +
                 "67.55\n" +
-                "69.74\n" +
                 "71.93\n" +
-                "74.12\n" +
                 "76.31\n" +
-                "78.50\n" +
                 "80.69\n" +
-                "82.88\n" +
                 "85.07\n" +
-                "87.26\n" +
                 "89.45\n" +
-                "91.64\n" +
                 "93.83\n" +
-                "96.02\n" +
                 "98.21\n" +
-                "100.40\n" +
                 "102.59\n";
         String[] group6Array = group6.split("\n");
 
-        String group7 = "23.97\n" +
-                "26.96\n" +
-                "29.98\n" +
+        String group7 = "26.96\n" +
                 "33.00\n" +
-                "35.98\n" +
                 "38.77\n" +
-                "41.56\n" +
                 "44.35\n" +
-                "47.14\n" +
                 "49.93\n" +
-                "52.43\n" +
                 "54.93\n" +
-                "57.43\n" +
                 "59.93\n" +
-                "62.43\n" +
                 "64.93\n" +
-                "67.43\n" +
                 "69.93\n" +
-                "72.43\n" +
                 "74.93\n" +
-                "77.42\n" +
                 "79.91\n" +
-                "82.40\n" +
                 "84.89\n" +
-                "87.38\n" +
                 "89.87\n" +
-                "92.36\n" +
                 "94.85\n" +
-                "97.34\n" +
                 "99.83\n" +
-                "102.32\n" +
                 "104.81\n" +
-                "107.30\n" +
                 "109.79\n" +
-                "112.28\n" +
                 "114.77\n" +
-                "117.26\n" +
                 "119.75\n" +
-                "122.24\n" +
                 "124.73\n";
         String[] group7Array = group7.split("\n");
 
@@ -762,14 +608,15 @@ public class InitialDatabaseMigration {
         data.setNameEnglish("LIDERLAF BOOKS");
         data.setNameSpanish("LIDERLAF LIBROS");
         data.setPhone("+5 5255665544");
-        data.setMainTextSpanish("Libros nuevos, usados, raros y antiguos. Revistas. Con envíos a todo el mundo.");
-        data.setMainTextEnglish("New, used, rare and old books. Magazines. With shipments to the whole world.");
+        data.setMainTextSpanish("<font size=\"5\">Libros nuevos, usados, raros y antiguos. Revistas. Con envíos a todo el mundo.</font>");
+        data.setMainTextEnglish("<font size=\"5\">New, used, rare and old books. Magazines. With shipments to the whole world.</font>");
         data.setEmail("liderlaf@gmail.com");
         data.setAddress("Paysandú 1838 e/ Dr Tristan Narvaja y Av. Daniel Fernández Crespo.");
         data.setTwitter("https://www.twitter.com");
         data.setFacebook("https://www.facebook.com");
         data.setInstagram("https://www.instagram.com");
         data.setGoogle("https://www.google.com");
+        data.setShipmentPercent(25);
         mongoTemplate.save(data);
     }
 }

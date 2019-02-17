@@ -14,16 +14,18 @@
 
     <ngb-carousel *ngIf="imageUrlList.length > 0" style="height: 280px;" [showNavigationIndicators]="false">
       <ng-template ngbSlide *ngFor="let elem of imageUrlList">
-        <img *ngFor="let t of elem.elementList"
-             [src]="t.url" [ngStyle]="{'position':t.position, 'left':t.left}" height="280px" width="167px"
-             alt="Random slide">
+        <a href="javascript:void(0);" *ngFor="let t of elem.elementList"
+           (click)="showDetails(details, detailMagazine, t)">
+          <img [src]="t.url" [ngStyle]="{'position':t.position, 'left':t.left}" height="280px" width="167px"
+               alt="Random slide">
+        </a>
       </ng-template>
     </ngb-carousel>
   </div>
 </section>
 <div style="margin: 0 10% 10px 10%;">
   <!--<h3 *ngIf="!uiData.mainTextEnglish" [translate]="'general.mainText'"></h3>-->
-  <h3 *ngIf="uiData">{{currentLang === 'en' ? uiData.mainTextEnglish : uiData.mainTextSpanish}}</h3>
+  <h3 *ngIf="uiData" [innerHTML]="currentLang === 'en' ? uiData.mainTextEnglish : uiData.mainTextSpanish"></h3>
   <div class="row" style="margin-top: 35px">
     <div class="col-sm-12">
       <span style="font-size: 1.3rem">PayPal: </span>
@@ -32,6 +34,135 @@
   </div>
 </div>
 
+
+<ng-template #details let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-lg">{{selectedBook.title + ' / ' + (selectedBook.classification.name | translate) }}</h5>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-5 to-text" style="border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.author'">Author</h4>
+          <p style="margin-bottom: 10px;">{{selectedBook.authors}}</p>
+        </div>
+        <div class="col-4 to-text" style="border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.title'">Title</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.title}}</p>
+        </div>
+        <div class="col-3">
+          <img *ngIf="!selectedBook.image" height="190" width="125" alt="" src="assets/images/image.gif"
+               style="position: absolute">
+          <img *ngIf="selectedBook.image" height="190" width="125" alt="" src="{{selectedBook.image}}"
+               style="position: absolute">
+        </div>
+        <div class="col-4 to-text" style="margin-top: 5px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.editors}}</p>
+        </div>
+        <div class="col-5 to-text" style="margin-top:40px;border-bottom: thin groove;">
+          <h5 style="margin-bottom: 10px">{{(selectedBook.cities !== "" ? selectedBook.cities : '-') + ', ' +
+            (selectedBook.countriesSpanish !== "" ? (currentLang === 'en' ?
+            selectedBook.countriesEnglish : selectedBook.countriesSpanish) : '-') + ', ' +
+            selectedBook.editionYear}}</h5>
+        </div>
+        <div class="col-5 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h5 style="margin-top: 35px">{{selectedBook.pages + (currentLang === 'en' ? ' pages. ' : ' págs. ') +
+            selectedBook.size + ' cm'}}</h5>
+        </div>
+        <div class="col-7 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.isbn'">ISBN</h4>
+          <p style="margin-bottom: 10px">{{selectedBook.isbn}}</p>
+        </div>
+        <div class="col-4 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.topic'">Topic</h4>
+          <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedBook.topicsEnglish :
+            selectedBook.topicsSpanish}}</p>
+        </div>
+        <div class="col-8 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.comments'">Comments</h4>
+          <p style="margin-bottom: 10px;">{{selectedBook.comments}}</p>
+        </div>
+        <div class="col-12 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.price'">Price</h4>
+          <p style="margin-bottom: 10px">
+            {{'(USD) ' + selectedBook.salePrice}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 20px">
+      <button type="button" (click)="addToCarBook(selectedBook)" class="btn btn-info" [translate]="'general.addCar'"><i
+        class="fa fa-cart-plus"></i> Add to car
+      </button>
+      <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">
+        <i
+          class="fa fa-window-close"></i> Close
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #detailMagazine let-modal>
+  <div class="modal-header modal-title">
+    <h5 class="modal-lg">{{selectedMagazine.title}}</h5>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-5" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.title'">Title</h4>
+          <p style="margin-bottom: 10px;">{{selectedMagazine.title}}</p>
+        </div>
+        <div class="col-4" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.editor'">Publisher</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.editors}}</p>
+        </div>
+        <div class="col-3">
+          <img *ngIf="!selectedMagazine.image" height="190" width="125" alt="" src="assets/images/image.gif"
+               style="position: absolute">
+          <img *ngIf="selectedMagazine.image" height="190" width="125" alt="" src="{{selectedMagazine.image}}"
+               style="position: absolute">
+        </div>
+        <div class="col-5" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.city'">City</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.cities}}</p>
+        </div>
+        <div class="col-4" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'magazine.publishYear'">Publish year</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.publishYear}}</p>
+        </div>
+        <div class="col-5" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'magazine.frequency'">Frequency</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.frequency}}</p>
+        </div>
+        <div class="col-7 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.isbn'">ISBN</h4>
+          <p style="margin-bottom: 10px">{{selectedMagazine.isbn}}</p>
+        </div>
+        <div class="col-5 to-text" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.topic'">Size</h4>
+          <p style="margin-bottom: 10px">{{currentLang === 'en' ? selectedMagazine.topicsEnglish :
+            selectedMagazine.topicsSpanish}}</p>
+        </div>
+        <div class="col-7" style="margin-top:20px;border-bottom: thin groove;">
+          <h4 class="d-block" [translate]="'book.price'">Price</h4>
+          <p style="margin-bottom: 10px">{{'(USD) ' + selectedMagazine.salePrice}}</p>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top: 20px">
+      <button type="button" (click)="addToCarMagazine(selectedMagazine)" class="btn btn-info"
+              [translate]="'general.addCar'"><i
+        class="fa fa-cart-plus"></i> Add to car
+      </button>
+      <button type="button" (click)="cancel()" class="btn btn-danger table-button-search" [translate]="'general.close'">
+        <i
+          class="fa fa-window-close"></i> Close
+      </button>
+    </div>
+  </div>
+</ng-template>
 
 <!--<ng-template #details let-modal>-->
 <!--<div class="modal-header modal-title">-->

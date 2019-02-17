@@ -17,6 +17,7 @@ export class LoginModalComponent implements AfterViewInit {
   rememberMe: boolean;
   username: string;
   credentials: any;
+  load: boolean = false;
 
   constructor(private loginService: LoginService,
               private router: Router,
@@ -30,6 +31,7 @@ export class LoginModalComponent implements AfterViewInit {
   }
 
   login() {
+    this.load = true;
     this.loginService
       .login({
         username: this.username,
@@ -37,6 +39,7 @@ export class LoginModalComponent implements AfterViewInit {
         rememberMe: this.rememberMe
       })
       .then(() => {
+        this.load = false;
         this.authenticationError = false;
         this.cartService.setCartCant(0);
         this.cartService.getCarSubject().next(0);
@@ -53,6 +56,7 @@ export class LoginModalComponent implements AfterViewInit {
         // }
       })
       .catch(() => {
+        this.load = false;
         this.authenticationError = true;
       });
   }

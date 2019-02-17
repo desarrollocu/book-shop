@@ -6,13 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.CustomBaseService;
 import soft.co.books.configuration.error.CustomizeException;
 import soft.co.books.domain.collection.Author;
+import soft.co.books.domain.collection.AuthorBook;
 import soft.co.books.domain.collection.Book;
 import soft.co.books.domain.repository.AuthorRepository;
 import soft.co.books.domain.service.dto.AuthorDTO;
@@ -115,7 +118,18 @@ public class AuthorService extends CustomBaseService<Author, String> {
                     author.setCountry(countryService.findOne(authorDTO.getCountry().getId()).get());
                     author.setDeathDate(authorDTO.getDeathDate());
                     author.setBornDate(authorDTO.getBornDate());
-                    authorRepository.save(author);
+                    Author authorTemp = authorRepository.save(author);
+                    /**
+                     * Update all books*/
+                    AuthorBook authorBook = new AuthorBook();
+                    authorBook.setId(authorTemp.getId());
+                    authorBook.setAuthorName(authorTemp.getFirstName() + " " + authorTemp.getLastName());
+
+                    Query query = new Query();
+                    query.addCriteria(Criteria.where("authorBook.id").is(authorTemp.getId()));
+                    Update update = new Update();
+                    update.set("authorBook", authorBook);
+                    mongoTemplate.updateMulti(query, update, Book.class);
                     log.debug("Changed Information for Author: {}", author);
                     return author;
                 })

@@ -52,6 +52,7 @@ public class UIDataService extends CustomBaseService<UIData, String> {
             data.setFacebook(uiData.getFacebook());
             data.setInstagram(uiData.getInstagram());
             data.setGoogle(uiData.getGoogle());
+            data.setShipmentPercent(uiData.getShipmentPercent());
 
             return uiDataRepository.save(data);
         } else {

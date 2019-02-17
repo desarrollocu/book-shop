@@ -88,14 +88,7 @@
                    name="twitter"
                    placeholder="{{'contact.twitter' | translate}}"
                    #twitter="ngModel"
-                   required
                    maxlength="350">
-            <div *ngIf="twitter.invalid && (twitter.dirty || twitter.touched)"
-                 class="error-msg">
-              <div *ngIf="twitter.errors.required" [translate]="'error.required.twitter'">
-                Twitter is required.
-              </div>
-            </div>
           </div>
           <div class="form-group col-md-6">
             <label for="facebook" [translate]="'contact.facebook'">Facebook</label>
@@ -106,14 +99,7 @@
                    name="facebook"
                    placeholder="{{'contact.facebook' | translate}}"
                    #facebook="ngModel"
-                   required
                    maxlength="350">
-            <div *ngIf="facebook.invalid && (facebook.dirty || facebook.touched)"
-                 class="error-msg">
-              <div *ngIf="facebook.errors.required" [translate]="'error.required.facebook'">
-                Facebook is required.
-              </div>
-            </div>
           </div>
         </div>
         <div class="form-row">
@@ -126,14 +112,7 @@
                    name="instagram"
                    placeholder="{{'contact.instagram' | translate}}"
                    #instagram="ngModel"
-                   required
                    maxlength="350">
-            <div *ngIf="instagram.invalid && (instagram.dirty || instagram.touched)"
-                 class="error-msg">
-              <div *ngIf="instagram.errors.required" [translate]="'error.required.instagram'">
-                Instagram is required.
-              </div>
-            </div>
           </div>
           <div class="form-group col-md-6">
             <label for="google" [translate]="'contact.google'">Google+</label>
@@ -144,52 +123,66 @@
                    name="google"
                    placeholder="{{'contact.google' | translate}}"
                    #google="ngModel"
+                   maxlength="350">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-9">
+            <label for="address" [translate]="'contact.address'">Address</label>
+            <input type="text"
+                   [(ngModel)]="uiData.address"
+                   class="form-control"
+                   id="address"
+                   name="address"
+                   placeholder="{{'contact.address' | translate}}"
+                   #address="ngModel"
                    required
                    maxlength="350">
-            <div *ngIf="google.invalid && (google.dirty || google.touched)"
+            <div *ngIf="address.invalid && (address.dirty || address.touched)"
                  class="error-msg">
-              <div *ngIf="google.errors.required" [translate]="'error.required.google'">
-                Google is required.
+              <div *ngIf="address.errors.required" [translate]="'error.required.address'">
+                Address is required.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="shipmentPercent" [translate]="'contact.shipmentPercent'">Shipment percent(%)</label>
+            <input type="number"
+                   [(ngModel)]="uiData.shipmentPercent"
+                   class="form-control"
+                   id="shipmentPercent"
+                   name="shipmentPercent"
+                   placeholder="{{'contact.address' | translate}}"
+                   #shipmentPercent="ngModel"
+                   min="1">
+            <div *ngIf="address.invalid && (address.dirty || address.touched)"
+                 class="error-msg">
+              <div *ngIf="address.errors.required" [translate]="'error.required.address'">
+                Address is required.
               </div>
             </div>
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="mainTextEnglish" [translate]="'contact.mainTextEnglish'">Main text in english</label>
-            <textarea type="text"
-                      [(ngModel)]="uiData.mainTextEnglish"
-                      class="form-control"
-                      id="mainTextEnglish"
-                      name="mainTextEnglish"
-                      placeholder="{{'contact.mainTextEnglish' | translate}}"
-                      #mainTextEnglish="ngModel"
-                      required>
-            </textarea>
-            <div *ngIf="mainTextEnglish.invalid && (mainTextEnglish.dirty || mainTextEnglish.touched)"
-                 class="error-msg">
-              <div *ngIf="mainTextEnglish.errors.required" [translate]="'error.required.mainTextEnglish'">
-                Main text in english is required.
-              </div>
-            </div>
+          <div class="form-group col-md-12">
+            <label [translate]="'contact.mainTextEnglish'">Main text in english</label>
+            <angular-editor id="editor1"
+                            name="editor1"
+                            [(ngModel)]="uiData.mainTextEnglish"
+                            required
+                            [config]="config">
+            </angular-editor>
           </div>
-          <div class="form-group col-md-6">
-            <label for="mainTextSpanish" [translate]="'contact.mainTextSpanish'">Main text in spanish</label>
-            <textarea type="text"
-                      [(ngModel)]="uiData.mainTextSpanish"
-                      class="form-control"
-                      id="mainTextSpanish"
-                      name="mainTextSpanish"
-                      placeholder="{{'contact.mainTextSpanish' | translate}}"
-                      #mainTextSpanish="ngModel"
-                      required>
-            </textarea>
-            <div *ngIf="mainTextSpanish.invalid && (mainTextSpanish.dirty || mainTextSpanish.touched)"
-                 class="error-msg">
-              <div *ngIf="mainTextSpanish.errors.required" [translate]="'error.required.mainTextSpanish'">
-                Main text in spanish is required.
-              </div>
-            </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <label [translate]="'contact.mainTextSpanish'">Main text in spanish</label>
+            <angular-editor id="editor2"
+                            name="editor2"
+                            [(ngModel)]="uiData.mainTextSpanish"
+                            required
+                            [config]="config">
+            </angular-editor>
           </div>
         </div>
         <button type="submit" class="btn btn-primary"
@@ -199,4 +192,5 @@
       </form>
     </div>
   </div>
+  <div style="margin-top: 20px" class="row"></div>
 </section>

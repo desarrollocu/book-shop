@@ -1,17 +1,21 @@
 <footer class="footer">
   <div class="legal">
-    {{'footer.info' | translate}} © {{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}} &nbsp;|&nbsp; {{uiData.phone}} &nbsp;|&nbsp; {{uiData.email}}
+    {{'footer.info' | translate}} © {{currentLang === 'en' ? uiData.nameEnglish : uiData.nameSpanish}} &nbsp;|&nbsp;
+    {{uiData.phone}} &nbsp;|&nbsp; {{uiData.email}}
     <br>
-    <a class="waves-effect waves-light active" [href]="uiData.twitter">
+    <a *ngIf="uiData.twitter" class="waves-effect waves-light active" [href]="uiData.twitter">
       <i class="fa fa-twitter"></i>
-    </a> &nbsp;|&nbsp;
-    <a class="waves-effect waves-light active" [href]="uiData.facebook">
+    </a>
+    <span *ngIf="uiData.facebook"> &nbsp;|&nbsp; </span>
+    <a *ngIf="uiData.facebook" class="waves-effect waves-light active" [href]="uiData.facebook">
       <i class="fa fa-facebook-official"></i>
-    </a> &nbsp;|&nbsp;
-    <a class="waves-effect waves-light active" [href]="uiData.google">
+    </a>
+    <span *ngIf="uiData.google"> &nbsp;|&nbsp; </span>
+    <a *ngIf="uiData.google" class="waves-effect waves-light active" [href]="uiData.google">
       <i class="fa fa-google-plus"></i>
-    </a> &nbsp;|&nbsp;
-    <a class="waves-effect waves-light active" [href]="uiData.instagram">
+    </a>
+    <span *ngIf="uiData.instagram"> &nbsp;|&nbsp; </span>
+    <a *ngIf="uiData.instagram" class="waves-effect waves-light active" [href]="uiData.instagram">
       <i class="fa fa-instagram"></i>
     </a>
   </div>

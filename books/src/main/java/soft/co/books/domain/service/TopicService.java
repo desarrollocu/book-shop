@@ -99,7 +99,7 @@ public class TopicService extends CustomBaseService<Topic, String> {
 
     public void delete(String id) {
         Query query = new Query();
-        query.addCriteria(where("topic.id").is(id));
+        query.addCriteria(where("topicList.id").is(id));
         if (mongoTemplate.count(query, Book.class) > 0 || mongoTemplate.count(query, Magazine.class) > 0) {
             throw new CustomizeException(Constants.ERR_DELETE);
         } else {

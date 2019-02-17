@@ -29,6 +29,7 @@ export class MagazineManagementComponent implements OnInit {
   message: string;
   imageSize: any;
   file: File;
+  load:boolean = false;
 
   constructor(private alertService: AlertDialogService,
               private magazineService: MagazineService,
@@ -64,6 +65,7 @@ export class MagazineManagementComponent implements OnInit {
   }
 
   saveMagazine() {
+    this.load = true;
     this.magazineService.saveMagazine(this.magazine, this.file)
       .subscribe(response => this.onSuccess(response, this.magazine),
         response => this.onError(response));
@@ -111,6 +113,7 @@ export class MagazineManagementComponent implements OnInit {
       msg = 'success.edited';
     }
     this.magazine = response.body;
+    this.load = false;
     this.alertService.success(msg, null, null);
     this.activeModal.close();
   }
@@ -132,6 +135,7 @@ export class MagazineManagementComponent implements OnInit {
   private onError(response) {
     let error = response.error;
     let fields = error.fields;
+    this.load = false;
     this.alertService.error(error.error, fields, null);
   }
 

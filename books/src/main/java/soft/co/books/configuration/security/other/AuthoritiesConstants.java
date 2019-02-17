@@ -21,6 +21,7 @@ public final class AuthoritiesConstants {
     //Book
     public static final String BOOK_MANAGEMENT = "book-management";
     public static final String BOOK_LIST = "book-list";
+    public static final String BOOK_TRACE = "book-trace";
     //Magazine
     public static final String MAGAZINE_MANAGEMENT = "magazine-management";
     public static final String MAGAZINE_LIST = "magazine-list";
@@ -30,6 +31,8 @@ public final class AuthoritiesConstants {
     //Sale
     public static final String SALE_MANAGEMENT = "sale-management";
     public static final String SALE_LIST = "sale-list";
+    //Trace
+    public static final String TRACE_LIST = "trace-list";
 
     //Other
     public static final String ANONYMOUS = "ANONYMOUS";

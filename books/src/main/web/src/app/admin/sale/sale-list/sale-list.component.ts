@@ -33,7 +33,7 @@ export class SaleListComponent implements OnInit {
               private authorService: AuthorService,
               private saleService: SaleService,
               private modalService: NgbModal) {
-    this.itemsPerPage = 5;
+    this.itemsPerPage = 10;
     this.predicate = 'id';
     this.reverse = true;
     this.page = 0;

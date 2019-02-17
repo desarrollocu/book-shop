@@ -55,9 +55,11 @@ public class UserDTO implements Serializable {
     @Size(max = 100, message = Constants.ERR_MAX100)
     private String cp;
 
-    private String address;
+    private String line1;
 
-    private int phone;
+    private String line2;
+
+    private String phone;
 
     private String password;
 
@@ -73,7 +75,7 @@ public class UserDTO implements Serializable {
 
     private String lastModifiedBy;
 
-    private Instant lastModifiedDate;
+    private String lastModifiedDate;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -97,24 +99,33 @@ public class UserDTO implements Serializable {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        this.address = user.getAddress();
+        this.line1 = user.getLine1();
+        this.line2 = user.getLine2();
 
         this.authorities = user.getAuthorities().stream()
                 .map(Authority::getName)
                 .collect(Collectors.toSet());
 
-        if (this.authorities.isEmpty())
-            this.isAdmin = "false";
-        else
+        if (this.authorities.size() > 1)
             this.isAdmin = "true";
+        else
+            this.isAdmin = "false";
     }
 
-    public String getAddress() {
-        return address;
+    public String getLine1() {
+        return line1;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLine1(String line1) {
+        this.line1 = line1;
+    }
+
+    public String getLine2() {
+        return line2;
+    }
+
+    public void setLine2(String line2) {
+        this.line2 = line2;
     }
 
     public Country getCountry() {
@@ -149,11 +160,11 @@ public class UserDTO implements Serializable {
         this.cp = cp;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -261,11 +272,11 @@ public class UserDTO implements Serializable {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public Instant getLastModifiedDate() {
+    public String getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(String lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 

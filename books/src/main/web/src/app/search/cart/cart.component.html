@@ -109,7 +109,7 @@
                      placeholder="{{'cart.fullName' | translate}}"
                      #fullName="ngModel"
                      required
-                     maxlength="350">
+                     maxlength="100">
               <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched)"
                    class="error-msg">
                 <div *ngIf="fullName.errors.required" [translate]="'error.required.fullName'">
@@ -127,7 +127,7 @@
                      placeholder="{{'cart.email' | translate}}"
                      #email="ngModel"
                      required
-                     maxlength="150">
+                     maxlength="100">
               <div *ngIf="email.invalid && (email.dirty || email.touched)"
                    class="error-msg">
                 <div *ngIf="email.errors.required" [translate]="'error.required.email'">
@@ -165,6 +165,7 @@
                          placeholder="{{'cart.country' | translate}}"
                          #country="ngModel"
                          [(ngModel)]="shippingInfo.country"
+                         (change)="stateEnable(shippingInfo.country)"
                          required>
               </ng-select>
               <div *ngIf="country.invalid && (country.dirty || country.touched)"
@@ -183,6 +184,7 @@
                      class="form-control"
                      id="state"
                      name="state"
+                     [disabled]="enableState"
                      placeholder="{{'cart.state' | translate}}"
                      maxlength="100">
             </div>
@@ -225,21 +227,35 @@
               </div>
             </div>
             <div class="form-group col-md-6">
-              <label for="address" [translate]="'cart.address'">Address</label>
+              <label for="line1" [translate]="'user.line1'">Line1</label>
               <input type="text"
-                     [(ngModel)]="shippingInfo.address"
+                     [(ngModel)]="shippingInfo.line1"
                      class="form-control"
-                     id="address"
-                     name="address"
-                     placeholder="{{'cart.address' | translate}}"
-                     #address="ngModel"
+                     id="line1"
+                     name="line1"
+                     placeholder="{{'user.line1' | translate}}"
+                     #line1="ngModel"
+                     maxlength="100"
                      required>
-              <div *ngIf="address.invalid && (address.dirty || address.touched)"
+              <div *ngIf="line1.invalid && (line1.dirty || line1.touched)"
                    class="error-msg">
-                <div *ngIf="address.errors.required" [translate]="'error.required.address'">
+                <div *ngIf="line1.errors.required" [translate]="'error.required.address'">
                   Address is required.
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="line2" [translate]="'user.line2'">Line2</label>
+              <input type="text"
+                     [(ngModel)]="shippingInfo.line2"
+                     class="form-control"
+                     id="line2"
+                     name="line2"
+                     maxlength="100"
+                     placeholder="{{'user.line2' | translate}}"
+                     #line2="ngModel">
             </div>
           </div>
           <div class="row">

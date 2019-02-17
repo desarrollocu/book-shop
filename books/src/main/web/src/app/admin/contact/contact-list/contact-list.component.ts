@@ -6,6 +6,9 @@ import {ContactService} from '../contact.service';
 import {AlertService} from '../../../shared/alert/alert.service';
 
 import {UiData} from '../../../search/model/uiData';
+import {AngularEditorConfig} from "@kolkov/angular-editor";
+
+declare var $: any;
 
 @Component({
   selector: 'app-contact-list',
@@ -16,6 +19,35 @@ export class ContactListComponent implements OnInit {
   uiData: UiData;
   currentLang: string;
   load: boolean = false;
+
+  config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '10rem',
+    minHeight: '5rem',
+    translate: "now",
+    fonts: [{name: 'Open Sans', class: 'Open Sans'},
+      {name: 'Arial', class: 'Arial'},
+      {name: 'Algerian', class: 'Algerian'},
+      {name: 'Times New Roman', class: 'Times New Roman'}
+    ],
+    defaultFontName: 'Open Sans',
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
 
   constructor(private translateService: TranslateService,
               private modalService: NgbModal,

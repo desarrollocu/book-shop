@@ -11,6 +11,7 @@ export class UiData {
     public facebook?: string,
     public instagram?: string,
     public google?: string,
+    public shipmentPercent?: number,
     public phone?: string
   ) {
   }

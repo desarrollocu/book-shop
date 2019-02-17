@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.error.CustomizeException;
-import soft.co.books.domain.collection.Country;
-import soft.co.books.domain.collection.DhlPrice;
+import soft.co.books.domain.collection.Book;
+import soft.co.books.domain.collection.Magazine;
 import soft.co.books.domain.service.BookService;
 import soft.co.books.domain.service.CartServices;
-import soft.co.books.domain.service.CountryService;
 import soft.co.books.domain.service.MagazineService;
+import soft.co.books.domain.service.UIDataService;
 import soft.co.books.domain.service.dto.CartDTO;
 import soft.co.books.domain.service.dto.ProductDTO;
 import soft.co.books.domain.service.dto.ResultToShopDTO;
 import soft.co.books.domain.service.session.CartSession;
 import soft.co.books.domain.service.session.ShippingSession;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -32,17 +32,17 @@ public class CartResource {
 
     private final MagazineService magazineService;
 
-    private final CountryService countryService;
-
     private final CartServices cartServices;
 
+    private final UIDataService uiDataService;
+
     public CartResource(BookService bookService,
-                        CountryService countryService,
                         CartServices cartServices,
+                        UIDataService uiDataService,
                         MagazineService magazineService) {
         this.bookService = bookService;
-        this.countryService = countryService;
         this.cartServices = cartServices;
+        this.uiDataService = uiDataService;
         this.magazineService = magazineService;
     }
 
@@ -97,16 +97,21 @@ public class CartResource {
         CartDTO cartDTO = new CartDTO();
         List<ResultToShopDTO> result = new ArrayList<>();
         List<CartSession> sessionList = cartServices.cartSessionList();
-        ShippingSession shippingInfo = cartServices.getShippingInfo();
 
         if (sessionList != null) {
             for (CartSession cartSession : sessionList) {
                 ResultToShopDTO resultToShopDTO;
                 if (cartSession.getBook()) {
-                    resultToShopDTO = bookService.findOne(cartSession.getId()).map(ResultToShopDTO::new).get();
+                    Book book = bookService.findByIdAndVisible(cartSession.getId(), true);
+                    if (book == null)
+                        throw new CustomizeException(Constants.ERR_NOT_BOOK);
+                    resultToShopDTO = new ResultToShopDTO(book);
                     resultToShopDTO.setBook(true);
                 } else {
-                    resultToShopDTO = magazineService.findOne(cartSession.getId()).map(ResultToShopDTO::new).get();
+                    Magazine magazine = magazineService.findByIdAndVisible(cartSession.getId(), true);
+                    if (magazine == null)
+                        throw new CustomizeException(Constants.ERR_NOT_BOOK);
+                    resultToShopDTO = new ResultToShopDTO(magazine);
                     resultToShopDTO.setBook(false);
                 }
 
@@ -123,26 +128,18 @@ public class CartResource {
             }
         }
 
-        if (shippingInfo != null) {
-            Country country = shippingInfo.getCountry();
-            if (country != null) {
-                for (DhlPrice dhlPrice : country.getPriceList()) {
-                    if (totalKgs > dhlPrice.getMinKg() && totalKgs <= dhlPrice.getMaxKg()) {
-                        shippingCost = dhlPrice.getPrice();
-                        break;
-                    }
-                    if (totalKgs > 20) {
-                        shippingCost = country.getPriceList().get(country.getPriceList().size() - 1).getPrice();
-                        break;
-                    }
-                }
-            } else
-                throw new CustomizeException(Constants.ERR_SERVER);
-        }
+        Map<String, Object> resultMap = cartServices.shippingData(totalKgs, shippingCost, null);
+        totalKgs = (double) resultMap.get("totalKgs");
+        shippingCost = (double) resultMap.get("shippingCost");
 
-        cartDTO.setShippingCost(shippingCost);
+        String shippingCostString = String.format("%.2f", shippingCost).replace(",", ".");
+        double shippingCostDouble = Double.valueOf(shippingCostString);
+        cartDTO.setShippingCost(shippingCostDouble);
         cartDTO.setTotalKgs(totalKgs);
-        cartDTO.setAmount(amount + cartDTO.getShippingCost());
+
+        String amountString = String.format("%.2f", (amount + cartDTO.getShippingCost())).replace(",", ".");
+        double amountDouble = Double.valueOf(amountString);
+        cartDTO.setAmount(amountDouble);
         cartDTO.setCant(cant);
         cartDTO.setShopDTOList(result);
         return cartDTO;

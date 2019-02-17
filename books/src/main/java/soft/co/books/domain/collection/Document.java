@@ -1,21 +1,23 @@
 package soft.co.books.domain.collection;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.*;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Field;
 import soft.co.books.configuration.Constants;
 import soft.co.books.configuration.database.AbstractAuditingEntity;
+import soft.co.books.domain.collection.data.Trace;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Document extends AbstractAuditingEntity implements Serializable {
+public abstract class Document implements Serializable {
 
     @Id
     private String id;
@@ -27,6 +29,8 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     @DBRef
     private List<Editor> editorList = new ArrayList<>();
+
+    private EditorDocument editorDocument;
 
     @Indexed
     @Field("sell_price")
@@ -61,8 +65,87 @@ public abstract class Document extends AbstractAuditingEntity implements Seriali
 
     private String comments;
 
+    @NotNull(message = Constants.ERR_NOT_NULL)
+    private boolean visible;
+
+    @DBRef
+    @Field("created_by")
+    private User createdBy;
+
+    @CreatedDate
+    @Field("created_date")
+    private Instant createdDate = Instant.now();
+
+    @DBRef
+    @LastModifiedBy
+    @Field("last_modified_by")
+    private User lastModifiedBy;
+
+    @LastModifiedDate
+    @Field("last_modified_date")
+    @JsonIgnore
+    private String lastModifiedDate;
+
+    private List<Trace> traceList = new ArrayList<>();
+
     @Version
     private Long version;
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Instant getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Instant createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public User getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(User lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public List<Trace> getTraceList() {
+        return traceList;
+    }
+
+    public void setTraceList(List<Trace> traceList) {
+        this.traceList = traceList;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public EditorDocument getEditorDocument() {
+        return editorDocument;
+    }
+
+    public void setEditorDocument(EditorDocument editorDocument) {
+        this.editorDocument = editorDocument;
+    }
 
     public boolean isToShow() {
         return toShow;

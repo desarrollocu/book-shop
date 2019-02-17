@@ -296,9 +296,10 @@ export class PaypalComponent implements OnChanges, AfterViewInit, OnDestroy {
       },
 
       onError: (err) => {
-        if (this.config.onError) {
-          this.config.onError(err);
-        }
+        // if (this.config.onError) {
+        //   console.log('onError');
+        //   this.config.onError(err);
+        // }
       },
 
       onCancel: (data, actions) => {

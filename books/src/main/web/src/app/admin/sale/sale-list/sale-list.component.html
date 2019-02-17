@@ -30,6 +30,7 @@
         <th scope="col" style="width: 15%;" [translate]="'sale.shippingCost'">Shipping cost</th>
         <th scope="col" style="width: 15%;" [translate]="'sale.saleDate'">Sale date</th>
         <th scope="col" style="width: 15%;" [translate]="'sale.saleState'">Sale state</th>
+        <th scope="col" style="width: 15%;" [translate]="'sale.user'">Buyer info</th>
         <th scope="col" style="width: 10%;"></th>
       </tr>
       </thead>
@@ -43,6 +44,10 @@
         <td>{{'(USD) ' + sale.shippingCost}}</td>
         <td>{{sale.saleDate}}</td>
         <td [translate]="sale.saleState"></td>
+        <td [translate]="sale.shipping.fullName + ', ' + sale.shipping.phone + ', ' + sale.shipping.email + ', '
+        + sale.shipping.line1 + (sale.shipping.line2 !== null ? sale.shipping.line2 : '')
+        + ', ' + sale.shipping.city + ', ' + (sale.shipping.state !== null ? sale.shipping.state + ', ' : '')
+        + sale.shipping.country.code + ', ' + sale.shipping.postalCode"></td>
         <td>
           <button class="btn btn-primary table-button"
                   (click)="editSale(sale)"><i class="fa fa-edit"></i>

@@ -8,4 +8,5 @@ import soft.co.books.domain.collection.Magazine;
  * Spring Data MongoDB repository for the Magazine entity.
  */
 public interface MagazineRepository extends CustomBaseRepository<Magazine, String> {
+    Magazine findByIdAndVisible(String id, boolean visible);
 }
