@@ -20,6 +20,55 @@ a:hover {
   text-decoration: none;
 }
 
+.btn-primary1 {
+  color: #fff;
+  background-color: #FF5733;
+  border-color: #FF5733;
+}
+
+.btn-primary1:not(:disabled):not(.disabled).active, .btn-primary1:not(:disabled):not(.disabled):active, .show>.btn-primary1.dropdown-toggle {
+  color: #fff;
+  background-color: #FF5733;
+  border-color: #FF5733;
+}
+
+.btn-primary1 {
+  color: #fff;
+  background-color: #FF5733;
+  border-color: #FF5733;
+}
+
+.btn-primary1:hover {
+  color: #fff;
+  background-color: #f44724;
+  border-color: #f44724;
+}
+
+.btn-primary1:focus, .btn-primary1.focus {
+  color: #fff;
+  background-color: #f44724;
+  border-color: #f44724;
+}
+
+.btn-primary1.disabled, .btn-primary1:disabled {
+  color: #fff;
+  background-color: #f7856f;
+  border-color: #f7856f;
+}
+
+.btn-primary1:not(:disabled):not(.disabled):active, .btn-primary1:not(:disabled):not(.disabled).active,
+.show > .btn-primary1.dropdown-toggle {
+  color: #fff;
+  background-color: #FF5733;
+  border-color: #FF5733;
+}
+
+.btn-primary1:not(:disabled):not(.disabled):active:focus, .btn-primary1:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary1.dropdown-toggle:focus {
+  background-color: #FF5733;
+  border-color: #FF5733;
+}
+
 /* :: 3.1.0 Spacing */
 .mb-15 {
   margin-bottom: 15px !important;
@@ -294,8 +343,15 @@ figcaption {
 }
 
 .modal-title {
-  background-color: #272c33;
-  color: #aaaaaa;
+  background-color: #FF5733;
+  color: white;
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #FF5733;
+  border-color: #FF5733;
 }
 
 .ng-invalid.ng-touched {

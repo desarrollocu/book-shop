@@ -26,9 +26,16 @@ span {
 }
 
 .nav-back{
-  background-color: #272c33;
+  background-color: #FF5733;
   border-bottom-right-radius: 10px;
+  color: white;
 }
 agm-map {
   height: 300px;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #FF5733;
 }

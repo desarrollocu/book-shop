@@ -59,7 +59,7 @@
           </ng-select>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary"
+      <button type="submit" class="btn btn-primary1"
               [translate]="'general.search'"><i class="fa fa-search"></i> Search
       </button>
       <button type="button" class="btn btn-success table-button-search"
@@ -99,7 +99,7 @@
         <td>{{'(USD) ' + book.salePrice}}</td>
         <td>{{book.createdBy + ', ' + book.createdDate}}</td>
         <td>
-          <button class="btn btn-primary table-button"
+          <button class="btn btn-primary1 table-button"
                   (click)="editBook(book)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-info table-button-delete"
@@ -134,7 +134,7 @@
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">
-        <button type="submit" class="btn btn-primary"
+        <button type="submit" class="btn btn-primary1"
                 (click)="removeBook()"
                 [translate]="'general.confirm'"> Confirm
         </button>

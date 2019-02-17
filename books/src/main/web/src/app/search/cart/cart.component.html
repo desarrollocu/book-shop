@@ -3,12 +3,12 @@
     <div class="row">
       <div class="col-sm-2">
         <button [translate]="'shopping.backBooks'" routerLink="/search-book"
-                class="btn btn-primary button-size">Back to shopping books
+                class="btn btn-primary1 button-size">Back to shopping books
         </button>
       </div>
       <div class="col-sm-3">
         <button [translate]="'shopping.backMagazines'" routerLink="/search-magazine"
-                class="btn btn-primary button-size table-button-search">Back to shopping magazines
+                class="btn btn-primary1 button-size table-button-search">Back to shopping magazines
         </button>
       </div>
       <div class="col-sm-3" *ngIf="elementList.length > 0">
@@ -260,7 +260,7 @@
           </div>
           <div class="row">
             <div class="col-sm-5">
-              <button type="submit" class="btn btn-primary"
+              <button type="submit" class="btn btn-primary1"
                       [disabled]="!shippingForm.valid"
                       [translate]="'general.save'"> Save
               </button>

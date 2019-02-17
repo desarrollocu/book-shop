@@ -34,7 +34,7 @@
                  placeholder="{{'editor.city' | translate}}">
         </div>
       </div>
-      <button type="submit" class="btn btn-primary"
+      <button type="submit" class="btn btn-primary1"
               [translate]="'general.search'"><i class="fa fa-search"></i> Search
       </button>
       <button type="button" class="btn btn-success table-button-search"
@@ -63,7 +63,7 @@
         <td>{{currentLang === 'en' ? editor.country.englishName: editor.country.spanishName}}</td>
         <td>{{editor.city}}</td>
         <td>
-          <button class="btn btn-primary table-button"
+          <button class="btn btn-primary1 table-button"
                   (click)="editEditor(editor)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
@@ -95,7 +95,7 @@
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">
-        <button type="submit" class="btn btn-primary"
+        <button type="submit" class="btn btn-primary1"
                 (click)="removeEditor()"
                 [translate]="'general.confirm'"> Confirm
         </button>

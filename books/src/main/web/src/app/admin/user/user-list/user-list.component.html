@@ -41,7 +41,7 @@
                  placeholder="{{'user.email' | translate}}">
         </div>
       </div>
-      <button type="submit" class="btn btn-primary"
+      <button type="submit" class="btn btn-primary1"
               [translate]="'general.search'"><i class="fa fa-search"></i> Search
       </button>
       <button type="button" class="btn btn-success table-button-search"
@@ -75,7 +75,7 @@
         <td *ngIf="user.isAdmin === 'true'" [translate]="'user.employee'"></td>
         <td *ngIf="user.isAdmin === 'false'" [translate]="'user.customer'"></td>
         <td>
-          <button class="btn btn-primary table-button"
+          <button class="btn btn-primary1 table-button"
                   (click)="editUser(user)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
@@ -107,7 +107,7 @@
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">
-        <button type="submit" class="btn btn-primary"
+        <button type="submit" class="btn btn-primary1"
                 (click)="removeUser()"
                 [translate]="'general.confirm'"> Confirm
         </button>

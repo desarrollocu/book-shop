@@ -5,7 +5,7 @@
 #sidebar {
   min-width: 250px;
   max-width: 300px;
-  background: #373a3f;
+  background: #FF5733;
   color: #f1f2f7 !important;
   transition: all 0.3s;
   height: 100%;
@@ -58,7 +58,7 @@
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #272c33;
+  background: #FF5733;
 }
 
 #sidebar .sidebar-header strong {
@@ -68,7 +68,7 @@
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #272c33;
+  border-bottom: 1px solid #f7856f;
 }
 
 #sidebar ul li a {
@@ -79,7 +79,7 @@
 
 #sidebar ul li a:hover {
   color: #f1f2f7;
-  background: #5b5b5b;
+  background: #f7856f;
 }
 
 #sidebar ul li a i {
@@ -89,7 +89,7 @@
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #f1f2f7;
-  background: #272c33;
+  background: #f7856f;
 }
 
 a[data-toggle="collapse"] {
@@ -107,7 +107,7 @@ a[data-toggle="collapse"] {
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
-  background: #272c33;
+  background: #FF5733;
 }
 
 ul.CTAs {
@@ -131,6 +131,10 @@ a.article,
 a.article:hover {
   background: #272c33 !important;
   color: #f1f2f7 !important;
+}
+
+.badge-color{
+  color: #FF5733;
 }
 
 .my-carousel {

@@ -210,7 +210,7 @@
                      style="display: none"
                      accept='image/png, image/jpeg'
                      (change)="preview($event)"/>
-              <button style="width: 125px; margin-top: 5px" type="button" class="btn btn-primary"
+              <button style="width: 125px; margin-top: 5px" type="button" class="btn btn-primary1"
                       *ngIf="!magazine.image"
                       (click)="fileInput.click()">Select File
               </button>
@@ -225,7 +225,7 @@
           </div>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary"
+        <button type="submit" class="btn btn-primary1"
                 [disabled]="!magazineManagementForm.valid || load"
                 [translate]="'general.save'"> Save
         </button>

@@ -72,7 +72,7 @@
                  placeholder="{{'author.deathDate' | translate}}">
         </div>
       </div>
-      <button type="submit" class="btn btn-primary"
+      <button type="submit" class="btn btn-primary1"
               [translate]="'general.search'"><i class="fa fa-search"></i> Search
       </button>
       <button type="button" class="btn btn-success table-button-search"
@@ -105,7 +105,7 @@
         <!--<td>{{author.state}}</td>-->
         <td>{{author.city}}</td>
         <td>
-          <button class="btn btn-primary table-button"
+          <button class="btn btn-primary1 table-button"
                   (click)="editAuthor(author)"><i class="fa fa-edit"></i>
           </button>
           <button class="btn btn-danger table-button-delete"
@@ -137,7 +137,7 @@
         <h5 [translate]="'general.sureMessage'">Are you sure?</h5>
       </div>
       <div class="col-md-8" style="margin-left: 60%">
-        <button type="submit" class="btn btn-primary"
+        <button type="submit" class="btn btn-primary1"
                 (click)="removeAuthor()"
                 [translate]="'general.confirm'"> Confirm
         </button>
